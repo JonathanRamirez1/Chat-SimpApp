@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_editor_absoluteX="0dp"
+    app:layout_editor_absoluteY="25dp">
+
+    <ImageView
+        android:id="@+id/imageViewProfileRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewMessageRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:maxWidth="300dp"
+        android:background="@drawable/bubble_chat_right"
+        android:paddingBottom="8dp"
+        android:paddingEnd="18dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewProfileRight"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewTimeRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="4dp"
+        android:textSize="7sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewMessageRight"
+        app:layout_constraintEnd_toStartOf="@+id/textViewMessageRight"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

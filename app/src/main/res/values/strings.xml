@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">LoginFuturo</string>
+
+    <!-- Login View -->
+    <string name="login_email">Email</string>
+    <string name="login_password">Password</string>
+    <string name="login_confirm_passsword">Confirm Password</string>
+    <string name="login_sign_in">Sign In</string>
+    <string name="login_signUp">Sign Up</string>
+    <string name="login_reset_password">Reset Password</string>
+    <string name="login_signIn_google">Sign In with Google</string>
+    <string name="login_forgot_password">I have fotgotten my password</string>
+    <string name="login_create_account">Create a new account</string>
+    <string name="login_go_to_login">Go back to Login</string>
+
+    <!-- Sign and Sign Up -->
+    <string name="email_is_no_valid">Email is not valid</string>
+    <string name="password_is_no_valid">Password should contain 1 lowercase, 1 uppercase,  1 special character and 8 characters length at least.</string>
+    <string name="confirm_password_is_no_valid">Confirm Password does not match with Password</string>
+
+    <string name="chat_edittext_message_hint">Type here a message...</string>
+
+    <!-- Bottom Navigation Menu -->
+    <string name="navigation_bottom_info">Info</string>
+    <string name="navigation_bottom_rates">Rates</string>
+    <string name="navigation_bottom_chat">Chat</string>
+
+    <!-- InfoFragment -->
+    <string name="info_label_messages">Total messages</string>
+    <string name="info_no_name">Name is not available</string>
+
+    <string name="options_menu_log_out">Log out</string>
+
+    <string name="user_message">User Message</string>
+
+    <!-- AlertDialog -->
+    <string name="alert_dialog_title">Rate the App!</string>
+    <string name="alert_dialog_edit_text_hint">Leave your feedback</string>
+    <string name="alert_dialog_ok">Rate</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Facebook Sign In -->
+    <string name="facebook_app_id">2871054539831513cambiar</string>
+    <string name="fb_login_protocol_scheme">fb2871054539831513cambiar</string>
+</resources>

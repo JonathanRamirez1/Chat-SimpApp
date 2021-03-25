@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="login_space">25sp</dimen>
+    <dimen name="login_edit_text_space">10sp</dimen>
+    <dimen name="login_edit_text_height">50sp</dimen>
+    <dimen name="login__button_height">50sp</dimen>
+    <dimen name="login__button_xl_height">60sp</dimen>
+    <dimen name="login_text_xl_size">18sp</dimen>
+    <dimen name="login_text_size">15sp</dimen>
+</resources>
