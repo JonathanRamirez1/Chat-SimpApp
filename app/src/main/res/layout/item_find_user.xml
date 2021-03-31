@@ -9,34 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarFindUser"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            <SearchView
-                android:id="@+id/searchViewFinUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"/>
-
-            <Button
-                android:id="@+id/buttonBack"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_back_rooms"
-                android:background="@color/colorPrimary"/>
-
-        </androidx.appcompat.widget.Toolbar>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
@@ -62,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
-                android:text="User Name"
+                android:text="User Email"
                 app:layout_constraintStart_toEndOf="@+id/imageViewPhoto"
                 app:layout_constraintTop_toTopOf="parent" />
 

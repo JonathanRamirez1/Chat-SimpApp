@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "115314714431-736nqstojdshpmisrfa7cjp2g4ke34bm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jonathan.loginfuturo",
+            "certificate_hash": "61afcb3cc6813e3ed20b33a8f372b00d8c8dda22"
+          }
+        },
+        {
           "client_id": "115314714431-he9o23p5d8sma0pccp6q208s7mq3hmr5.apps.googleusercontent.com",
           "client_type": 3
         }

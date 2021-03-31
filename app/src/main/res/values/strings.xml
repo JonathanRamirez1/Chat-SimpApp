@@ -44,4 +44,6 @@
     <!-- Facebook Sign In -->
     <string name="facebook_app_id">2871054539831513cambiar</string>
     <string name="fb_login_protocol_scheme">fb2871054539831513cambiar</string>
+
+    <string name="search">Search…</string>
 </resources>

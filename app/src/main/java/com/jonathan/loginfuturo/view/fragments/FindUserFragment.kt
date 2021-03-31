@@ -1,27 +1,27 @@
 package com.jonathan.loginfuturo.view.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.jonathan.loginfuturo.R
-import com.jonathan.loginfuturo.databinding.ItemFindUserBinding
+import com.jonathan.loginfuturo.databinding.FragmentFindUserBinding
 
 
 class FindUserFragment : Fragment() {
 
-    private lateinit var binding: ItemFindUserBinding
+    private lateinit var binding: FragmentFindUserBinding
     private lateinit var navController: NavController
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.item_find_user, container, false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_find_user, container, false)
 
         return binding.root
     }

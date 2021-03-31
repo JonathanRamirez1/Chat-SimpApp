@@ -25,25 +25,18 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/navEditor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/activities/HomeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/activities/HomeActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/adapters/RoomsAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/adapters/RoomsAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/RoomsFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/RoomsFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_find_user.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_rooms.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_rooms.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_rooms.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_rooms.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_chat.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_login.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/google-services.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/FindUserFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_find_user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_find_user.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="ZY2278B75S" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_28" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -52,7 +45,18 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
-        <projects_view />
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
       </state>
     </system>
   </component>
@@ -65,8 +69,8 @@
         <option value="Kotlin Object" />
         <option value="resourceFile" />
         <option value="navigationResourceFile" />
-        <option value="layoutResourceFile" />
         <option value="Kotlin Class" />
+        <option value="layoutResourceFile" />
       </list>
     </option>
   </component>
@@ -89,11 +93,12 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.jonathan.loginfuturo.view.fragments" />
       <recent name="com.jonathan.loginfuturo.view.activities" />
       <recent name="com.jonathan.loginfuturo.dialogues" />
       <recent name="com.jonathan.loginfuturo.models" />
@@ -112,16 +117,19 @@
       <recent name="com.jonathan.loginfuturo.view.activities" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia\app" />
+      <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia" />
       <recent name="D:\LoginFuturo\app" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia" />
       <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia\app\src\main\res\drawable" />
     </key>
     <key name="android.template.331044089">
       <recent name="com.jonathan.loginfuturo.views" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Android App.app">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -180,6 +188,30 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LoginFuturoCopia [signingReport]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="signingReport" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.LoginFuturoCopia [signingReport]" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -214,6 +246,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
+    <state x="392" y="88" key="#Notifications" timestamp="1617224328044">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="392" y="88" key="#Notifications/0.0.1600.860@0.0.1600.860" timestamp="1617224328044" />
     <state x="530" y="185" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1616272105611">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -222,26 +258,34 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="630" y="285" key="#com.intellij.debugger.actions.ViewTextAction/0.0.1600.860@0.0.1600.860" timestamp="1616011267959" />
+    <state x="541" y="233" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1617221072341">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="541" y="233" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1600.860@0.0.1600.860" timestamp="1617221072341" />
     <state x="151" y="149" key="#com.intellij.ide.util.MemberChooser" timestamp="1616447175164">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="151" y="149" key="#com.intellij.ide.util.MemberChooser/0.0.1600.860@0.0.1600.860" timestamp="1616447175164" />
-    <state x="530" y="177" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1616784932123">
+    <state x="530" y="177" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1617218950468">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="530" y="177" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1600.860@0.0.1600.860" timestamp="1616784932123" />
-    <state x="167" y="86" width="472" height="695" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog" timestamp="1615408587454">
+    <state x="530" y="177" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1600.860@0.0.1600.860" timestamp="1617218950468" />
+    <state x="167" y="86" width="475" height="695" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog" timestamp="1617218970546">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="167" y="86" width="472" height="695" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.0.1600.860@0.0.1600.860" timestamp="1615408587454" />
+    <state x="167" y="86" width="475" height="695" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.0.1600.860@0.0.1600.860" timestamp="1617218970546" />
     <state x="610" y="183" key="#xdebugger.XInspectDialog" timestamp="1616008571764">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="610" y="183" key="#xdebugger.XInspectDialog/0.0.1600.860@0.0.1600.860" timestamp="1616008571764" />
-    <state x="591" y="189" key="AndroidCreateResourceFileDialog" timestamp="1616702529958">
+    <state x="591" y="189" key="AndroidCreateResourceFileDialog" timestamp="1617218434335">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="591" y="189" key="AndroidCreateResourceFileDialog/0.0.1600.860@0.0.1600.860" timestamp="1616702529958" />
+    <state x="591" y="189" key="AndroidCreateResourceFileDialog/0.0.1600.860@0.0.1600.860" timestamp="1617218434335" />
+    <state x="658" y="243" key="AndroidCreateXmlResourceDialog" timestamp="1617215170087">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="658" y="243" key="AndroidCreateXmlResourceDialog/0.0.1600.860@0.0.1600.860" timestamp="1617215170087" />
     <state x="1055" y="195" key="AndroidProcessChooserDialog" timestamp="1616009150351">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -250,26 +294,26 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="433" y="24" key="CommitChangelistDialog2/0.0.1600.860@0.0.1600.860" timestamp="1616624122926" />
-    <state x="580" y="185" key="FileChooserDialogImpl" timestamp="1615400791193">
+    <state x="580" y="185" key="FileChooserDialogImpl" timestamp="1617222216235">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="580" y="185" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1615400791193" />
-    <state width="1557" height="337" key="GridCell.Tab.0.bottom" timestamp="1617206423428">
+    <state x="580" y="185" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1617222216235" />
+    <state width="1557" height="239" key="GridCell.Tab.0.bottom" timestamp="1617224839376">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="337" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1617206423428" />
-    <state width="1557" height="337" key="GridCell.Tab.0.center" timestamp="1617206423428">
+    <state width="1557" height="239" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1617224839376" />
+    <state width="1557" height="239" key="GridCell.Tab.0.center" timestamp="1617224839375">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="337" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1617206423428" />
-    <state width="1557" height="337" key="GridCell.Tab.0.left" timestamp="1617206423427">
+    <state width="1557" height="239" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1617224839375" />
+    <state width="1557" height="239" key="GridCell.Tab.0.left" timestamp="1617224839374">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="337" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1617206423427" />
-    <state width="1557" height="337" key="GridCell.Tab.0.right" timestamp="1617206423428">
+    <state width="1557" height="239" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1617224839374" />
+    <state width="1557" height="239" key="GridCell.Tab.0.right" timestamp="1617224839375">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1557" height="337" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1617206423428" />
+    <state width="1557" height="239" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1617224839375" />
     <state width="1557" height="298" key="GridCell.Tab.1.bottom" timestamp="1616018558348">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -286,10 +330,10 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state width="1557" height="298" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1616018558348" />
-    <state x="301" y="72" key="SettingsEditor" timestamp="1616622893621">
+    <state x="301" y="72" key="SettingsEditor" timestamp="1617225248301">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="301" y="72" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1616622893621" />
+    <state x="301" y="72" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1617225248301" />
     <state width="498" height="446" key="SwitcherDM" timestamp="1612900038143">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -302,10 +346,10 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="92" y="92" width="1416" height="676" key="com.android.tools.idea.avdmanager.AvdListDialog/0.0.1600.860@0.0.1600.860" timestamp="1612906621648" />
-    <state x="713" y="233" key="com.intellij.ide.util.TipDialog" timestamp="1617196160903">
+    <state x="713" y="233" key="com.intellij.ide.util.TipDialog" timestamp="1617224888159">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="713" y="233" key="com.intellij.ide.util.TipDialog/0.0.1600.860@0.0.1600.860" timestamp="1617196160903" />
+    <state x="713" y="233" key="com.intellij.ide.util.TipDialog/0.0.1600.860@0.0.1600.860" timestamp="1617224888159" />
     <state x="609" y="347" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1616624095555">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -314,9 +358,12 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="541" y="72" key="refactoring.ChangeSignatureDialog/0.0.1600.860@0.0.1600.860" timestamp="1616270578257" />
-    <state x="456" y="195" key="run.anything.popup" timestamp="1616448884190">
+    <state x="456" y="195" width="672" height="677" key="run.anything.popup" timestamp="1617222041230">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="456" y="195" key="run.anything.popup/0.0.1600.860@0.0.1600.860" timestamp="1616448884190" />
+    <state x="456" y="195" width="672" height="677" key="run.anything.popup/0.0.1600.860@0.0.1600.860" timestamp="1617222041230" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/LoginFuturo$LoginFuturoCopia__signingReport_.ic" NAME="LoginFuturoCopia [signingReport] Coverage Results" MODIFIED="1617224027380" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
