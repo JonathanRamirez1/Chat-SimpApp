@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.jonathan.loginfuturo.view.fragments.RegisterFragment"

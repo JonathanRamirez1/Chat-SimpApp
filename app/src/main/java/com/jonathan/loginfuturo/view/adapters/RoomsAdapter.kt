@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_rooms.view.*
 
 class RoomsAdapter(val rooms : List<Rooms>, val userId : String) : RecyclerView.Adapter<RoomsAdapter.RoomsHolder>() {
 
-    private lateinit var navController: NavController
+   // private lateinit var navController: NavController
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsAdapter.RoomsHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -35,8 +35,8 @@ class RoomsAdapter(val rooms : List<Rooms>, val userId : String) : RecyclerView.
     inner class RoomsHolder(val binding: ItemRoomsBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun render(rooms: Rooms) = with(binding) {
-            navController = Navigation.findNavController(binding.root)
-            binding.root.setOnClickListener {
+         //   navController = Navigation.findNavController(binding.root)
+        //    binding.root.setOnClickListener {
             binding.textViewNameUser.text = rooms.userName
             binding.textViewMessageUser.text = rooms.messageUser
             binding.textViewStatusUser.text = rooms.statusUser
@@ -47,7 +47,7 @@ class RoomsAdapter(val rooms : List<Rooms>, val userId : String) : RecyclerView.
                         .centerCrop()
                         .transform(CircleTransform())
                         .into(imageViewPhoto)
-                    navController.navigate(R.id.chatFragment)
+               //     navController.navigate(R.id.chatFragment)
                     binding.executePendingBindings()
 
                 } else {
@@ -57,7 +57,7 @@ class RoomsAdapter(val rooms : List<Rooms>, val userId : String) : RecyclerView.
                         .transform(CircleTransform())
                         .into(imageViewPhoto)
                     // binding.executePendingBindings()
-                }
+               // }
             }
         }
     }

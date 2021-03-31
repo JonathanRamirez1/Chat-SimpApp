@@ -1,11 +1,16 @@
 package com.jonathan.loginfuturo.view.fragments
 
 import android.os.Bundle
+import android.text.Layout
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -16,19 +21,19 @@ import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.Rooms
 import com.jonathan.loginfuturo.databinding.FragmentRoomsBinding
 import com.jonathan.loginfuturo.view.adapters.RoomsAdapter
-import kotlinx.android.synthetic.main.fragment_rooms.*
 
 class RoomsFragment : Fragment() {
 
     private lateinit var binding: FragmentRoomsBinding
     private lateinit var roomsAdapter: RoomsAdapter
     private lateinit var firebaseUser: FirebaseUser
-    private lateinit var roomsDataBaseReference : CollectionReference
+    private lateinit var roomsDataBaseReference: CollectionReference
+    private lateinit var navController: NavController
 
 
-    private val roomsList : ArrayList<Rooms> = ArrayList()
-    private val firebaseAuth : FirebaseAuth = FirebaseAuth.getInstance()
-    private val fireBaseStore : FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val roomsList: ArrayList<Rooms> = ArrayList()
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val fireBaseStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
@@ -39,6 +44,12 @@ class RoomsFragment : Fragment() {
         setUpChatDataBase()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        launchFindUserFragment(view)
     }
 
     private fun setUpChatDataBase() {
@@ -53,13 +64,22 @@ class RoomsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         roomsAdapter = RoomsAdapter(roomsList, firebaseUser.uid)
 
-      //  if (recyclerViewRooms != null) {
-            binding.recyclerViewRooms.setHasFixedSize(true)
-            binding.recyclerViewRooms.layoutManager = layoutManager
-            binding.recyclerViewRooms.itemAnimator = DefaultItemAnimator()
-            binding.recyclerViewRooms.adapter = roomsAdapter
+        //  if (recyclerViewRooms != null) {
+        binding.recyclerViewRooms.setHasFixedSize(true)
+        binding.recyclerViewRooms.layoutManager = layoutManager
+        binding.recyclerViewRooms.itemAnimator = DefaultItemAnimator()
+        binding.recyclerViewRooms.adapter = roomsAdapter
 
-       // }
+        // }
     }
 
-}
+    private fun launchFindUserFragment(view: View) {
+        val findUser = binding.findUser
+
+        navController = Navigation.findNavController(view)
+        findUser.setOnClickListener {
+            navController.navigate(R.id.findUserFragment)
+            }
+        }
+    }
+

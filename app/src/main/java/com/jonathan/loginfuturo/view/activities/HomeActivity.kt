@@ -5,15 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.view.adapters.PagerAdapter
+import com.jonathan.loginfuturo.view.fragments.ContainerChatFragment
 import com.jonathan.loginfuturo.view.fragments.InformationFragment
 import com.jonathan.loginfuturo.view.fragments.RatesFragment
-import com.jonathan.loginfuturo.view.fragments.RoomsFragment
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_rooms.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -34,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
         val pagerAdapter = PagerAdapter(supportFragmentManager)
         pagerAdapter.addFragment(InformationFragment())
         pagerAdapter.addFragment(RatesFragment())
-        pagerAdapter.addFragment(RoomsFragment())
+        pagerAdapter.addFragment(ContainerChatFragment())
         return pagerAdapter
     }
 
