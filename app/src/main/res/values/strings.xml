@@ -18,7 +18,7 @@
     <string name="password_is_no_valid">Password should contain 1 lowercase, 1 uppercase,  1 special character and 8 characters length at least.</string>
     <string name="confirm_password_is_no_valid">Confirm Password does not match with Password</string>
 
-    <string name="chat_edittext_message_hint">Type here a message...</string>
+    <string name="chat_edittext_message_hint">Type here a message…</string>
 
     <!-- Bottom Navigation Menu -->
     <string name="navigation_bottom_info">Info</string>

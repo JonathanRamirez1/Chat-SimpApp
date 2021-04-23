@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "115314714431",
-    "project_id": "loginfuturo",
-    "storage_bucket": "loginfuturo.appspot.com"
+    "project_number": "1086975179141",
+    "project_id": "loginfuturo-ec75e",
+    "storage_bucket": "loginfuturo-ec75e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:115314714431:android:84d99c92115ee4f507d58a",
+        "mobilesdk_app_id": "1:1086975179141:android:6b0955661d7dc6797b6cec",
         "android_client_info": {
           "package_name": "com.jonathan.loginfuturo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "115314714431-736nqstojdshpmisrfa7cjp2g4ke34bm.apps.googleusercontent.com",
+          "client_id": "1086975179141-meuh70fr23cb15fco3q4ac9f7jr2inra.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.jonathan.loginfuturo",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "115314714431-he9o23p5d8sma0pccp6q208s7mq3hmr5.apps.googleusercontent.com",
+          "client_id": "1086975179141-4a5vefrb38fb0j8t8bi9lrtjigvajf0b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB0pZ7rEyvBxqmYEHVroykU4t11zb7WJKs"
+          "current_key": "AIzaSyCseePZtoSYjHk1D33J_-JIeIODaQXZG6A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "115314714431-he9o23p5d8sma0pccp6q208s7mq3hmr5.apps.googleusercontent.com",
+              "client_id": "1086975179141-4a5vefrb38fb0j8t8bi9lrtjigvajf0b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

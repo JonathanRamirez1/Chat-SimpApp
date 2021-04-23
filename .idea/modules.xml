@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LoginFuturo.iml" filepath="$PROJECT_DIR$/.idea/modules/LoginFuturo.iml" group="LoginFuturo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="LoginFuturo/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LoginFuturo.iml" filepath="$PROJECT_DIR$/.idea/modules/LoginFuturo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LoginFuturo.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LoginFuturo.app.iml" />
     </modules>
   </component>
 </project>

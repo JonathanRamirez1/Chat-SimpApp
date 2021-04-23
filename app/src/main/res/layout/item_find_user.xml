@@ -29,7 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textViewNameUser"
+                android:id="@+id/textViewEmailUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -37,16 +37,6 @@
                 android:text="User Email"
                 app:layout_constraintStart_toEndOf="@+id/imageViewPhoto"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewMessageUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/user_message"
-                app:layout_constraintStart_toEndOf="@+id/imageViewPhoto"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNameUser" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

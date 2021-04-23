@@ -31,7 +31,6 @@ class ChatFragment : Fragment() {
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var chatAdapter : ChatAdapter
 
-
     private val fireBaseStore : FirebaseFirestore = FirebaseFirestore.getInstance()
     private val firebaseAuth : FirebaseAuth = FirebaseAuth.getInstance()
     private val messageList : ArrayList<Message> = ArrayList()
@@ -39,17 +38,21 @@ class ChatFragment : Fragment() {
     private var chatSubscription : ListenerRegistration? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat, container, false)
+        savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_chat, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setUpChatDataBase()
         setUPCurrentUser()
         setUpChatButton()
         setUpRecyclerView()
-        //setUpAdapter()
         subscribeToChatMessage()
-
-        return binding.root
     }
 
     /** CUANDO SE AGREGA ALGUN VALOR VERIFICA SI EXISTE, DE EXISTIR LA AÑADE Y SINO LA CREA**/
@@ -125,7 +128,6 @@ class ChatFragment : Fragment() {
                 }
             })
     }
-
 
     override fun onDestroyView() {
         chatSubscription?.remove()

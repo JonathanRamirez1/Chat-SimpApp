@@ -8,26 +8,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jonathan.loginfuturo.*
 import com.jonathan.loginfuturo.databinding.FragmentRegisterBinding
 import com.jonathan.loginfuturo.viewmodels.RegisterViewModel
 import kotlinx.android.synthetic.main.fragment_register.*
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class RegisterFragment : Fragment() {
 
+    private lateinit var binding: FragmentRegisterBinding
     private lateinit var registerViewModel: RegisterViewModel
     private lateinit var navController: NavController
+    private lateinit var userRegisterDataBaseReference: CollectionReference
 
     private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
-    //DataBinding
-    private lateinit var binding: FragmentRegisterBinding
+    private val fireBaseStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +39,7 @@ class RegisterFragment : Fragment() {
             ViewModelProviders.of(this)[RegisterViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        registerViewModel.isRegister.value = null
+        /*  registerViewModel.isRegister.value = null
         registerViewModel.isRegister.observe(this, Observer {
             view?.let { it1 -> validateFieldsRegisterFragment(it1) }
         })
@@ -44,7 +48,7 @@ class RegisterFragment : Fragment() {
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             }
-        })
+        })*/
     }
 
 
@@ -59,6 +63,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         validEmailAndPasswordAndConfirmPassword()
+        validateFields(view)
         launchLoginFragment(view)
     }
 
@@ -100,16 +105,21 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun validateFieldsRegisterFragment(view: View) {
+    private fun validateFields(view: View) {
         val signUpUser = binding.buttonSignUp
 
         signUpUser.setOnClickListener {
             val email = binding.editTextEmailSignUp.text.toString()
             val password = binding.editTextPasswordSignUp.text.toString()
             val confirmPassword = binding.editTextConfirmPassword.text.toString()
+            val photo = firebaseAuth.currentUser?.photoUrl?.toString() ?: run { "" }
+            //val uId = firebaseAuth.currentUser?.uid ?: run { "" }
+            val createAt = Date()
 
             if (isValidEmail(email) && isValidPassword(password) && isValidConfirmPassword(password, confirmPassword)) {
-                registerViewModel.signUpByEmail(email, password)
+                setUpLoginDataBase()
+                signUpByEmail(email, password)
+                saveUserInformation(UserInformation(email, photo,  createAt))
                 navController = Navigation.findNavController(view)
                 navController.navigate(R.id.loginFragment)
             } else {
@@ -117,26 +127,38 @@ class RegisterFragment : Fragment() {
             }
         }
     }
+
+    private fun signUpByEmail(email: String, password: String) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    firebaseAuth.currentUser!!.sendEmailVerification().addOnCompleteListener {
+                        Toast.makeText(context, "An email has been sent to you. Confirm before logging in.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Unexpected error occurred. Please try again.", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun setUpLoginDataBase() {
+        userRegisterDataBaseReference = fireBaseStore.collection("Register")
+        if (firebaseAuth.currentUser != null) {
+            fireBaseStore.collection("Register").document(firebaseAuth.currentUser!!.email)
+        }
+    }
+
+    private fun saveUserInformation(userInformation: UserInformation) {
+        val registerUser = HashMap<String, Any>()
+        registerUser["email"] = userInformation.email
+        registerUser["photo"] = userInformation.photo
+      //  registerUser["uId"] = userInformation.uId
+        registerUser["createAt"] = userInformation.createAt
+
+        userRegisterDataBaseReference.add(registerUser)
+            .addOnCompleteListener {}
+            .addOnFailureListener {
+                Toast.makeText(context, "Unexpected Error", Toast.LENGTH_SHORT).show()
+            }
+    }
 }
-
-/* registerViewModel.commandData.observe(this, Observer { it ->
-           when (it) {
-               is BaseCommand.Success -> {
-                   val snackBar =
-                       view?.let { it1 -> Snackbar.make(it1, it.toastMessage.toString(), Snackbar.LENGTH_INDEFINITE) }
-                   snackBar?.setAction("Okay") {
-                       snackBar.dismiss()
-                   }
-                   snackBar?.show()
-               }
-               is BaseCommand.Error -> {
-                    val snackBar =
-                        view?.let { it1 -> Snackbar.make(it1, it.errorString, Snackbar.LENGTH_INDEFINITE) }
-                   snackBar?.setAction("Okay") {
-                       snackBar.dismiss()
-                   }
-                   snackBar?.show()
-               }
-           }
-       })*/
-

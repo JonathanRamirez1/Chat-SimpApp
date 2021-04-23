@@ -37,11 +37,8 @@ class RoomsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rooms, container, false)
-
-        setUPCurrentUser()
-        setUpRecyclerViewRooms()
-        setUpChatDataBase()
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_rooms, container, false)
 
         return binding.root
     }
@@ -50,6 +47,9 @@ class RoomsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         launchFindUserFragment(view)
+        setUPCurrentUser()
+        setUpRecyclerViewRooms()
+        setUpChatDataBase()
     }
 
     private fun setUpChatDataBase() {
@@ -64,14 +64,11 @@ class RoomsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         roomsAdapter = RoomsAdapter(roomsList, firebaseUser.uid)
 
-        //  if (recyclerViewRooms != null) {
-        binding.recyclerViewRooms.setHasFixedSize(true)
-        binding.recyclerViewRooms.layoutManager = layoutManager
-        binding.recyclerViewRooms.itemAnimator = DefaultItemAnimator()
-        binding.recyclerViewRooms.adapter = roomsAdapter
-
-        // }
-    }
+            binding.recyclerViewRooms.setHasFixedSize(true)
+            binding.recyclerViewRooms.layoutManager = layoutManager
+            binding.recyclerViewRooms.itemAnimator = DefaultItemAnimator()
+            binding.recyclerViewRooms.adapter = roomsAdapter
+        }
 
     private fun launchFindUserFragment(view: View) {
         val findUser = binding.findUser
@@ -79,7 +76,9 @@ class RoomsFragment : Fragment() {
         navController = Navigation.findNavController(view)
         findUser.setOnClickListener {
             navController.navigate(R.id.findUserFragment)
-            }
         }
     }
+}
+
+
 

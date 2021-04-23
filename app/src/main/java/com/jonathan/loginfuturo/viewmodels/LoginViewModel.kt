@@ -1,16 +1,33 @@
 package com.jonathan.loginfuturo.viewmodels
 
 import android.app.Application
+import android.content.Intent
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
+import com.jonathan.loginfuturo.Constants
 import com.jonathan.loginfuturo.Event
+import com.jonathan.loginfuturo.R
+import com.jonathan.loginfuturo.model.LoginModel
+import com.jonathan.loginfuturo.view.activities.HomeActivity
+import com.jonathan.loginfuturo.view.activities.LoginActivity
 
 class LoginViewModel(application: Application): AndroidViewModel(application) {
 
-    private val statusMessage: MutableLiveData<Event<String>> = MutableLiveData()
+
+}
+
+/*   private val statusMessage: MutableLiveData<Event<String>> = MutableLiveData()
     val message: LiveData<Event<String>>
         get() = statusMessage
 
@@ -27,7 +44,6 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
                 if (task.isSuccessful) {
                     if (task.isSuccessful) {
                         if (firebaseAuth.currentUser!!.isEmailVerified) {
-                            firebaseUser = firebaseAuth.currentUser!!
                             _isLogin.postValue(true)
 
                         } else {
@@ -40,6 +56,5 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
                     }
                 }
             }
-    }
-}
+    }*/
 

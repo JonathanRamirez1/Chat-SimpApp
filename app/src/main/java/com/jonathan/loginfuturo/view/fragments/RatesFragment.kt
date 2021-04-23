@@ -31,7 +31,7 @@ class RatesFragment : Fragment() {
     private lateinit var ratesAdapter: RatesAdapter
     private lateinit var ratesDataBaseReference: CollectionReference
     private lateinit var rateBusListener: Disposable
-    private  var firebaseUser: FirebaseUser? = null
+    private lateinit var firebaseUser: FirebaseUser
 
     private val ratesList: ArrayList<Rate> = ArrayList()
     private var ratesSubscription: ListenerRegistration? = null
@@ -43,6 +43,11 @@ class RatesFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rates, container, false)
 
+        return  binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setUpRateDataBase()
         setUPCurrentUser()
@@ -50,11 +55,7 @@ class RatesFragment : Fragment() {
         sepUpFab()
         subscribeToRatings()
         subscribeToNewRatings()
-
-
-        return  binding.root
     }
-
 
     /** CUANDO SE AGREGA ALGUN VALOR VERIFICA SI EXISTE, DE EXISTIR LA AÑADE Y SINO LA CREA**/
 
@@ -65,9 +66,7 @@ class RatesFragment : Fragment() {
     /** SI EL USUAROI ESTA LOGGEADO LO DA Y SINO LO MANDA A LA PANTALLA DE LOGGIN O CUALQUIER OTRA ACCION**/
 
     private fun setUPCurrentUser() {
-        if (firebaseUser != null) {
-            firebaseUser.let { firebaseAuth.currentUser!! }
-        }
+            firebaseUser = firebaseAuth.currentUser!!
     }
 
     private fun setUpRecyclerView() {

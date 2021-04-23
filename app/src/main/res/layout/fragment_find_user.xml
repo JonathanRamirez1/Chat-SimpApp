@@ -23,19 +23,32 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <SearchView
-            android:id="@+id/searchViewFinUser"
+            android:id="@+id/searchViewFindUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:queryHint="@string/search"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end"
+            app:iconifiedByDefault="false"/>
 
         <Button
             android:id="@+id/buttonBack"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:drawableStart="@drawable/ic_back_rooms"
             android:background="@color/colorPrimary"/>
 
     </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFindUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarFindUser">
+
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

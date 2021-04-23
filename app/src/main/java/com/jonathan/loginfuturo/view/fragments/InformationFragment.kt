@@ -21,7 +21,7 @@ import io.reactivex.disposables.Disposable
 class InformationFragment : Fragment() {
 
     private lateinit var binding: FragmentInformationBinding
-    private  var firebaseUser: FirebaseUser? = null
+    private  lateinit var firebaseUser: FirebaseUser
     private lateinit var chatDataBaseReference: CollectionReference
     private lateinit var infoBusListener: Disposable
 
@@ -34,38 +34,38 @@ class InformationFragment : Fragment() {
         savedInstanceState: Bundle?): View? { binding = DataBindingUtil.inflate(inflater,
         R.layout.fragment_information, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         setUpChatDataBase()
-       // setUPCurrentUser()
+        setUPCurrentUser()
         setUpCurrentUserInfoUI()
 
         //Total Messages Event Bus + Reactive Style
         subscribeTotalMessagesEventBusReactiveStyle()
-
-        return binding.root
     }
 
     /** CUANDO SE AGREGA ALGUN VALOR VERIFICA SI EXISTE, DE EXISTIR LA AÑADE Y SINO LA CREA**/
 
     private fun setUpChatDataBase() {
-        chatDataBaseReference = fireBaseStore.collection("chat")
+        chatDataBaseReference = fireBaseStore.collection("info")
     }
 
     /** SI EL USUAROI ESTA LOGGEADO LO DA Y SINO LO MANDA A LA PANTALLA DE LOGGIN O CUALQUIER OTRA ACCION**/
 
     private fun setUPCurrentUser() {
-        if (firebaseUser != null) {
-            firebaseUser?.let { firebaseAuth.currentUser!! }
-        }
+            firebaseUser = firebaseAuth.currentUser!!
     }
 
-
     private fun setUpCurrentUserInfoUI() {
-        setUPCurrentUser()
-            binding.textViewInfoEmail.text = firebaseUser?.email
-            binding.textViewInfoName.text = firebaseUser?.displayName?.let { firebaseUser?.displayName }
+            binding.textViewInfoEmail.text = firebaseUser.email
+            binding.textViewInfoName.text = firebaseUser.displayName?.let { firebaseUser.displayName }
                     ?: run { getString(R.string.info_no_name) }
-            firebaseUser?.photoUrl?.let {
-                Picasso.get().load(firebaseUser?.photoUrl).resize(300, 300)
+            firebaseUser.photoUrl?.let {
+                Picasso.get().load(firebaseUser.photoUrl).resize(300, 300)
                     .centerCrop()
                     .transform(CircleTransform())
                     .into(binding.imageViewInfoAvatar)
@@ -93,20 +93,3 @@ class InformationFragment : Fragment() {
         super.onDestroyView()
     }
 }
-
-/*  //TODO CAMBIAR NOMBRE DE ESTE METODO
-    private fun subscribeTotalMessagesFirebaseStyle() {
-        chatSubscription = chatDataBaseReference.addSnapshotListener(object : EventListener, com.google.firebase.firestore.EventListener<QuerySnapshot> {
-            override fun onEvent(querySnapshot: QuerySnapshot?, exception: FirebaseFirestoreException?) {
-                exception?.let {
-                    Toast.makeText(context, "Exception!", Toast.LENGTH_SHORT).show()
-                    return
-                }
-
-                querySnapshot?.let {
-                    _view
-                        .textViewInfoTotalMessages.text = "${it.size()}"
-                }
-            }
-        })
-    }*/

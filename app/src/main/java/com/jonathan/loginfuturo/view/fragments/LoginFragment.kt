@@ -3,15 +3,13 @@ package com.jonathan.loginfuturo.view.fragments
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Observer
-
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -23,19 +21,22 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jonathan.loginfuturo.*
 import com.jonathan.loginfuturo.Constants.REQUEST_CODE_GOOGLE_SIGN_IN
+import com.jonathan.loginfuturo.Utils.RxBus
 import com.jonathan.loginfuturo.databinding.FragmentLoginBinding
-import com.jonathan.loginfuturo.view.activities.MainActivity
+import com.jonathan.loginfuturo.view.activities.HomeActivity
 import com.jonathan.loginfuturo.viewmodels.LoginViewModel
+import io.reactivex.disposables.Disposable
+import java.util.*
+import kotlin.collections.HashMap
 
 class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var navController: NavController
-    private lateinit var firebaseUser: FirebaseUser
 
     private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val mGoogleApiClient : GoogleApiClient by lazy { getGoogleApiClient()!! }
@@ -50,44 +51,40 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
             ViewModelProviders.of(this)[LoginViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-
-
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        binding  = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_login, container, false)
-
-        binding.loginViewModel = LoginViewModel(application = Application())
-
-        loginViewModel.message.observe(viewLifecycleOwner, Observer { it ->
-            it.getContentIfNotHandled()?.let {
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-            }
-        })
-
-        loginViewModel.isLogin.value = null
-        loginViewModel.isLogin.observe(viewLifecycleOwner, Observer {
+      /*  loginViewModel.isLogin.value = null
+        loginViewModel.isLogin.observe(this, Observer {
             launchLoginByEmail()
         })
 
+        loginViewModel.isLoginByGoogle.value = null
+        loginViewModel.isLoginByGoogle.observe(this, Observer {
+            val intent = Intent(context, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        })*/
+    }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        binding.loginViewModel = LoginViewModel(application = Application())
+
+       /* loginViewModel.message.observe(viewLifecycleOwner, Observer { it ->
+            it.getContentIfNotHandled()?.let {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            }
+        })*/
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         validEmailAndPassword()
         launchRegisterFragment(view)
         launchForgotPasswordFragment(view)
         launchLoginByGoogle()
-    }
-
-
-    private fun setUPCurrentUser() {
-        firebaseUser = firebaseAuth.currentUser!!
+        launchLoginByEmail()
     }
 
     private fun validEmailAndPassword() {
@@ -134,14 +131,30 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
             val password = binding.editTextPasswordLogin.text.toString()
 
             if (isValidEmail(email) && isValidPassword(password)) {
-                    loginViewModel.logInByEmail(email, password)
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                    logInByEmail(email, password)
             } else {
                 Toast.makeText(context, "Please make sure all data is correct", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun logInByEmail(email: String, password: String) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.isSuccessful) {
+                        if (firebaseAuth.currentUser!!.isEmailVerified) {
+                            val intent = Intent(context, HomeActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(context, "User must confirm email first", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(context, "Sign In Failure. Authentication failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
     }
 
     private fun launchLoginByGoogle() {
@@ -173,10 +186,8 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (mGoogleApiClient.isConnected) {
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient)
-            //   firebaseUser = firebaseAuth.currentUser!!
-
             }
-            val intent = Intent(context, MainActivity::class.java)
+            val intent = Intent(context, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
