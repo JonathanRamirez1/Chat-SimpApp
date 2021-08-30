@@ -2,7 +2,10 @@ package com.jonathan.loginfuturo
 
 import java.util.*
 
-data class UserInformation(val email: String = "",
-                           val photo: String = "",
-                         //  val uId: String = "",
-                           val createAt: Date = Date())
+data class UserInformation(
+    var username: String = "",
+    var email: String = "",
+    var photo: String = "",
+    var password: String = "",
+    var confirmPassword: String = "",
+    var timeStamp: Date = Date())

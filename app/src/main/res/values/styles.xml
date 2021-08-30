@@ -22,4 +22,19 @@
         <item name="android:maxHeight">48dip</item>
     </style>
 
+    <!-- Custom Spots progress dialog -->
+    <style name="Custom" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="DialogTitleAppearance">@style/CustomText</item>
+        <item name="DialogTitleText">@string/alert_dialog_title_wait</item>
+        <item name="DialogSpotColor">@color/colorAccentDark</item>
+        <item name="DialogSpotCount">4</item>
+    </style>
+
+    <style name="CustomText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+
+
 </resources>

@@ -31,6 +31,20 @@ fun EditText.validate(validation : (String) -> Unit) {
     })
 }
 
+/** REGULAR EXPRESION
+ 1. Solo contiene caracteres alfanuméricos , subrayado y punto
+ 2. El subrayado y el punto no pueden estar al final o al comienzo de un nombre de usuario (por ejemplo, _username/ username_/ .username/ username.).
+ 3. El subrayado y el punto no pueden estar uno al lado del otro (p user_.name. Ej .).
+ 4. El subrayado o el punto no se pueden usar varias veces seguidas (por ejemplo, user__name/ user..name).
+ 5. El número de caracteres debe estar entre 8 y 20.
+ **/
+
+fun Fragment.isValidUsername(username: String) : Boolean {
+    val usernamePattern = "^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"
+    val pattern = Pattern.compile(usernamePattern)
+    return pattern.matcher(username).matches()
+}
+
 /** Caracteres permitidos en el email**/
 
  fun Fragment.isValidEmail(email: String) : Boolean {

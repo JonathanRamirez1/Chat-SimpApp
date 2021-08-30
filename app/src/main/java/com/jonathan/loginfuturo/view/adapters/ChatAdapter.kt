@@ -4,20 +4,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.core.SnapshotHolder
+import com.google.firebase.firestore.DocumentSnapshot
 import com.jonathan.loginfuturo.Constants.GLOBAL_MESSAGE
 import com.jonathan.loginfuturo.Constants.MY_MESSAGE
 import com.jonathan.loginfuturo.model.Message
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.Utils.CircleTransform
+import com.jonathan.loginfuturo.providers.AuthProvider
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_chat_item_left.view.*
 import kotlinx.android.synthetic.main.fragment_chat_item_right.view.*
 import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatAdapter (val items : List<Message>, val userId : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val layoutRight = R.layout.fragment_chat_item_right
     private val layoutLeft = R.layout.fragment_chat_item_left
+    private val firebaseAuth = AuthProvider()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -41,21 +46,19 @@ class ChatAdapter (val items : List<Message>, val userId : String) : RecyclerVie
     /** Se usa este metodo cuando hay diferente tipo de item **/
 
     override fun getItemViewType(position: Int): Int  =
-        if (items[position].authorId == userId) MY_MESSAGE else GLOBAL_MESSAGE
-
+        if (firebaseAuth.getUid().let { items[position].getIdEmisor(String()) } == userId) MY_MESSAGE else GLOBAL_MESSAGE
 
     class ViewHolderRight(itemView : View) : RecyclerView.ViewHolder(itemView) {
-
         fun bind(message: Message) = with(itemView) {
-            textViewMessageRight.text = message.message
-            textViewTimeRight.text = SimpleDateFormat("hh:mm").format(message.sendAt)
-            if (message.profileImageUrl.isEmpty()) {
+            textViewMessageRight.text = message.getMessage()
+            textViewTimeRight.text = message.getTimeStamp(Date().time).toString()
+            if (message.getProfileImageUrl().isEmpty()) {
                 Picasso.get().load(R.drawable.person).resize(100, 100)
                     .centerCrop()
                     .transform(CircleTransform())
                     .into(imageViewProfileRight)
             } else {
-                Picasso.get().load(message.profileImageUrl).resize(100, 100)
+                Picasso.get().load(message.getProfileImageUrl()).resize(100, 100)
                     .centerCrop()
                     .transform(CircleTransform())
                     .into(imageViewProfileRight)
@@ -66,15 +69,15 @@ class ChatAdapter (val items : List<Message>, val userId : String) : RecyclerVie
     class ViewHolderLeft(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(message: Message) = with(itemView) {
-            textViewMessageLeft.text = message.message
-            textViewTimeLeft.text = SimpleDateFormat("hh:mm").format(message.sendAt)
-            if (message.profileImageUrl.isEmpty()) {
+            textViewMessageLeft.text = message.getMessage()
+            textViewTimeLeft.text =  message.getTimeStamp(Date().time).toString()
+            if (message.getProfileImageUrl().isEmpty()) {
                 Picasso.get().load(R.drawable.person).resize(100, 100)
                     .centerCrop()
                     .transform(CircleTransform())
                     .into(imageViewProfileLeft)
             } else {
-                Picasso.get().load(message.profileImageUrl).resize(100, 100)
+                Picasso.get().load(message.getProfileImageUrl()).resize(100, 100)
                     .centerCrop()
                     .transform(CircleTransform())
                     .into(imageViewProfileLeft)

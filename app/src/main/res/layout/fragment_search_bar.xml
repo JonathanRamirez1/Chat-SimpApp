@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".view.fragments.SearchBarFragment">
+
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/searchBar"
+            style="@style/MaterialSearchBarLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mt_backIconTint="?attr/colorPrimary"
+            app:mt_clearIconTint="@color/colorPrimary"
+            app:mt_hint="Texto de busqueda"
+            app:mt_hintColor="@color/colorAccent"
+            app:mt_textColor="@color/colorPrimaryDark"
+            app:mt_leftTextSelectorTint="@color/colorPrimaryDark"
+            app:mt_maxSuggestionsCount="10"
+            app:mt_placeholder="Search..."
+            app:mt_placeholderColor="@color/colorPrimaryDark"
+            app:mt_searchBarColor="@color/colorPrimary"
+            app:mt_searchIconTint="@color/colorPrimaryDark" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFindUser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
+</layout>

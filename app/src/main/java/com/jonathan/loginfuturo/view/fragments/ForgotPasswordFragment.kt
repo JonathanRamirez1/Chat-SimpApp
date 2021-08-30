@@ -44,8 +44,8 @@ class ForgotPasswordFragment : Fragment() {
     }
 
     private fun validResetPassword() {
-        binding.editTextEmail.validate {
-            if (isValidEmail(it)) {
+        binding.editTextEmail.validate { email ->
+            if (isValidEmail(email)) {
                 binding.editTextEmail.error = null
             } else {
                 binding.editTextEmail.error = getString(R.string.login_forgot_password)
@@ -69,7 +69,7 @@ class ForgotPasswordFragment : Fragment() {
         val resetPassword = binding.buttonForgotPassword
 
         resetPassword.setOnClickListener {
-            val email = editTextEmail.text.toString()
+            val email = binding.editTextEmail.text.toString()
             if (isValidEmail(email)) {
                 firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
                     Toast.makeText(context, "Email has been sent to reset your password", Toast.LENGTH_SHORT).show()

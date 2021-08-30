@@ -1,5 +1,6 @@
 package com.jonathan.loginfuturo.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,25 +10,25 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.*
-import com.jonathan.loginfuturo.NewUserEvent
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.UserInformation
-import com.jonathan.loginfuturo.Utils.RxBus
 import com.jonathan.loginfuturo.databinding.FragmentFindUserBinding
+import com.jonathan.loginfuturo.model.Rooms
+import com.jonathan.loginfuturo.providers.AuthProvider
+import com.jonathan.loginfuturo.providers.MessageProvider
 import com.jonathan.loginfuturo.view.adapters.FindUserAdapter
-import io.reactivex.disposables.Disposable
+import kotlin.collections.ArrayList
+import com.jonathan.loginfuturo.providers.RoomsProvider
 import java.util.*
 import java.util.EventListener
-import kotlin.collections.ArrayList
-
 
 class FindUserFragment : Fragment() {
 
@@ -41,8 +42,15 @@ class FindUserFragment : Fragment() {
     private val listFindUserFull: ArrayList<UserInformation> = ArrayList()
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val fireBaseStore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val mExtraidUser = Intent.getIntent("").getStringExtra("idUser")
 
     private var findUserSubscription: ListenerRegistration? = null
+
+    private var userEmisor = String()
+    private var userReceptor = String()
+    private var idChat = String()
+    private var messageProvider = MessageProvider()
+    private var authProvider = AuthProvider()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_find_user, container, false)
@@ -66,7 +74,7 @@ class FindUserFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
     }
 
     private fun launchRoomsFragment(view: View) {
@@ -101,7 +109,7 @@ class FindUserFragment : Fragment() {
             override fun onQueryTextChange(query: String?): Boolean {
                 findUserDataBaseReference = fireBaseStore.collection("Register")
                 fireBaseStore.collection("Register")
-                    .document(firebaseAuth.currentUser!!.email).get().addOnSuccessListener {
+                    .document(firebaseAuth.currentUser!!.email.toString()).get().addOnSuccessListener {
                         findUserSubscription = findUserDataBaseReference
                             .orderBy("email", Query.Direction.DESCENDING)
                             .addSnapshotListener(object : EventListener, com.google.firebase.firestore.EventListener<QuerySnapshot> {

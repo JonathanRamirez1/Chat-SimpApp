@@ -39,10 +39,8 @@ class RatesFragment : Fragment() {
     private val fireBaseStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rates, container, false)
-
         return  binding.root
     }
 

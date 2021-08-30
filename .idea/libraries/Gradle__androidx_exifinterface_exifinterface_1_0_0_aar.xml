@@ -1,13 +1,16 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.exifinterface:exifinterface:1.0.0@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b1300d9729cab00336570fb3d1d7d41a/exifinterface-1.0.0/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f6ec07ad56c18cd6c0fb794bd1136888/exifinterface-1.0.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5e1a7d5bc8cc7cb2a0abae3d26bf78eb/exifinterface-1.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b1300d9729cab00336570fb3d1d7d41a/exifinterface-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b1300d9729cab00336570fb3d1d7d41a/exifinterface-1.0.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b1300d9729cab00336570fb3d1d7d41a/exifinterface-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0ce99aab2266dbcf3e3cda66c56de5c5/exifinterface-1.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/abf6018031227a48c6e3d775eb8077c1/exifinterface-1.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f6ec07ad56c18cd6c0fb794bd1136888/exifinterface-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f6ec07ad56c18cd6c0fb794bd1136888/exifinterface-1.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f6ec07ad56c18cd6c0fb794bd1136888/exifinterface-1.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

@@ -73,6 +73,9 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.bottom_nav_chat -> {
                     viewPager.currentItem = 2;
+                   /* val bundle = Bundle()
+                    bundle.putString("idUser1", authProvider.getUid().toString())
+                    bundle.putString("idUser2", mExtraidUser)*/
                     true
                 }
                 else ->

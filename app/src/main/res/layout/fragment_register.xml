@@ -15,6 +15,24 @@
 
 
         <EditText
+            android:id="@+id/editTextUsernameSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_edit_text_height"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/editext_rounded"
+            android:hint="@string/login_username"
+            android:inputType="text"
+            android:paddingLeft="@dimen/login_edit_text_space"
+            android:paddingRight="@dimen/login_edit_text_space"
+            android:textSize="@dimen/login_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/editTextEmailSignUp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <EditText
             android:id="@+id/editTextEmailSignUp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_edit_text_height"
@@ -58,7 +76,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="24dp"
             android:background="@drawable/editext_rounded"
-            android:hint="@string/login_confirm_passsword"
+            android:hint="@string/login_confirm_password"
             android:inputType="textPassword"
             android:paddingLeft="@dimen/login_edit_text_space"
             android:paddingRight="@dimen/login_edit_text_space"

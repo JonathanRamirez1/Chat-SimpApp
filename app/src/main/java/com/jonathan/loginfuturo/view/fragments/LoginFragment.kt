@@ -1,5 +1,6 @@
 package com.jonathan.loginfuturo.view.fragments
 
+import android.app.AlertDialog
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
@@ -20,36 +21,39 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.jonathan.loginfuturo.*
 import com.jonathan.loginfuturo.Constants.REQUEST_CODE_GOOGLE_SIGN_IN
-import com.jonathan.loginfuturo.Utils.RxBus
 import com.jonathan.loginfuturo.databinding.FragmentLoginBinding
+import com.jonathan.loginfuturo.model.UserModel
+import com.jonathan.loginfuturo.providers.AuthProvider
+import com.jonathan.loginfuturo.providers.UserProvider
 import com.jonathan.loginfuturo.view.activities.HomeActivity
 import com.jonathan.loginfuturo.viewmodels.LoginViewModel
-import io.reactivex.disposables.Disposable
-import java.util.*
-import kotlin.collections.HashMap
+import dmax.dialog.SpotsDialog
 
 class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var navController: NavController
-
-    private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
-    private val mGoogleApiClient : GoogleApiClient by lazy { getGoogleApiClient()!! }
-
-
-    //DataBinding
     private lateinit var binding: FragmentLoginBinding
+    private lateinit var authProvider: AuthProvider
+    private lateinit var userProvider: UserProvider
+    private lateinit var alertDialog: AlertDialog
+    private lateinit var userModel: UserModel
+
+    private val mGoogleApiClient : GoogleApiClient by lazy { getGoogleApiClient()!! }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginViewModel = activity?.run {
             ViewModelProviders.of(this)[LoginViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
+
+        authProvider = AuthProvider()
+        userProvider = UserProvider()
+        userModel = UserModel()
+        setUpAlertDialog()
+
 
       /*  loginViewModel.isLogin.value = null
         loginViewModel.isLogin.observe(this, Observer {
@@ -68,37 +72,42 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         binding.loginViewModel = LoginViewModel(application = Application())
 
-       /* loginViewModel.message.observe(viewLifecycleOwner, Observer { it ->
-            it.getContentIfNotHandled()?.let {
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-            }
-        })*/
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        //setUpLoginDataBase()
+        launchLoginByEmailAndPassword()
         validEmailAndPassword()
         launchRegisterFragment(view)
         launchForgotPasswordFragment(view)
         launchLoginByGoogle()
-        launchLoginByEmail()
+    }
+
+   private fun setUpAlertDialog() { //TODO CUSTOMIZAR https://github.com/dybarsky/spots-dialog
+        alertDialog = SpotsDialog.Builder()
+            .setContext(context)
+            .setTheme(R.style.Custom)
+            .setCancelable(false)
+            .build()
+
     }
 
     private fun validEmailAndPassword() {
 
-        binding.editTextEmailLogin.validate {
-            if (isValidEmail(it)) {
+        binding.editTextEmailLogin.validate { email ->
+            if (isValidEmail(email)) {
                 binding.editTextEmailLogin.error = null
             } else {
                 binding.editTextEmailLogin.error = getString(R.string.email_is_no_valid)
             }
         }
 
-        binding.editTextPasswordLogin.validate {
-            if (isValidPassword(it)) {
+        binding.editTextPasswordLogin.validate { password ->
+            if (isValidPassword(password)) {
                 binding.editTextPasswordLogin.error = null
             } else {
                 binding.editTextPasswordLogin.error = getString(R.string.password_is_no_valid)
@@ -124,26 +133,59 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         }
     }
 
-    private fun launchLoginByEmail() {
-        val loginUser = binding.buttonLogin
-        loginUser.setOnClickListener {
-            val email = binding.editTextEmailLogin.text.toString()
-            val password = binding.editTextPasswordLogin.text.toString()
+    //TODO VERIFICAR SI ESTO SE NECESITA SINO BORRAR
+    private fun setUpLoginDataBase() {
+        val id = authProvider.getUid().toString()
+        userProvider.getUser(id).addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                Toast.makeText(context, "Document Exit", Toast.LENGTH_SHORT).show()
+            } else {
+                val user = UserModel()
+                user.setId(id)
+                userProvider.createCollection(user).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(context, "Document Create", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Document No Create", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 
-            if (isValidEmail(email) && isValidPassword(password)) {
-                    logInByEmail(email, password)
+    private fun launchLoginByEmailAndPassword() {
+        val loginUser = binding.buttonLogin
+        val userInformation = UserInformation()
+
+        loginUser.setOnClickListener {
+            userInformation.email = binding.editTextEmailLogin.text.toString()
+            userInformation.password = binding.editTextPasswordLogin.text.toString()
+            updatePhotoLocal()
+
+            if (isValidEmail(userInformation.email) && isValidPassword(userInformation.password)) {
+                    logInByEmailAndPassword(userInformation)
             } else {
                 Toast.makeText(context, "Please make sure all data is correct", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun logInByEmail(email: String, password: String) {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
+    private fun updatePhotoLocal() {
+        val photo = R.drawable.person
+        val id: String = authProvider.getUid()
+        userModel.setPhoto(photo.toString())
+        userModel.setId(id)
+        userProvider.updateCollection(userModel)
+    }
+
+    private fun logInByEmailAndPassword(userInformation: UserInformation) {
+        alertDialog.show()
+        authProvider.login(userInformation.email, userInformation.password)
             .addOnCompleteListener { task ->
+                alertDialog.dismiss()
                 if (task.isSuccessful) {
                     if (task.isSuccessful) {
-                        if (firebaseAuth.currentUser!!.isEmailVerified) {
+                        if (authProvider.isEmailVerified()) {
                             val intent = Intent(context, HomeActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
@@ -155,6 +197,35 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
                     }
                 }
             }
+    }
+
+    /** Verifica si un usuario esta registrado en Firestore, sino lo agrega a la Base de Datos **/
+    private fun checkUserExist(id: String) {
+        userProvider.getUser(id).addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                alertDialog.dismiss()
+                val intent = Intent(context, HomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            } else {
+                val userModel = UserModel()
+                val userInformation = UserInformation()
+                userInformation.email = authProvider.getEmail()
+                userModel.setId(id)
+                userModel.setEmail(userInformation.email)
+                userModel.setTimeStamp(userInformation.timeStamp)
+                userProvider.createCollection(userModel).addOnCompleteListener { task ->
+                    alertDialog.dismiss()
+                    if (task.isSuccessful) {
+                        val intent = Intent(context, HomeActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(context, "The information could not be saved", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }  //TODO CONTINUAR EN LA CARPETA 3 VIDEO 3; 6:36
     }
 
     private fun launchLoginByGoogle() {
@@ -182,14 +253,18 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
 
     /** Inicio de sesion con google **/
     private fun loginByGoogleAccountIntoFirebase(googleAccount : GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(googleAccount.idToken, null)
-        firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
+        alertDialog.show()
+        authProvider.googleLogin(googleAccount).addOnCompleteListener { task ->
             if (mGoogleApiClient.isConnected) {
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient)
             }
-            val intent = Intent(context, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            if (task.isSuccessful) {
+                val id: String = authProvider.getUid()
+                checkUserExist(id)
+            } else {
+                alertDialog.dismiss()
+                Toast.makeText(context, "Could not login with google", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -205,7 +280,37 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         }
     }
 
+    //TODO VERIFICAR SI ESTO SE NECESITA SINO BORRAR
+    override fun onDestroyView() {
+      //  loginBusListener.dispose()
+      //  loginSubscription?.remove()
+        super.onDestroyView()
+    }
+
     override fun onConnectionFailed(p0: ConnectionResult) {
         Toast.makeText(context, "Connection Failed!!", Toast.LENGTH_SHORT).show()
     }
 }
+
+/*/** Guarda la información de usuario (email y fecha) en Firestore cuando se inicia sesion con Google **/
+    private fun saveUserInfoByGoogle(id: String) {
+       val userModel = UserModel()
+       val userInformation = UserInformation()
+       userInformation.email = authProvider.getEmail()
+       userModel.setEmail(userInformation.email)
+       userModel.setId(userInformation.id)
+        val saveInfoByLoginGoogle: MutableMap<String, Any> = HashMap()
+        userInformation.email = authProvider.getEmail()
+        saveInfoByLoginGoogle["email"] = userInformation.email
+        saveInfoByLoginGoogle["timeStamp"] = userInformation.timeStamp
+        firebaseFirestore.collection("UsersRegister").document(id).set(saveInfoByLoginGoogle)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val intent = Intent(context, HomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(context, "The information could not be saved", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }*/

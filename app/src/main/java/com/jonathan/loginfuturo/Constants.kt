@@ -6,4 +6,6 @@ object Constants {
     const val REQUEST_CODE_FACEBOOK_SIGN_IN = 98
     const val GLOBAL_MESSAGE = 1
     const val MY_MESSAGE = 2
+    const val SENDER_MESSAGE = 1
+    const val RECEIVE_MESSAGE = 2
 }

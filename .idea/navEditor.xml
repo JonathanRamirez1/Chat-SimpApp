@@ -103,6 +103,15 @@
                             <option name="y" value="-15" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_chatFragment_to_roomsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -115,6 +124,20 @@
                             <option name="y" value="368" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_findUserFragment_to_chatFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_findUserFragment_to_roomsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -123,8 +146,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="24" />
+                            <option name="x" value="-78" />
+                            <option name="y" value="-52" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -135,6 +158,37 @@
                               </value>
                             </entry>
                             <entry key="action_roomsFragment_to_findUserFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_roomsFragment_to_searchBarFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="searchBarFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-35" />
+                            <option name="y" value="485" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_searchBarFragment_to_chatFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_searchBarFragment_to_roomsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -214,25 +268,13 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="chatFragment">
+                  <entry key="completeInfoFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-684" />
-                            <option name="y" value="435" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="findUserFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-587" />
-                            <option name="y" value="-41" />
+                            <option name="x" value="-145" />
+                            <option name="y" value="431" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -305,32 +347,6 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_registerFragment_to_loginFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="roomsFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-845" />
-                            <option name="y" value="33" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_roomsFragment_to_chatFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_roomsFragment_to_findUserFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

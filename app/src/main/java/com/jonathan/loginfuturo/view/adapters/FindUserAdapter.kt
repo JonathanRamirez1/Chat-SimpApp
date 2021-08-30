@@ -1,15 +1,23 @@
 package com.jonathan.loginfuturo.view.adapters
 
+import android.app.Application
+import android.content.Intent
+import android.content.Intent.getIntent
+import android.content.Intent.getIntentOld
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.core.graphics.toColor
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.UserInformation
 import com.jonathan.loginfuturo.Utils.CircleTransform
+import com.jonathan.loginfuturo.databinding.ItemFindUserBinding
+import com.jonathan.loginfuturo.providers.AuthProvider
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_find_user.view.*
 import java.util.*
@@ -18,9 +26,18 @@ import kotlin.collections.ArrayList
 
 class FindUserAdapter(private var findUser: List<UserInformation>, private var findUserFull: List<UserInformation>): RecyclerView.Adapter<FindUserAdapter.FindUserHolder>(), Filterable {
 
+    private lateinit var binding: ItemFindUserBinding
+    private lateinit var navController: NavController
+
+    private val firebaseAuth = AuthProvider()
+    private val mExtraidUser = getIntent("").getStringExtra("idUser")
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FindUserHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return FindUserHolder(layoutInflater.inflate(R.layout.item_find_user, parent, false))
+        binding = ItemFindUserBinding.inflate(layoutInflater, parent, false)
+           launchChatFragment(parent)
+
+        return FindUserHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: FindUserHolder, position: Int) {
@@ -47,6 +64,17 @@ class FindUserAdapter(private var findUser: List<UserInformation>, private var f
                     .transform(CircleTransform())
                     .into(imageViewPhoto)
             }
+        }
+    }
+
+    private fun launchChatFragment(itemView: View) {
+        val goToChat = binding.root
+        val bundle = Bundle()
+        navController = Navigation.findNavController(itemView)
+        goToChat.setOnClickListener {
+          /*  bundle.putString("idEmisor", firebaseAuth.getUid())
+            bundle.putString("idReceptor", mExtraidUser)*/
+            navController.navigate(R.id.chatFragment)
         }
     }
 
