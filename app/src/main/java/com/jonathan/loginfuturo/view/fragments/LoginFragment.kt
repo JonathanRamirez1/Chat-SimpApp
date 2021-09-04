@@ -19,8 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.jonathan.loginfuturo.*
 import com.jonathan.loginfuturo.Constants.REQUEST_CODE_GOOGLE_SIGN_IN
 import com.jonathan.loginfuturo.databinding.FragmentLoginBinding
@@ -87,13 +85,12 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         launchLoginByGoogle()
     }
 
-   private fun setUpAlertDialog() { //TODO CUSTOMIZAR https://github.com/dybarsky/spots-dialog
+   private fun setUpAlertDialog() {
         alertDialog = SpotsDialog.Builder()
             .setContext(context)
             .setTheme(R.style.Custom)
             .setCancelable(false)
             .build()
-
     }
 
     private fun validEmailAndPassword() {
@@ -160,7 +157,6 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         loginUser.setOnClickListener {
             userInformation.email = binding.editTextEmailLogin.text.toString()
             userInformation.password = binding.editTextPasswordLogin.text.toString()
-            updatePhotoLocal()
 
             if (isValidEmail(userInformation.email) && isValidPassword(userInformation.password)) {
                     logInByEmailAndPassword(userInformation)
@@ -168,14 +164,6 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
                 Toast.makeText(context, "Please make sure all data is correct", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun updatePhotoLocal() {
-        val photo = R.drawable.person
-        val id: String = authProvider.getUid()
-        userModel.setPhoto(photo.toString())
-        userModel.setId(id)
-        userProvider.updateCollection(userModel)
     }
 
     private fun logInByEmailAndPassword(userInformation: UserInformation) {
@@ -225,7 +213,7 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
                     }
                 }
             }
-        }  //TODO CONTINUAR EN LA CARPETA 3 VIDEO 3; 6:36
+        }
     }
 
     private fun launchLoginByGoogle() {
@@ -280,37 +268,7 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         }
     }
 
-    //TODO VERIFICAR SI ESTO SE NECESITA SINO BORRAR
-    override fun onDestroyView() {
-      //  loginBusListener.dispose()
-      //  loginSubscription?.remove()
-        super.onDestroyView()
-    }
-
     override fun onConnectionFailed(p0: ConnectionResult) {
         Toast.makeText(context, "Connection Failed!!", Toast.LENGTH_SHORT).show()
     }
 }
-
-/*/** Guarda la información de usuario (email y fecha) en Firestore cuando se inicia sesion con Google **/
-    private fun saveUserInfoByGoogle(id: String) {
-       val userModel = UserModel()
-       val userInformation = UserInformation()
-       userInformation.email = authProvider.getEmail()
-       userModel.setEmail(userInformation.email)
-       userModel.setId(userInformation.id)
-        val saveInfoByLoginGoogle: MutableMap<String, Any> = HashMap()
-        userInformation.email = authProvider.getEmail()
-        saveInfoByLoginGoogle["email"] = userInformation.email
-        saveInfoByLoginGoogle["timeStamp"] = userInformation.timeStamp
-        firebaseFirestore.collection("UsersRegister").document(id).set(saveInfoByLoginGoogle)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val intent = Intent(context, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(context, "The information could not be saved", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }*/

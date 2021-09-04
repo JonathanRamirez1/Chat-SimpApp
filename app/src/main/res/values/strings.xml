@@ -22,6 +22,8 @@
 
     <string name="chat_edittext_message_hint">Type here a message…</string>
 
+    <string name="phone_number_is_no_valid">Enter prefix followed by number</string>
+
     <!-- Bottom Navigation Menu -->
     <string name="navigation_bottom_info">Info</string>
     <string name="navigation_bottom_rates">Rates</string>
@@ -48,5 +50,13 @@
     <string name="facebook_app_id">2871054539831513cambiar</string>
     <string name="fb_login_protocol_scheme">fb2871054539831513cambiar</string>
 
+    <!-- CompleteInfoFragment -->
     <string name="search">Search…</string>
+    <string name="username">Username</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="complete">Complete</string>
+    <string name="choose">Choose an option</string>
+    <string name="gallery_image">Gallery image</string>
+    <string name="camera_photo">Take photo</string>
+
 </resources>

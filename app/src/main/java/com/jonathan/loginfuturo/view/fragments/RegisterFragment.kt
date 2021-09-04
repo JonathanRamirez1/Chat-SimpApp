@@ -69,7 +69,7 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        validEmailAndPasswordAndConfirmPassword()
+        validFields()
         validateFields(view)
         launchLoginFragment(view)
     }
@@ -82,15 +82,7 @@ class RegisterFragment : Fragment() {
             .build()
     }
 
-    private fun validEmailAndPasswordAndConfirmPassword() {
-
-        binding.editTextUsernameSignUp.validate { username ->
-            if (isValidUsername(username)) {
-                binding.editTextUsernameSignUp.error = null
-            } else {
-                binding.editTextUsernameSignUp.error = getString(R.string.username_is_no_valid)
-            }
-        }
+    private fun validFields() {
 
         binding.editTextEmailSignUp.validate { email ->
             if (isValidEmail(email)) {
@@ -112,8 +104,7 @@ class RegisterFragment : Fragment() {
             if (isValidConfirmPassword((editTextPasswordSignUp.text.toString()), confirmPassword)) {
                 binding.editTextConfirmPassword.error = null
             } else {
-                binding.editTextConfirmPassword.error =
-                    getString(R.string.confirm_password_is_no_valid)
+                binding.editTextConfirmPassword.error = getString(R.string.confirm_password_is_no_valid)
             }
         }
     }
@@ -132,22 +123,17 @@ class RegisterFragment : Fragment() {
         val signUpUser = binding.buttonSignUp
 
         signUpUser.setOnClickListener {
-            userInformation.username = binding.editTextUsernameSignUp.text.toString()
             userInformation.email = binding.editTextEmailSignUp.text.toString()
             userInformation.password = binding.editTextPasswordSignUp.text.toString()
             userInformation.confirmPassword = binding.editTextConfirmPassword.text.toString()
 
-            if (isValidUsername(userInformation.username) && isValidEmail(userInformation.email) && isValidPassword(
-                    userInformation.password
-                )
-                && isValidConfirmPassword(userInformation.password, userInformation.confirmPassword)
-            ) {
+            if (isValidEmail(userInformation.email) && isValidPassword(userInformation.password)
+                && isValidConfirmPassword(userInformation.password, userInformation.confirmPassword)) {
                 signUpByEmail()
                 navController = Navigation.findNavController(view)
                 navController.navigate(R.id.loginFragment)
             } else {
-                Toast.makeText(context, "Please make sure all data is correct", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(context, "Please make sure all data is correct", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -1,17 +1,8 @@
 package com.jonathan.loginfuturo.providers
 
-import android.app.DownloadManager
-import android.net.Uri
-import androidx.fragment.app.FragmentActivity
-import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
-import com.google.firebase.firestore.Query
-import com.jonathan.loginfuturo.Constants
-import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.model.UserModel
 
 class AuthProvider {

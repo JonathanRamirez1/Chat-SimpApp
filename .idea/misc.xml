@@ -5,23 +5,29 @@
       <map>
         <entry key="..\:/Users/Administrator/AppData/Local/Android/Sdk/platforms/android-31/data/res/drawable/progress_horizontal.xml" value="0.2890625" />
         <entry key="..\:/Users/Administrator/AppData/Local/Android/Sdk/platforms/android-31/data/res/drawable/ratingbar_full.xml" value="0.2890625" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/activity_complete_info.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/activity_container_chat.xml" value="0.254981884057971" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/activity_home.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/activity_login.xml" value="0.1480978260869565" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/dialog_rate.xml" value="0.16077898550724637" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/dialog_wait_moment.xml" value="0.27291666666666664" />
-        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_complete_info.xml" value="0.25885416666666666" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_complete_info.xml" value="0.22" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_container_chat.xml" value="0.14764492753623187" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_edit_profile.xml" value="0.22" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_find_user.xml" value="0.1" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_forgot_password.xml" value="0.21965579710144928" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_login.xml" value="0.21965579710144928" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_rates.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_rates_item.xml" value="0.16077898550724637" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_register.xml" value="0.21965579710144928" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_rooms.xml" value="0.21965579710144928" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_search_bar.xml" value="0.25" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/item_find_user.xml" value="0.19746376811594202" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/item_rooms.xml" value="0.15942028985507245" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/toolbar.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/menu/general_options_menu.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/xml/file_paths.xml" value="0.13069908814589665" />
       </map>
     </option>
   </component>

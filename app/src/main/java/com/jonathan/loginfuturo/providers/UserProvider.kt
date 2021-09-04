@@ -32,6 +32,10 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
         return userCollection.document(userModel.getId()).update(complete)
     }
 
+    fun taskUser(userModel: UserModel): Task<Void> {
+        return userCollection.document(userModel.getId()).set(userModel)
+    }
+
     fun getPhoto(photo: String): Task<DocumentSnapshot> {
         return userCollection.document(photo).get()
     }

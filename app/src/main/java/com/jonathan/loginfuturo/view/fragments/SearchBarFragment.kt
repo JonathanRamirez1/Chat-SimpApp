@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -80,6 +81,7 @@ class SearchBarFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
 
     override fun onStart() {
         super.onStart()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         getAllEmail()
     }
 

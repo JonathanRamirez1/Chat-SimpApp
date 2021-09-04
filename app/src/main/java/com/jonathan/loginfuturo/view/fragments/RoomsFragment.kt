@@ -1,12 +1,9 @@
 package com.jonathan.loginfuturo.view.fragments
 
-import android.content.Intent
-import android.content.Intent.getIntent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -22,7 +19,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.auth.User
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.databinding.FragmentRoomsBinding
 import com.jonathan.loginfuturo.model.Rooms
@@ -76,7 +72,7 @@ class RoomsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        launchFindUserFragment(view)
+        checkCompleteInfo(view)
         //setUpRecyclerViewRooms()
         getIdUsers()
         checkChatExist()
@@ -136,31 +132,33 @@ class RoomsFragment : Fragment() {
             binding.recyclerViewRooms.itemAnimator = DefaultItemAnimator()
             binding.recyclerViewRooms.adapter = roomsAdapter
         }*/
-
-    private fun launchFindUserFragment(view: View) {
-        val goFindUserFragment = binding.floatingButtonFindUser
+    private fun checkCompleteInfo(view: View) {
+        val goCompleteFragment = binding.floatingButtonCompleteInfo
+        val id: String = authProvider.getUid()
 
         navController = Navigation.findNavController(view)
-        goFindUserFragment.setOnClickListener {
+        goCompleteFragment.setOnClickListener {
             setDataUsers()
-           // updatePhoto()
-            navController.navigate(R.id.searchBarFragment)
+            userProvider.getUser(id).addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val cover: String = documentSnapshot.getString("cover").toString()
+                    val phone: String = documentSnapshot.getString("phone").toString()
+                    val photo: String = documentSnapshot.getString("photo").toString()
+                    val username: String = documentSnapshot.getString("username").toString()
+                    if (cover.isEmpty() && phone.isEmpty() && photo.isEmpty() && username.isEmpty()) {
+                        navController.navigate(R.id.completeInfoFragment)
+                    } else {
+                        navController.navigate(R.id.searchBarFragment)
+                    }
+                }
+            }
         }
     }
-
-   /* private fun updatePhoto() {
-        val photo = firebaseUser.photoUrl.toString()
-            val id: String = authProvider.getUid()
-            userModel.setPhoto(photo)
-            userModel.setId(id)
-            userProvider.updateCollection(userModel)
-    }*/
 
     private fun setDataUsers() {
         bundle.putString("idEmisor", authProvider.getUid())
         bundle.putString("idReceptor", mExtraIdUser)
         parentFragmentManager.setFragmentResult("key", bundle);
-
     }
 
     private fun checkChatExist() {

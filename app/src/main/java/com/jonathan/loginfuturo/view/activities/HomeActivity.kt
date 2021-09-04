@@ -1,12 +1,12 @@
 package com.jonathan.loginfuturo.view.activities
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.R
@@ -15,7 +15,7 @@ import com.jonathan.loginfuturo.view.fragments.ContainerChatFragment
 import com.jonathan.loginfuturo.view.fragments.InformationFragment
 import com.jonathan.loginfuturo.view.fragments.RatesFragment
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.fragment_rooms.*
+import java.io.File
 
 class HomeActivity : AppCompatActivity() {
 
@@ -64,18 +64,15 @@ class HomeActivity : AppCompatActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bottom_nav_info -> {
-                    viewPager.currentItem = 0;
+                    viewPager.currentItem = 0
                     true
                 }
                 R.id.bottom_nav_rates -> {
-                    viewPager.currentItem = 1;
+                    viewPager.currentItem = 1
                     true
                 }
                 R.id.bottom_nav_chat -> {
-                    viewPager.currentItem = 2;
-                   /* val bundle = Bundle()
-                    bundle.putString("idUser1", authProvider.getUid().toString())
-                    bundle.putString("idUser2", mExtraidUser)*/
+                    viewPager.currentItem = 2
                     true
                 }
                 else ->

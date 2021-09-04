@@ -40,9 +40,6 @@
         <action
             android:id="@+id/action_loginFragment_to_futuroFragment"
             app:destination="@id/futuroFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_completeInfoFragment"
-            app:destination="@id/completeInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -54,8 +51,4 @@
         android:name="com.jonathan.loginfuturo.view.fragments.FuturoFragment"
         android:label="fragment_futuro"
         tools:layout="@layout/fragment_futuro" />
-    <fragment
-        android:id="@+id/completeInfoFragment"
-        android:name="com.jonathan.loginfuturo.view.fragments.CompleteInfoFragment"
-        android:label="CompleteInfoFragment" />
 </navigation>

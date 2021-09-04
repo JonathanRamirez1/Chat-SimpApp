@@ -1,6 +1,5 @@
 package com.jonathan.loginfuturo.model
 
-import android.provider.ContactsContract
 import java.util.*
 
 class UserModel {
@@ -12,14 +11,14 @@ class UserModel {
     private var username: String = ""
     private var photo: String = ""
     private var cover: String = ""
-    private var phone: Int = 0
+    private var phone: String = ""
     private var timeStamp: Date = Date()
 
     fun User() {
 
     }
 
-    fun User(id: String, email: String, username: String, photo: String, cover: String, phone: Int, timeStamp: Date) {
+    fun User(id: String, email: String, username: String, photo: String, cover: String, phone: String, timeStamp: Date) {
         this.id = id
         this.email = email
         this.username = username
@@ -69,11 +68,11 @@ class UserModel {
         this.cover = cover
     }
 
-    fun getPhone(): Int {
+    fun getPhone(): String {
         return phone
     }
 
-    fun setPhone(phone: Int) {
+    fun setPhone(phone: String) {
         this.phone = phone
     }
 
