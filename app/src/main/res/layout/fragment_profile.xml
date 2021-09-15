@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="view.fragments.ProfileFragment">
@@ -19,7 +21,8 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -30,6 +33,7 @@
                     android:transitionName="@string/search"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/circleImageViewPhotoProfile"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
                     android:src="@drawable/person"
@@ -97,6 +101,7 @@
                     android:gravity="center">
 
                     <TextView
+                        android:id="@+id/textViewUsernameProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="NOMBRE DEL PERFIL"
@@ -105,6 +110,7 @@
                         android:textSize="20dp" />
 
                     <TextView
+                        android:id="@+id/textViewEmailProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="correo@algo.com"
@@ -137,4 +143,14 @@
             android:textStyle="italic" />
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingButtonGoChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_find_user" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

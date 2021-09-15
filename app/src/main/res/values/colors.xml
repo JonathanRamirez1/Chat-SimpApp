@@ -9,8 +9,10 @@
     <color name="colorSecondaryText">#BDBDBD</color>
     <color name="colortTextBlack">#222</color>
     <color name="colorIcon">#FFFFFF</color>
-    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorDivider">#BDBDBD</color>#228b22
     <color name="colorChatBg">#CCC</color>
+    <color name="colorChat">#0e813c</color>
+
 
     <color name="colorGooglePlus">#DD4B39</color>
     <color name="colorGooglePlusDark">#B92D21</color>

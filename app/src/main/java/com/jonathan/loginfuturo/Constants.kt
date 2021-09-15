@@ -14,4 +14,5 @@ object Constants {
     const val REQUEST_CODE_GALLERY_COVER_PHOTO = 2
     const val REQUEST_CODE_PROFILE_CAMERA = 3
     const val REQUEST_CODE_COVER_CAMERA = 4
+    const val REQUEST_CODE_NOTIFY_MESSAGE = 1
 }

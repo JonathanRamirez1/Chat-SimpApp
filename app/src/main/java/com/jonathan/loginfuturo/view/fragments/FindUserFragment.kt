@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentResultListener
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -21,13 +20,10 @@ import com.google.firebase.firestore.*
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.UserInformation
 import com.jonathan.loginfuturo.databinding.FragmentFindUserBinding
-import com.jonathan.loginfuturo.model.Rooms
 import com.jonathan.loginfuturo.providers.AuthProvider
 import com.jonathan.loginfuturo.providers.MessageProvider
 import com.jonathan.loginfuturo.view.adapters.FindUserAdapter
 import kotlin.collections.ArrayList
-import com.jonathan.loginfuturo.providers.RoomsProvider
-import java.util.*
 import java.util.EventListener
 
 class FindUserFragment : Fragment() {

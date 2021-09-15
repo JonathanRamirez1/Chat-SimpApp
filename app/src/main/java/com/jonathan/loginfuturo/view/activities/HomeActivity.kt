@@ -1,35 +1,42 @@
 package com.jonathan.loginfuturo.view.activities
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.R
+import com.jonathan.loginfuturo.Utils.ViewedMessageHelper
+import com.jonathan.loginfuturo.providers.AuthProvider
+import com.jonathan.loginfuturo.providers.TokenProvider
 import com.jonathan.loginfuturo.view.adapters.PagerAdapter
 import com.jonathan.loginfuturo.view.fragments.ContainerChatFragment
 import com.jonathan.loginfuturo.view.fragments.InformationFragment
 import com.jonathan.loginfuturo.view.fragments.RatesFragment
 import kotlinx.android.synthetic.main.activity_home.*
-import java.io.File
 
 class HomeActivity : AppCompatActivity() {
 
     private var previewBottomSelected : MenuItem? = null
 
+    private lateinit var tokenProvider: TokenProvider
+    private lateinit var authProvider: AuthProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        tokenProvider = TokenProvider()
+        authProvider = AuthProvider()
 
         /** Toolbar **/
         setSupportActionBar(findViewById(R.id.toolbarView))
 
         setUpViewPager(getPagerAdapter())
         setUpBottomNavigationBar()
+        createToken()
     }
 
     private fun getPagerAdapter() : PagerAdapter {
@@ -97,4 +104,22 @@ class HomeActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun createToken() {
+        tokenProvider.create(authProvider.getUid()) //TODO CONSIDERAR SI SE CAMBIA AL HomeActivity
+    }
+
+    override fun onStart() {
+        super.onStart()
+        ViewedMessageHelper.updateState(true, this)  //TODO CONTINUAR 7 17
+    }
+
+    override fun onPause() {
+        super.onPause()
+        ViewedMessageHelper.updateState(false, this)
+    }
 }
+
+   /* override fun onStop() {
+        super.onStop()
+        ViewedMessageHelper.updateOnline(false, this)*/

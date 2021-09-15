@@ -208,8 +208,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="406" />
-                            <option name="y" value="-15" />
+                            <option name="x" value="364" />
+                            <option name="y" value="-28" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -232,6 +232,15 @@
                             <option name="x" value="645" />
                             <option name="y" value="325" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_completeInfoFragment_to_searchBarFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -262,6 +271,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="profileFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="726" />
+                            <option name="y" value="-55" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="roomsFragment">
                     <value>
                       <LayoutPositions>
@@ -274,6 +295,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_roomsFragment_to_chatFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_roomsFragment_to_completeInfoFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

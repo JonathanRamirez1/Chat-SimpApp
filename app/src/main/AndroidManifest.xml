@@ -7,6 +7,7 @@
     
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:allowBackup="true"
@@ -24,8 +25,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
-        <activity android:name=".view.activities.HomeActivity"></activity>
-        <activity android:name=".view.activities.MainActivity"></activity>
+        <activity android:name=".view.activities.HomeActivity"/>
+        <activity android:name=".view.activities.MainActivity"/>
         <activity
             android:name=".view.activities.MainEmptyActivity"
             android:exported="true"
@@ -38,6 +39,24 @@
         <activity
             android:name=".view.activities.LoginActivity"
             android:theme="@style/NoPreview"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <service
+            android:name=".services.MyFirebaseMessagingClient"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <receiver android:name=".receivers.MessageReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+
     </application>
 </manifest>

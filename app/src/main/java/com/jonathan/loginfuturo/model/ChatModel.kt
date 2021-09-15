@@ -3,11 +3,12 @@ package com.jonathan.loginfuturo.model
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Rooms {
+class ChatModel {
 
     private var id: String = ""
     private var idEmisor: String = ""
     private var idReceptor: String = ""
+    private var idNotification: Int = 0
     private var isWritting: Boolean = false
     private var timeStamp: Date = Date()
     private var photo: String = ""
@@ -18,6 +19,7 @@ class Rooms {
         id: String,
         idEmisor: String,
         idReceptor: String,
+        idNotification: Int,
         isWritting: Boolean,
         timeStamp: Date,
         photo: String,
@@ -27,6 +29,7 @@ class Rooms {
         this.id = id
         this.idEmisor = idEmisor
         this.idReceptor = idReceptor
+        this.idNotification = idNotification
         this.isWritting = isWritting
         this.timeStamp = timeStamp
         this.photo = photo
@@ -56,6 +59,14 @@ class Rooms {
 
     fun setIdReceptor(idReceptor: String) {
         this.idReceptor = idReceptor
+    }
+
+    fun getIdNotification(): Int {
+        return idNotification
+    }
+
+    fun setIdNotification(idNotification: Int) {
+        this.idNotification = idNotification
     }
 
     fun isWritting(): Boolean {

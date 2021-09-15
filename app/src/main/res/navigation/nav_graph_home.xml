@@ -71,6 +71,9 @@
         <action
             android:id="@+id/action_searchBarFragment_to_roomsFragment"
             app:destination="@id/roomsFragment" />
+        <action
+            android:id="@+id/action_searchBarFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/completeInfoFragment"
@@ -79,5 +82,13 @@
         <action
             android:id="@+id/action_completeInfoFragment_to_searchBarFragment"
             app:destination="@id/searchBarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.jonathan.loginfuturo.view.fragments.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
 </navigation>

@@ -59,4 +59,16 @@
     <string name="gallery_image">Gallery image</string>
     <string name="camera_photo">Take photo</string>
 
+    <!-- Chat -->
+    <string name="online">Online</string>
+    <string name="time_ago">A while ago</string>
+    <string name="offline">Offline</string>
+
+    <!-- Notification -->
+    <string name="new_message">NEW MESSAGE</string>
+    <string name="your_message">Your Message…</string>
+    <string name="reply_message">Reply</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
 </resources>

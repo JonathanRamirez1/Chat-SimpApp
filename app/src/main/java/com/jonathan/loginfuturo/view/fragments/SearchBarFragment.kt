@@ -1,6 +1,5 @@
 package com.jonathan.loginfuturo.view.fragments
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
 import com.jonathan.loginfuturo.R
+import com.jonathan.loginfuturo.Utils.ViewedMessageHelper
 import com.jonathan.loginfuturo.databinding.FragmentSearchBarBinding
-import com.jonathan.loginfuturo.model.Rooms
 import com.jonathan.loginfuturo.model.UserModel
 import com.jonathan.loginfuturo.providers.AuthProvider
 import com.jonathan.loginfuturo.providers.UserProvider
@@ -46,11 +45,11 @@ class SearchBarFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     }
 
     override fun onSearchStateChanged(enabled: Boolean) {
-        //searchByEmail(enabled.toString().lowercase(Locale.getDefault())) //TODO CAMBIAR A MINUSCULA
+        TODO("Not yet implemented")
     }
 
     override fun onSearchConfirmed(text: CharSequence?) {
-        searchByEmail(text.toString().lowercase(Locale.getDefault()))  //TODO CAMBIAR A MINUSCULA
+        searchByEmail(text.toString().lowercase(Locale.getDefault()))
     }
 
     override fun onButtonClicked(buttonCode: Int) {

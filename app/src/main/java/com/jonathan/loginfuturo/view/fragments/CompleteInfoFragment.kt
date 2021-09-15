@@ -171,16 +171,16 @@ class CompleteInfoFragment : Fragment() {
                 }
             } else if(i == 1) {
                 if (numberImage == 1) {
-                    taskPhoto(Constants.REQUEST_CODE_PROFILE_CAMERA)
+                    openCamera(Constants.REQUEST_CODE_PROFILE_CAMERA)
                 } else if(numberImage == 2) {
-                    taskPhoto(Constants.REQUEST_CODE_COVER_CAMERA)
+                    openCamera(Constants.REQUEST_CODE_COVER_CAMERA)
                 }
             }
         })
         alertDialogBuilder.show()
     }
 
-    private fun taskPhoto(requestCode: Int) {
+    private fun openCamera(requestCode: Int) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (activity?.let { intent.resolveActivity(it.packageManager) } != null) {
             var cameraFile: File? = null
@@ -234,7 +234,7 @@ class CompleteInfoFragment : Fragment() {
                                         userModel.setPhoto(profile)
                                         userModel.setUsername(username)
                                         userModel.setPhone(phone)
-                                        userProvider.CompleteUserInfo(userModel).addOnCompleteListener { task ->
+                                        userProvider.completeUserInfo(userModel).addOnCompleteListener { task ->
                                                 alertDialog.dismiss()
                                                 if (task.isSuccessful) {
                                                     navController = Navigation.findNavController(view)

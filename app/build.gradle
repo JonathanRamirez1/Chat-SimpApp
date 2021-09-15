@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.7.0'
     implementation 'com.firebaseui:firebase-ui-firestore:8.0.0'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
 
     //Google Sign In
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
@@ -73,6 +74,10 @@ dependencies {
     //Compress image
     implementation 'id.zelory:compressor:2.1.0'
 
+    //Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -39,7 +39,7 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
     private lateinit var alertDialog: AlertDialog
     private lateinit var userModel: UserModel
 
-    private val mGoogleApiClient : GoogleApiClient by lazy { getGoogleApiClient()!! }
+    private val mGoogleApiClient: GoogleApiClient by lazy { getGoogleApiClient()!! }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         setUpAlertDialog()
 
 
-      /*  loginViewModel.isLogin.value = null
+        /*  loginViewModel.isLogin.value = null
         loginViewModel.isLogin.observe(this, Observer {
             launchLoginByEmail()
         })
@@ -188,7 +188,8 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
     }
 
     /** Verifica si un usuario esta registrado en Firestore, sino lo agrega a la Base de Datos **/
-    private fun checkUserExist(id: String) {
+    private fun checkUserExist() {
+        val id: String = authProvider.getUid()
         userProvider.getUser(id).addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 alertDialog.dismiss()
@@ -240,15 +241,14 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
     }
 
     /** Inicio de sesion con google **/
-    private fun loginByGoogleAccountIntoFirebase(googleAccount : GoogleSignInAccount) {
+    private fun loginByGoogleAccountIntoFirebase(googleAccount: GoogleSignInAccount) {
         alertDialog.show()
         authProvider.googleLogin(googleAccount).addOnCompleteListener { task ->
             if (mGoogleApiClient.isConnected) {
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient)
             }
             if (task.isSuccessful) {
-                val id: String = authProvider.getUid()
-                checkUserExist(id)
+                checkUserExist()
             } else {
                 alertDialog.dismiss()
                 Toast.makeText(context, "Could not login with google", Toast.LENGTH_SHORT).show()

@@ -13,12 +13,14 @@ class UserModel {
     private var cover: String = ""
     private var phone: String = ""
     private var timeStamp: Date = Date()
+    private var online: Boolean = false
+    private var lastConnect: Long = 123
 
     fun User() {
 
     }
 
-    fun User(id: String, email: String, username: String, photo: String, cover: String, phone: String, timeStamp: Date) {
+    fun User(id: String, email: String, username: String, photo: String, cover: String, phone: String, timeStamp: Date, online: Boolean, lastConnect: Long) {
         this.id = id
         this.email = email
         this.username = username
@@ -26,6 +28,8 @@ class UserModel {
         this.cover = cover
         this.phone = phone
         this.timeStamp = timeStamp
+        this.online = online
+        this.lastConnect = lastConnect
     }
 
     fun getId(): String {
@@ -82,5 +86,21 @@ class UserModel {
 
     fun setTimeStamp(timeStamp: Date) {
         this.timeStamp = timeStamp
+    }
+
+    fun getOnline(): Boolean {
+        return online
+    }
+
+    fun setOnline(online: Boolean) {
+        this.online = online
+    }
+
+    fun getLastConnect(): Long {
+        return lastConnect
+    }
+
+    fun setLastConnect(lastConnect: Long) {
+        this.lastConnect = lastConnect
     }
 }

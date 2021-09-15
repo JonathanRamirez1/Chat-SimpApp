@@ -1,9 +1,12 @@
 package com.jonathan.loginfuturo.view.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +20,8 @@ import com.jonathan.loginfuturo.databinding.ItemFindUserBinding
 import com.jonathan.loginfuturo.model.UserModel
 import com.jonathan.loginfuturo.providers.AuthProvider
 import com.jonathan.loginfuturo.providers.UserProvider
+import com.jonathan.loginfuturo.view.fragments.ProfileFragment
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_rates_item.view.*
 
 
 class SearchBarAdapter(options: FirestoreRecyclerOptions<UserModel>): FirestoreRecyclerAdapter<UserModel, SearchBarAdapter.SearchBarHolder>(options) {
@@ -26,19 +29,15 @@ class SearchBarAdapter(options: FirestoreRecyclerOptions<UserModel>): FirestoreR
     private lateinit var userProvider: UserProvider
     private lateinit var navController: NavController
     private lateinit var authProvider: AuthProvider
-    private lateinit var firebaseUser: FirebaseUser
 
     private var context: Context? = null
     private var bundle = Bundle()
-
-    private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     constructor(options: FirestoreRecyclerOptions<UserModel>, context: Context?) : this(options) {
         super.updateOptions(options)
         this.context = context
         userProvider = UserProvider()
         authProvider = AuthProvider()
-        setUPCurrentUser()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchBarAdapter.SearchBarHolder {
@@ -49,23 +48,24 @@ class SearchBarAdapter(options: FirestoreRecyclerOptions<UserModel>): FirestoreR
 
     override fun onBindViewHolder(searchBarHolder: SearchBarHolder, position: Int, userModel: UserModel) {
         val document = snapshots.getSnapshot(position)
-        val roomsId = document.id
-        val id: String = document.getString("id").toString()
+        val mExtraIdUser: String = document.getString("id").toString()
 
-        getUserInfo(id, searchBarHolder)
+        if (authProvider.getUid() == mExtraIdUser) {
+            searchBarHolder.itemView.visibility = View.GONE
+            searchBarHolder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+        }
+
+        getUserInfo(mExtraIdUser, searchBarHolder)
         searchBarHolder.render(userModel)
         searchBarHolder.bindingAdapterPosition
 
         searchBarHolder.binding.root.setOnClickListener { view ->
             navController = Navigation.findNavController(view)
-            bundle.putString("id", roomsId) //TODO VERIFICAR SI SIRVE PARA ALGO, TODAS
-            navController.navigate(R.id.chatFragment)
+            bundle.putString("idEmisor", authProvider.getUid())
+            bundle.putString("idReceptor", mExtraIdUser)
+            navController.navigate(R.id.chatFragment, bundle)
         }
     }
-    fun setUPCurrentUser() {
-        firebaseUser = firebaseAuth.currentUser!!
-    }
-
 
     private fun getUserInfo(idUser: String, searchBarHolder: SearchBarHolder) {
         userProvider.getUser(idUser).addOnSuccessListener { documentSnapshot ->
@@ -86,50 +86,10 @@ class SearchBarAdapter(options: FirestoreRecyclerOptions<UserModel>): FirestoreR
         }
     }
 
-    inner class SearchBarHolder(val binding: ItemFindUserBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class SearchBarHolder(val binding: ItemFindUserBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun render(userModel: UserModel) {
             binding.textViewEmailUser.text = userModel.getEmail()
         }
     }
 }
-
-/*if (documentSnapshot.contains("photo")) {
-                    val photo: String = documentSnapshot.getString("photo").toString()
-                    if (photo.isNotEmpty()) {
-                        Picasso.get().load(photo).resize(100, 100)
-                            .centerCrop().transform(CircleTransform())
-                            .into(searchBarHolder.binding.imageViewPhoto)
-                    } else if (photo.isNullOrEmpty()) {
-                        Picasso.get().load(R.drawable.person).resize(100, 100)
-                            .centerCrop().transform(CircleTransform())
-                            .into(searchBarHolder.binding.imageViewPhoto)
-                    }
-                }*/
-
-/*if (photo.contains("2131165388")) {
-                        Picasso.get().load(R.drawable.person).resize(100, 100)
-                            .centerCrop().transform(CircleTransform())
-                            .into(searchBarHolder.binding.imageViewPhoto)
-                    } else {
-                        Picasso.get().load(photo).resize(100, 100)
-                            .centerCrop().transform(CircleTransform())
-                            .into(searchBarHolder.binding.imageViewPhoto)
-                    }*/
-
-/*if (documentSnapshot.contains("photo")) {
-                    val photoLocal: String = documentSnapshot.getString("photo").toString()
-                    if (photoLocal.contains("2131165388") && photoLocal.isNullOrEmpty()) {
-                        Picasso.get().load(photoLocal).resize(100, 100)
-                            .centerCrop().transform(CircleTransform())
-                            .into(searchBarHolder.binding.imageViewPhoto)
-                    } else {
-                        val photo: String = documentSnapshot.getString("photo").toString()
-                        if (photo.isNotEmpty()) {
-                            Picasso.get().load(photo).resize(100, 100)
-                                .centerCrop().transform(CircleTransform())
-                                .into(searchBarHolder.binding.imageViewPhoto)
-                        }
-                    }
-                }*/

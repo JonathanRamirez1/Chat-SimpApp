@@ -3,6 +3,8 @@ package com.jonathan.loginfuturo.providers
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
 import com.jonathan.loginfuturo.model.UserModel
+import java.util.*
+import kotlin.collections.HashMap
 
 class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19:49
 
@@ -10,6 +12,10 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
 
     fun getUser(id: String): Task<DocumentSnapshot> {
         return userCollection.document(id).get()
+    }
+
+    fun getUserRealTime(id: String): DocumentReference {
+        return userCollection.document(id)
     }
 
     fun createCollection(userModel: UserModel): Task<Void> {
@@ -23,13 +29,20 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
         return userCollection.document(userModel.getId()).update(updateUser) //TODO ALGUN ERROR DE NULLPOINTEXCEPTION SE DEBE PASAR EL ID (userModel.setId(id) EN FRAGMENT REQUERIDO)
     }
 
-    fun CompleteUserInfo(userModel: UserModel): Task<Void> {
+    fun completeUserInfo(userModel: UserModel): Task<Void> {
         val complete: MutableMap<String, Any> = HashMap()
         complete["cover"] = userModel.getCover()
         complete["photo"] = userModel.getPhoto()
         complete["username"] = userModel.getUsername()
         complete["phone"] = userModel.getPhone()
         return userCollection.document(userModel.getId()).update(complete)
+    }
+
+    fun updateState(id: String, state: Boolean): Task<Void> {
+        val updateState: MutableMap<String, Any> = HashMap()
+        updateState["online"] = state
+        updateState["lastConnect"] = Date().time
+        return userCollection.document(id).update(updateState)
     }
 
     fun taskUser(userModel: UserModel): Task<Void> {

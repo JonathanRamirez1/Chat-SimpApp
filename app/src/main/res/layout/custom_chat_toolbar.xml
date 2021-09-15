@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimaryDark">
+
+    <Button
+        android:id="@+id/buttonBackRooms"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:drawableStart="@drawable/ic_back_rooms"
+        android:background="@color/colorPrimaryDark"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewChat"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:civ_circle_background_color="@color/white"
+        android:layout_toEndOf="@+id/buttonBackRooms"
+        android:src="@drawable/person"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:id="@+id/textViewUsernameChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_toEndOf="@+id/circleImageViewChat"
+        android:maxLines="1"
+        android:text="Username"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:text="Hace un momento"
+        android:textSize="12sp"
+        android:layout_toEndOf="@+id/circleImageViewChat"
+        android:layout_below="@+id/textViewUsernameChat" />
+
+
+</RelativeLayout>

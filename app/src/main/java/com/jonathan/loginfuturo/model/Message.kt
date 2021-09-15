@@ -25,7 +25,7 @@ class Message {
         this.profileImageUrl = profileImageUrl
     }
 
-    fun getId(id: String): String {
+    fun getId(): String {
         return id
     }
 
@@ -33,7 +33,7 @@ class Message {
         this.id = id
     }
 
-    fun getIdEmisor(idEmisor: String): String {
+    fun getIdEmisor(): String {
         return idEmisor
     }
 
@@ -41,7 +41,7 @@ class Message {
         this.idEmisor = idEmisor
     }
 
-    fun getIdReceptor(idReceptor: String): String {
+    fun getIdReceptor(): String {
         return idReceptor
     }
 
@@ -49,7 +49,7 @@ class Message {
         this.idReceptor = idReceptor
     }
 
-    fun getIdChat(idChat: String): String {
+    fun getIdChat(): String {
         return idChat
     }
 
@@ -65,7 +65,7 @@ class Message {
         this.message = message
     }
 
-    fun getTimeStamp(timeStamp: Long): Long {
+    fun getTimeStamp(): Long {
         return timeStamp
     }
 
@@ -73,7 +73,7 @@ class Message {
         this.timeStamp = timeStamp
     }
 
-    fun getViewed(viewed: Boolean): Boolean {
+    fun getViewed(): Boolean {
         return viewed
     }
 

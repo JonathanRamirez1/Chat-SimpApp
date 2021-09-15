@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_chat_item_right.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatAdapter (val items : List<Message>, val userId : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GroupChatAdapter (val items : List<Message>, val userId : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val layoutRight = R.layout.fragment_chat_item_right
     private val layoutLeft = R.layout.fragment_chat_item_left
@@ -46,12 +46,12 @@ class ChatAdapter (val items : List<Message>, val userId : String) : RecyclerVie
     /** Se usa este metodo cuando hay diferente tipo de item **/
 
     override fun getItemViewType(position: Int): Int  =
-        if (firebaseAuth.getUid().let { items[position].getIdEmisor(String()) } == userId) MY_MESSAGE else GLOBAL_MESSAGE
+        if (firebaseAuth.getUid().let { items[position].getIdEmisor() } == userId) MY_MESSAGE else GLOBAL_MESSAGE
 
     class ViewHolderRight(itemView : View) : RecyclerView.ViewHolder(itemView) {
         fun bind(message: Message) = with(itemView) {
             textViewMessageRight.text = message.getMessage()
-            textViewTimeRight.text = message.getTimeStamp(Date().time).toString()
+            textViewTimeRight.text = message.getTimeStamp().toString()
             if (message.getProfileImageUrl().isEmpty()) {
                 Picasso.get().load(R.drawable.person).resize(100, 100)
                     .centerCrop()
@@ -70,7 +70,7 @@ class ChatAdapter (val items : List<Message>, val userId : String) : RecyclerVie
 
         fun bind(message: Message) = with(itemView) {
             textViewMessageLeft.text = message.getMessage()
-            textViewTimeLeft.text =  message.getTimeStamp(Date().time).toString()
+            textViewTimeLeft.text =  message.getTimeStamp().toString()
             if (message.getProfileImageUrl().isEmpty()) {
                 Picasso.get().load(R.drawable.person).resize(100, 100)
                     .centerCrop()

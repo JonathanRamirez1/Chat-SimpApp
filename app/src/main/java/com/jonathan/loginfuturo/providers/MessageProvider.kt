@@ -10,14 +10,9 @@ import com.jonathan.loginfuturo.model.Message
 
 class MessageProvider {
 
-     private lateinit var messageDataBaseReference: CollectionReference
-
-    fun messageProvider() {
-        messageDataBaseReference = FirebaseFirestore.getInstance().collection("Messages")
-    }
+     private val messageDataBaseReference: CollectionReference = FirebaseFirestore.getInstance().collection("Messages")
 
     fun create(message: Message): Task<Void> {
-        messageDataBaseReference = FirebaseFirestore.getInstance().collection("Messages")
         val document : DocumentReference = messageDataBaseReference.document()
         message.setId(document.id)
         return document.set(message)
@@ -25,5 +20,33 @@ class MessageProvider {
 
     fun getMessageByChat(idChat: String): Query {
         return messageDataBaseReference.whereEqualTo("idChat", idChat).orderBy("timeStamp", Query.Direction.ASCENDING)
+    }
+
+    fun getMessageByChatEmisor(idChat: String, idEmisor: String): Query {
+        return messageDataBaseReference.whereEqualTo("idChat", idChat).whereEqualTo("idEmisor", idEmisor).whereEqualTo("viewed", false)
+    }
+
+    fun getLastThreeMessageByChatEmisor(idChat: String, idEmisor: String): Query {
+        return messageDataBaseReference.whereEqualTo("idChat", idChat)
+            .whereEqualTo("idEmisor", idEmisor)
+            .whereEqualTo("viewed", false)
+            .orderBy("timeStamp", Query.Direction.DESCENDING)
+            .limit(3)
+    }
+
+    fun getLastMessage(idChat: String): Query {
+        return messageDataBaseReference.whereEqualTo("idChat", idChat).orderBy("timeStamp", Query.Direction.DESCENDING).limit(1)
+    }
+
+    fun getLastMessageEmisor(idChat: String, idEmisor: String): Query {
+        return messageDataBaseReference.whereEqualTo("idChat", idChat)
+            .whereEqualTo("idEmisor", idEmisor)
+            .orderBy("timeStamp", Query.Direction.DESCENDING).limit(1)
+    }
+
+    fun updateViewed(idDocument: String, state: Boolean): Task<Void> {
+        val viewed: MutableMap<String, Any> = HashMap()
+        viewed["viewed"] = state
+        return  messageDataBaseReference.document(idDocument).update(viewed)
     }
 }
