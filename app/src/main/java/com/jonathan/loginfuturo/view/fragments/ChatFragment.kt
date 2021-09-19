@@ -1,6 +1,7 @@
 package com.jonathan.loginfuturo.view.fragments
 
 import android.content.Context.*
+import android.location.GnssAntennaInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,7 @@ import com.google.gson.Gson
 import com.jonathan.loginfuturo.model.FCMBody
 import com.jonathan.loginfuturo.model.FCMResponse
 import com.jonathan.loginfuturo.providers.*
+import com.jonathan.loginfuturo.view.adapters.RoomsAdapter
 import retrofit2.Callback
 import kotlin.collections.HashMap
 import retrofit2.Call
@@ -52,6 +54,7 @@ class ChatFragment : Fragment() {
 
     private var messageAdapter: MessageAdapter? = null
     private var chatRegistration: ListenerRegistration? = null
+    private var messageRegistration: ListenerRegistration? = null
 
     private var idUserEmisor: String = ""
     private var idUserReceptor: String = ""
@@ -80,7 +83,7 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getDataUsers()
-        getUsernameForNotifications()
+        getInfoUserForNotifications()
         checkChatExist()
         sendMessage()
         launchRoomsFragment(view)
@@ -134,8 +137,8 @@ class ChatFragment : Fragment() {
                 val size: Int = querySnapshot.size()
                 if (size == 0) {
                     createChat() //TODO CORREGIR ERROR QUE SE AGREGA EL CHAT SIN ESCRIBIR NINGUN MENSAJE
-                } else {
-                    idChat = querySnapshot.documents[0].id  //TODO 7 11
+                } else if (size > 0) {
+                    idChat = querySnapshot.documents[0].id
                     idNotificationChat = querySnapshot.documents[0].getLong("idNotification")
                     getAllMessagesUser()
                     updateViewed()
@@ -177,8 +180,7 @@ class ChatFragment : Fragment() {
                 super.onItemRangeInserted(positionStart, itemCount)
                 updateViewed()
                 val numberMessage: Int = messageAdapter!!.itemCount
-                val lastMessagePosition =
-                    wrapContentLinearLayoutManager.findLastCompletelyVisibleItemPosition()
+                val lastMessagePosition = wrapContentLinearLayoutManager.findLastCompletelyVisibleItemPosition()
 
                 if (lastMessagePosition == -1 || (positionStart >= (numberMessage - 1) && lastMessagePosition == (positionStart - 1))) {
                     binding.recyclerViewChat.scrollToPosition(positionStart)
@@ -253,7 +255,7 @@ class ChatFragment : Fragment() {
             idUserEmisor
         }
         chatRegistration = userProvider.getUserRealTime(idUserInfo)
-            .addSnapshotListener { documentSnapshot, error ->
+            .addSnapshotListener { documentSnapshot, _ ->
                 if (documentSnapshot != null) {
                     if (documentSnapshot.exists()) {
                         if (documentSnapshot.contains("username")) {
@@ -264,6 +266,7 @@ class ChatFragment : Fragment() {
                             val online: Boolean? = documentSnapshot.getBoolean("online")
                             if (online == true) {
                                 binding.TextViewTimeChat.text = resources.getString(R.string.online)
+
                             } else if (documentSnapshot.contains("lastConnect")) {
                                 val lastConnect: Long = documentSnapshot.getLong("lastConnect")!!.toLong()
                                 val relativeTime = RelativeTime.getTimeAgo(lastConnect, context)
@@ -305,44 +308,33 @@ class ChatFragment : Fragment() {
     }
 
     private fun getLastThreeMessages(message: Message, token: String) {
-        messageProvider.getLastThreeMessageByChatEmisor(idChat, authProvider.getUid()).get().addOnSuccessListener { querySnapshot ->
-            val messageArrayList = ArrayList<Message>()
+        messageProvider.getLastThreeMessageByChatEmisor(idChat, authProvider.getUid()).get()
+            .addOnSuccessListener { querySnapshot ->
+                val messageArrayList = ArrayList<Message>()
 
-            for (documentSnapshot in querySnapshot.documents) {
-                if (documentSnapshot.exists()) {
-                    val message1: Message? = documentSnapshot.toObject(Message::class.java)
-                    messageArrayList.add(message1!!)
+                for (documentSnapshot in querySnapshot.documents) {
+                    if (documentSnapshot.exists()) {
+                        val message1: Message? = documentSnapshot.toObject(Message::class.java)
+                        messageArrayList.add(message1!!)
+                    }
                 }
-            }
-            if (messageArrayList.size == 0) {
-                messageArrayList.add(message)
-            }
-            messageArrayList.reverse()
+                if (messageArrayList.size == 0) {
+                    messageArrayList.add(message)
+                }
+                messageArrayList.reverse()
 
-            val gson = Gson()
-            val messages = gson.toJson(messageArrayList)
-            sendNotification(token, messages, message)
-        }
+                val gson = Gson()
+                val messages = gson.toJson(messageArrayList)
+                sendNotification(token, messages, message)
+            }
     }
 
     private fun sendNotification(token: String, messages: String, message: Message) {
         val data: MutableMap<String, String> = HashMap()
-        data["title"] = "NEW MESSAGE"
-        data["body"] = message.getMessage()
-        data["idNotification"] = idNotificationChat.toString()
-        data["messages"] = messages
-        data["usernameEmisor"] = usernameEmisor.uppercase(Locale.getDefault())
-        data["usernameReceptor"] = usernameReceptor.uppercase(Locale.getDefault())
-        data["imageEmisor"] = imageEmisor
-        data["imageReceptor"] = imageReceptor
-        data["idEmisor"] = message.getIdEmisor()
-        data["idReceptor"] = message.getIdReceptor()
-        data["idChat"] = message.getIdChat()
-
-        if (imageEmisor == "") { //TODO CAMBIAR A isEmpty y probar
+        if (imageEmisor.isEmpty()) {
             imageEmisor = "IMAGEN_NO_VALIDA"
         }
-        if (imageReceptor == "") {
+        if (imageReceptor.isEmpty()) {
             imageReceptor = "IMAGEN_NO_VALIDA"
         }
 
@@ -355,9 +347,22 @@ class ChatFragment : Fragment() {
         messageProvider.getLastMessageEmisor(idChat, idUserEmisorForNotification).get().addOnSuccessListener { querySnapshot ->
                 val size: Int = querySnapshot.size()
                 var lastMessage = ""
-                if (size > 0) {
-                    lastMessage = querySnapshot.documents[0].getString("message").toString()
+                if (size == 0) {
+                    data["title"] = "NEW MESSAGE"
+                    data["body"] = message.getMessage()
+                    data["idNotification"] = idNotificationChat.toString()
+                    data["messages"] = messages
+                    data["usernameEmisor"] = usernameEmisor.uppercase(Locale.getDefault())
+                    data["usernameReceptor"] = usernameReceptor.uppercase(Locale.getDefault())
+                    data["imageEmisor"] = imageEmisor
+                    data["imageReceptor"] = imageReceptor
+                    data["idEmisor"] = message.getIdEmisor()
+                    data["idReceptor"] = message.getIdReceptor()
+                    data["idChat"] = message.getIdChat()
+                  //  lastMessage = querySnapshot.documents[0].getString("message").toString()
                     data["lastMessage"] = lastMessage
+                }  else if(lastMessage.isNullOrEmpty()) {
+                    receiverNotification(messages)
                 }
                 val body = FCMBody(token, "high", "4500s", data)
                 notificationProvider.sendNotification(body)?.enqueue(object : Callback<FCMResponse?> {
@@ -379,7 +384,19 @@ class ChatFragment : Fragment() {
         }
     }
 
-    private fun getUsernameForNotifications() {
+    private fun receiverNotification(messages: String) {
+        val data: MutableMap<String, String> = HashMap()
+        data["title"] = "NEW MESSAGE"
+        data["body"] = message.getMessage()
+        data["idNotification"] = idNotificationChat.toString()
+        data["messages"] = messages
+        data["usernameEmisor"] = usernameEmisor.uppercase(Locale.getDefault())
+        data["imageEmisor"] = imageEmisor
+        data["idEmisor"] = message.getIdEmisor()
+        data["idChat"] = message.getIdChat()
+    }
+
+    private fun getInfoUserForNotifications() {
         userProvider.getUser(authProvider.getUid()).addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 if (documentSnapshot.contains("username")) {

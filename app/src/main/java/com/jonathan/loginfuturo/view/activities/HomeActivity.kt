@@ -13,7 +13,7 @@ import com.jonathan.loginfuturo.providers.AuthProvider
 import com.jonathan.loginfuturo.providers.TokenProvider
 import com.jonathan.loginfuturo.view.adapters.PagerAdapter
 import com.jonathan.loginfuturo.view.fragments.ContainerChatFragment
-import com.jonathan.loginfuturo.view.fragments.InformationFragment
+import com.jonathan.loginfuturo.view.fragments.ProfileFragment
 import com.jonathan.loginfuturo.view.fragments.RatesFragment
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -41,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun getPagerAdapter() : PagerAdapter {
         val pagerAdapter = PagerAdapter(supportFragmentManager)
-        pagerAdapter.addFragment(InformationFragment())
+        pagerAdapter.addFragment(ProfileFragment())
         pagerAdapter.addFragment(RatesFragment())
         pagerAdapter.addFragment(ContainerChatFragment())
         return pagerAdapter

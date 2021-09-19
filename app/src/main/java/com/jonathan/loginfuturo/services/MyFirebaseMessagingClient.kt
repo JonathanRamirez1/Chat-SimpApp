@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -34,7 +35,7 @@ class MyFirebaseMessagingClient: FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        val data = remoteMessage.data
+        val data: Map<String, String> = remoteMessage.data
         val title: String? = data["title"]
         val body: String? = data["body"]
         if (title != null) {
@@ -51,13 +52,13 @@ class MyFirebaseMessagingClient: FirebaseMessagingService() {
         val builder: NotificationCompat.Builder = notificationHelper.getNotification(title, body)
         val random = Random()
         val n: Int = random.nextInt(10000)
-        notificationHelper.getManager()!!.notify(n, builder.build())
+        notificationHelper.getManager().notify(n, builder.build())
     }
 
     private fun showNotificationMessage(data: Map<String, String>) {
         val imageEmisor = data["imageEmisor"].toString()
         val imageReceptor = data["imageReceptor"].toString()
-
+        Log.d("ENTRO", "NEW MESSAGE")
         getImageEmisor(data, imageEmisor, imageReceptor)
     }
 
@@ -85,17 +86,11 @@ class MyFirebaseMessagingClient: FirebaseMessagingService() {
             .load(imageReceptor)
             .into(object : Target {
                 override fun onBitmapLoaded(bitmapReceptor: Bitmap, from: LoadedFrom?) {
-                    if (bitmapEmisor != null) {
-                        notifyMessage(data, bitmapEmisor, bitmapReceptor)
-                    }
+                        notifyMessage(data, bitmapEmisor!!, bitmapReceptor)
                 }
-
                 override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-                    if (bitmapEmisor != null) {
-                        notifyMessage(data, bitmapEmisor, null)
-                    }
+                        notifyMessage(data, bitmapEmisor!!, null)
                 }
-
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
             })
     }
@@ -142,6 +137,6 @@ class MyFirebaseMessagingClient: FirebaseMessagingService() {
             bitmapEmisor,
             bitmapReceptor,
             action)
-        notificationHelper.getManager()!!.notify(idNotification, builder.build())
+        notificationHelper.getManager().notify(idNotification, builder.build())
     }
 }

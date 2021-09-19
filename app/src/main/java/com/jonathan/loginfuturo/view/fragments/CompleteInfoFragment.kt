@@ -110,31 +110,32 @@ class CompleteInfoFragment : Fragment() {
     private fun validateFields(view: View) {
         val username: String = binding.materialEditTextCompleteUsername.text.toString()
         val phone: String = binding.materialEditTextCompletePhone.text.toString()
+        val gender: String = binding.materialEditTextCompleteGender.text.toString()
 
-        if (isValidUsername(username) && isValidPhoneNumber(phone)) {
-            if (username.isNotEmpty() && phone.isNotEmpty()) {
+        if (username.isNotEmpty() && phone.isNotEmpty() && gender.isNotEmpty()) {
+            if (isValidUsername(username) && isValidPhoneNumber(phone)) {
                 /**SELECCIONO LAS DOS IMAGENES DE GALERIA**/
                 if (fileProfileGallery != null && fileCoverGallery != null) {
-                    saveUserInfo(username, phone, fileProfileGallery!!, fileCoverGallery!!, view)
+                    saveUserInfo(username, phone, gender, fileProfileGallery!!, fileCoverGallery!!, view)
                 }
                 /**TOMO LAS DOS FOTOS DE LA CAMARA**/
                 else if (fileProfileCamera != null && fileCoverCamera != null) {
-                    saveUserInfo(username, phone, fileProfileCamera!!, fileCoverCamera!!, view)
+                    saveUserInfo(username, phone, gender, fileProfileCamera!!, fileCoverCamera!!, view)
                 }
                 /**SELECCIONO UNA IMAGEN DE GALERIA Y LA OTRA LA TOMO DESDE LA CAMARA**/
                 else if (fileProfileGallery != null && fileCoverCamera != null) {
-                    saveUserInfo(username, phone, fileProfileGallery!!, fileCoverCamera!!, view)
+                    saveUserInfo(username, phone, gender, fileProfileGallery!!, fileCoverCamera!!, view)
                 }
                 /**TOMO UNA FOTO DE LA CAMARA Y LA OTRA LA SELECCIONO DESDE GALERIA**/
                 else if (fileProfileCamera != null && fileCoverGallery != null) {
-                    saveUserInfo(username, phone, fileProfileCamera!!, fileCoverGallery!!, view)
+                    saveUserInfo(username, phone, gender, fileProfileCamera!!, fileCoverGallery!!, view)
                 }
                 else {
                     Toast.makeText(context, "You need a cover photo and a profile photo to continue", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(context, "Fill in all the fields", Toast.LENGTH_SHORT).show()
             }
+        } else {
+            Toast.makeText(context, "Fill in all the fields", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -216,7 +217,7 @@ class CompleteInfoFragment : Fragment() {
         return cameraFile
     }
 
-    private fun saveUserInfo(username: String, phone: String, fileProfile: File, fileCover: File, view: View) {
+    private fun saveUserInfo(username: String, phone: String, gender: String, fileProfile: File, fileCover: File, view: View) {
         alertDialog.show()
         imageProvider.saveImageProfile(requireContext(), fileProfile)
             .addOnCompleteListener { taskProfile ->
@@ -234,6 +235,7 @@ class CompleteInfoFragment : Fragment() {
                                         userModel.setPhoto(profile)
                                         userModel.setUsername(username)
                                         userModel.setPhone(phone)
+                                        userModel.setGender(gender)
                                         userProvider.completeUserInfo(userModel).addOnCompleteListener { task ->
                                                 alertDialog.dismiss()
                                                 if (task.isSuccessful) {

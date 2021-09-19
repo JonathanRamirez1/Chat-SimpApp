@@ -35,6 +35,7 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
         complete["photo"] = userModel.getPhoto()
         complete["username"] = userModel.getUsername()
         complete["phone"] = userModel.getPhone()
+        complete["gender"] = userModel.getGender()
         return userCollection.document(userModel.getId()).update(complete)
     }
 

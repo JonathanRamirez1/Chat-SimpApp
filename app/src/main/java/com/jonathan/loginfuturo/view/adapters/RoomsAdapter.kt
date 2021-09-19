@@ -20,6 +20,7 @@ import com.jonathan.loginfuturo.providers.AuthProvider
 import com.jonathan.loginfuturo.providers.ChatProvider
 import com.jonathan.loginfuturo.providers.MessageProvider
 import com.jonathan.loginfuturo.providers.UserProvider
+import kotlinx.android.synthetic.main.item_rooms.view.*
 
 class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecyclerAdapter<ChatModel, RoomsAdapter.RoomsHolder>(options) {
 
@@ -27,6 +28,7 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
     private lateinit var userProvider: UserProvider
     private lateinit var authProvider: AuthProvider
     private lateinit var messageProvider: MessageProvider
+    private lateinit var chatProvider: ChatProvider
 
     private var bundle = Bundle()
     private var context: Context? = null
@@ -39,8 +41,8 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
         userProvider = UserProvider()
         authProvider = AuthProvider()
         messageProvider = MessageProvider()
+        chatProvider = ChatProvider()
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -53,14 +55,13 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
         val roomsId = document.id
 
         if (authProvider.getUid() == chatModel.getIdEmisor()) {
-            getUserInfo(chatModel.getIdReceptor(), roomsHolder) //TODO CONTINUAR EN CARPETA 7 ENTRE EL VIDEO 6 Y 10
+            getUserInfo(chatModel.getIdReceptor(), roomsHolder)
         } else {
             getUserInfo(chatModel.getIdEmisor(), roomsHolder)
         }
 
         roomsHolder.render(chatModel)
         roomsHolder.bindingAdapterPosition
-
 
         roomsHolder.binding.root.setOnClickListener { view ->
             navController = Navigation.findNavController(view)
@@ -79,7 +80,6 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
         getMessageNotRead(roomsId, idEmisor, roomsHolder)
     }
 
-    //TODO MIRAR LA CARPETA 6 DEL VIDEO 7: MIN 9:50
     private fun getUserInfo(idUser: String, roomsHolder: RoomsHolder) {
         userProvider.getUser(idUser).addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot!!.exists()) {
@@ -100,7 +100,7 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
 
     private fun getLastMessage(roomsId: String, roomsHolder: RoomsHolder) {
         roomsMessageSubscription = messageProvider.getLastMessage(roomsId)
-            .addSnapshotListener { querySnapshot, error ->
+            .addSnapshotListener { querySnapshot, _ ->
                 if (querySnapshot != null) {
                     val size: Int = querySnapshot.size()
                     if (size > 0) {
@@ -121,7 +121,7 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
 
     private fun getMessageNotRead(roomsId: String, idEmisor: String, roomsHolder: RoomsHolder) {
         roomsSubscription = messageProvider.getMessageByChatEmisor(roomsId, idEmisor)
-            .addSnapshotListener { querySnapshot, error ->
+            .addSnapshotListener { querySnapshot, _ ->
                 if (querySnapshot != null) {
                     val size: Int = querySnapshot.size()
                     if (size > 0) {

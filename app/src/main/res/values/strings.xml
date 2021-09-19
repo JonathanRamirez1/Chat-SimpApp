@@ -30,9 +30,11 @@
     <string name="navigation_bottom_chat">Chat</string>
 
     <!-- InfoFragment -->
-    <string name="info_label_messages">Total messages</string>
+    <string name="phone_number_profile">Phone Number</string>
+    <string name="gender_profile">Gender</string>
+    <string name="username_profile">Username</string>
+    <string name="email_profile">Email</string>
     <string name="info_no_name">Name is not available</string>
-
     <string name="options_menu_log_out">Log out</string>
 
     <string name="user_message">User Message</string>
@@ -58,6 +60,7 @@
     <string name="choose">Choose an option</string>
     <string name="gallery_image">Gallery image</string>
     <string name="camera_photo">Take photo</string>
+    <string name="gender">Gender</string>
 
     <!-- Chat -->
     <string name="online">Online</string>

@@ -26,6 +26,10 @@ class MessageProvider {
         return messageDataBaseReference.whereEqualTo("idChat", idChat).whereEqualTo("idEmisor", idEmisor).whereEqualTo("viewed", false)
     }
 
+     fun countMessage(idEmisor: String): Query {
+        return messageDataBaseReference.whereEqualTo("idEmisor", idEmisor)
+    }
+
     fun getLastThreeMessageByChatEmisor(idChat: String, idEmisor: String): Query {
         return messageDataBaseReference.whereEqualTo("idChat", idChat)
             .whereEqualTo("idEmisor", idEmisor)
@@ -49,4 +53,9 @@ class MessageProvider {
         viewed["viewed"] = state
         return  messageDataBaseReference.document(idDocument).update(viewed)
     }
+
+    fun getChat(id: String): DocumentReference {
+        return messageDataBaseReference.document(id)
+    }
+
 }

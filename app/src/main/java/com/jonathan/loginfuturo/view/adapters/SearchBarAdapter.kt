@@ -67,6 +67,8 @@ class SearchBarAdapter(options: FirestoreRecyclerOptions<UserModel>): FirestoreR
         }
     }
 
+
+
     private fun getUserInfo(idUser: String, searchBarHolder: SearchBarHolder) {
         userProvider.getUser(idUser).addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {

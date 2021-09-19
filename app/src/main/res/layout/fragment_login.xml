@@ -6,7 +6,7 @@
     <data>
         <variable
             name="LoginViewModel"
-            type="com.jonathan.loginfuturo.viewmodels.LoginViewModel" />
+            type="com.jonathan.loginfuturo.viewmodels.LoginViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,8 +79,8 @@
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/buttonLogInGoogle"
-            android:layout_width="176dp"
-            android:layout_height="53dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"

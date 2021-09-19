@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +27,7 @@ class SearchBarFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     private lateinit var binding: FragmentSearchBarBinding
     private lateinit var userProvider: UserProvider
     private lateinit var authProvider: AuthProvider
-    private lateinit var searchBarAdapter: SearchBarAdapter
+    private var searchBarAdapter: SearchBarAdapter? = null
 
     private var mSearchBarAdapter: SearchBarAdapter? = null
 
@@ -45,7 +46,9 @@ class SearchBarFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     }
 
     override fun onSearchStateChanged(enabled: Boolean) {
-        TODO("Not yet implemented")
+      if (!enabled) {
+          getAllEmail()
+      }
     }
 
     override fun onSearchConfirmed(text: CharSequence?) {
@@ -65,7 +68,6 @@ class SearchBarFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
         mSearchBarAdapter?.notifyDataSetChanged()
         binding.recyclerViewFindUser.adapter = mSearchBarAdapter
         mSearchBarAdapter?.startListening()
-
     }
 
     private fun getAllEmail() {
@@ -74,8 +76,9 @@ class SearchBarFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
             .setQuery(query, UserModel::class.java)
             .build()
         searchBarAdapter = SearchBarAdapter(options, context)
+        searchBarAdapter?.notifyDataSetChanged()
         binding.recyclerViewFindUser.adapter = searchBarAdapter
-        searchBarAdapter.startListening()
+        searchBarAdapter?.startListening()
     }
 
     override fun onStart() {
@@ -86,7 +89,9 @@ class SearchBarFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
 
     override fun onStop() {
         super.onStop()
-        searchBarAdapter.stopListening()
-        mSearchBarAdapter?.stopListening()
+            searchBarAdapter?.stopListening()
+        if (mSearchBarAdapter != null) {
+            mSearchBarAdapter?.stopListening()
+        }
     }
 }

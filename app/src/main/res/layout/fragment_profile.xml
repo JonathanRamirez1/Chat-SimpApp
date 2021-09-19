@@ -25,12 +25,12 @@
                 android:background="@color/colorPrimaryDark">
 
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:id="@+id/imageViewCover"
+                    android:layout_width="410dp"
                     android:layout_height="200dp"
                     android:src="@drawable/person"
                     android:scaleType="centerCrop"
-                    app:layout_collapseMode="parallax"
-                    android:transitionName="@string/search"/>
+                    app:layout_collapseMode="parallax"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/circleImageViewPhotoProfile"
@@ -47,50 +47,51 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_gravity="center|right"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="70dp"
                     android:gravity="center">
 
                     <TextView
+                        android:id="@+id/texViewPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3132424243"
                         android:textColor="@color/colorPrimaryText"
                         android:textStyle="bold"
-                        android:textSize="15dp" />
+                        android:textSize="15sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TELEFONO"
+                        android:text="@string/phone_number_profile"
                         android:textColor="@color/colorPrimaryText"
                         android:textStyle="bold"
-                        android:textSize="13dp" />
+                        android:textSize="13sp"/>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_gravity="center|left"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="70dp"
                     android:gravity="center">
 
                     <TextView
+                        android:id="@+id/textViewGender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
                         android:textColor="@color/colorPrimaryText"
                         android:textStyle="bold"
-                        android:textSize="15dp" />
+                        android:textSize="15sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="PUBLICACIONES"
+                        android:text="@string/gender_profile"
                         android:textColor="@color/colorPrimaryText"
                         android:textStyle="bold"
-                        android:textSize="13dp" />
+                        android:textSize="13sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -98,26 +99,27 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_gravity="bottom"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center">
 
                     <TextView
                         android:id="@+id/textViewUsernameProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="NOMBRE DEL PERFIL"
+                        android:text="@string/username_profile"
                         android:textColor="@color/colorPrimaryText"
                         android:textStyle="bold"
-                        android:textSize="20dp" />
+                        android:textSize="20sp"/>
 
                     <TextView
                         android:id="@+id/textViewEmailProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="correo@algo.com"
+                        android:text="@string/email_profile"
                         android:textColor="@color/colorPrimaryText"
                         android:textStyle="bold"
                         android:layout_marginTop="7dp"
-                        android:textSize="15dp" />
+                        android:textSize="15sp"/>
                 </LinearLayout>
 
             </FrameLayout>
@@ -126,31 +128,11 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="362dp"
+        android:layout_height="390dp"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimaryDark"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="No hay publicaciones"
-            android:textSize="18dp"
-            android:textStyle="italic" />
-
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingButtonGoChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_find_user" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -1,6 +1,7 @@
 package com.jonathan.loginfuturo.providers
 
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jonathan.loginfuturo.model.ChatModel
@@ -22,10 +23,5 @@ class ChatProvider {
         ids.add(idEmisor + idReceptor)
         ids.add(idReceptor + idEmisor)
         return chatCollectionReference.whereIn("id", ids)
-    }
-
-    //TODO SOLO ES PRUEBA DE LA CARPETA 6 DEL VIDEO 7: MIN 18:12
-    fun getComment(idUser: String): Query {
-        return chatCollectionReference.whereEqualTo("idUser", idUser)
     }
 }

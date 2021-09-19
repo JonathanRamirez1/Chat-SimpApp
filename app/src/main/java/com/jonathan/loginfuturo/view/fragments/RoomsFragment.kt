@@ -27,26 +27,12 @@ import kotlin.collections.ArrayList
 class RoomsFragment : Fragment() {
 
     private lateinit var binding: FragmentRoomsBinding
-    private  var roomsAdapter: RoomsAdapter? = null
     private lateinit var navController: NavController
     private lateinit var chatProvider: ChatProvider
     private lateinit var authProvider: AuthProvider
     private lateinit var userProvider: UserProvider
 
-
-    private val chatModelList: ArrayList<ChatModel> = ArrayList()
-    private var mAdapter: RoomsAdapter? = null
-    private var mRecyclerView: RecyclerView? = null
-    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private var bundle = Bundle()
-    private var mExtraIdUser: String = ""
-
-
-
-    private var userEmisor = String()
-    private var userReceptor = String()
-    private var idChat = String()
-    private var messageProvider = MessageProvider()
+    private  var roomsAdapter: RoomsAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rooms, container, false)
@@ -60,12 +46,7 @@ class RoomsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         checkCompleteInfo(view)
-        //setUpRecyclerViewRooms()
-        //getIdUsers()
-        //checkChatExist()
 
         val layoutManager = LinearLayoutManager(context)  //TODO PONER EN EL searchByEmail() Y getAllEmail() Y DESPUES PROBAR SI FUNCIONA
         binding.recyclerViewRooms.layoutManager = layoutManager
@@ -73,13 +54,7 @@ class RoomsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        ViewedMessageHelper.updateState(true, requireContext())
         getAllChatUser()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        ViewedMessageHelper.updateState(false, requireContext())
     }
 
     override fun onStop() {
@@ -103,7 +78,6 @@ class RoomsFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
         goCompleteFragment.setOnClickListener {
-            //setDataUsers()
 
             userProvider.getUser(id).addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {
@@ -111,7 +85,8 @@ class RoomsFragment : Fragment() {
                     val phone: String = documentSnapshot.getString("phone").toString()
                     val photo: String = documentSnapshot.getString("photo").toString()
                     val username: String = documentSnapshot.getString("username").toString()
-                    if (cover.isEmpty() && phone.isEmpty() && photo.isEmpty() && username.isEmpty()) {
+                    val gender: String = documentSnapshot.getString("gender").toString()
+                    if (cover.isEmpty() && phone.isEmpty() && photo.isEmpty() && username.isEmpty() && gender.isEmpty()) {
                         navController.navigate(R.id.completeInfoFragment)
                     } else {
                         navController.navigate(R.id.searchBarFragment)
@@ -120,6 +95,7 @@ class RoomsFragment : Fragment() {
             }
         }
     }
+
     private fun getAllChatUser() {
         val query: Query = chatProvider.getAll(authProvider.getUid())
         val options = FirestoreRecyclerOptions.Builder<ChatModel>()

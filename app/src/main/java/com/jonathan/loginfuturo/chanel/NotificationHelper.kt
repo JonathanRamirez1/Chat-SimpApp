@@ -20,12 +20,12 @@ import java.util.*
 class NotificationHelper(context: Context?) : ContextWrapper(context) {
 
     private var notificationManager: NotificationManager? = null
-        get() {
-            if (field == null) {
-                field = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            }
-            return field
+
+    init {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannels()
         }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun createChannels() {
@@ -38,14 +38,14 @@ class NotificationHelper(context: Context?) : ContextWrapper(context) {
         notificationChannel.enableVibration(true)
         notificationChannel.lightColor = Color.GRAY
         notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-        notificationManager!!.createNotificationChannel(notificationChannel)
+        getManager().createNotificationChannel(notificationChannel)
     }
 
-    fun getManager(): NotificationManager? {
+    fun getManager(): NotificationManager {
         if (notificationManager == null) {
             notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         }
-        return notificationManager
+        return notificationManager as NotificationManager
     }
 
     fun getNotification(title: String?, body: String?): NotificationCompat.Builder {
@@ -67,29 +67,29 @@ class NotificationHelper(context: Context?) : ContextWrapper(context) {
                                action: NotificationCompat.Action
     ): NotificationCompat.Builder {
         var person1: Person? = null
-        if (bitmapReceptor == null) {
-            person1 = Person.Builder()
+        person1 = if (bitmapReceptor == null) {
+            Person.Builder()
                 .setName(usernameReceptor)
                 .setIcon(IconCompat.createWithResource(applicationContext, R.drawable.person))
                 .build()
         } else {
-            person1 = Person.Builder()
+            Person.Builder()
                 .setName(usernameReceptor)
                 .setIcon(IconCompat.createWithBitmap(bitmapReceptor))
                 .build()
         }
 
         var person2: Person? = null
-         if (bitmapEmisor == null) {
-            person2 = Person.Builder()
+        person2 = if (bitmapEmisor == null) {
+            Person.Builder()
                 .setName(usernameEmisor)
                 .setIcon(IconCompat.createWithResource(applicationContext, R.drawable.person))
                 .build()
         } else {
-             person2 = Person.Builder()
-                 .setName(usernameEmisor)
-                 .setIcon(IconCompat.createWithBitmap(bitmapEmisor))
-                 .build()
+            Person.Builder()
+                .setName(usernameEmisor)
+                .setIcon(IconCompat.createWithBitmap(bitmapEmisor))
+                .build()
         }
 
         val messagingStyle: NotificationCompat.MessagingStyle = NotificationCompat.MessagingStyle(person1)
@@ -116,11 +116,5 @@ class NotificationHelper(context: Context?) : ContextWrapper(context) {
     companion object {
         private const val CHANNEL_ID = "com.jonathan.loginfuturo"
         private const val CHANNEL_NAME = "LoginFuturo"
-    }
-
-    init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannels()
-        }
     }
 }
