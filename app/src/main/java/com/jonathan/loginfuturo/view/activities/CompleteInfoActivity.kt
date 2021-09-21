@@ -1,37 +1,35 @@
-package com.jonathan.loginfuturo.view.fragments
+package com.jonathan.loginfuturo.view.activities
 
-import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.util.FileUtil
 import com.jonathan.loginfuturo.*
 import com.jonathan.loginfuturo.Utils.ConvertUriToFile
-import com.jonathan.loginfuturo.databinding.FragmentCompleteInfoBinding
+import com.jonathan.loginfuturo.Utils.ConvertUriToFile.from
 import com.jonathan.loginfuturo.model.UserModel
 import com.jonathan.loginfuturo.providers.AuthProvider
 import com.jonathan.loginfuturo.providers.ImageProvider
 import com.jonathan.loginfuturo.providers.UserProvider
 import com.squareup.picasso.Picasso
 import dmax.dialog.SpotsDialog
+import kotlinx.android.synthetic.main.activity_complete_info.*
 import java.io.File
 import java.util.*
 
-class CompleteInfoFragment : Fragment() {
+class CompleteInfoActivity : AppCompatActivity() {
 
-    private lateinit var binding: FragmentCompleteInfoBinding
-    private lateinit var navController: NavController
     private lateinit var userModel: UserModel
     private lateinit var userProvider: UserProvider
     private lateinit var authProvider: AuthProvider
@@ -52,102 +50,115 @@ class CompleteInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_complete_info)
+
+        /** Toolbar **/
+        setSupportActionBar(findViewById(R.id.toolbarView))
+
         userModel = UserModel()
         userProvider = UserProvider()
         authProvider = AuthProvider()
         imageProvider = ImageProvider()
+
         setUpAlertDialog()
         setUpAlerDialogBuilder()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_complete_info, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         validFields()
-        launchFindUserFragment(view)
+        launchFindUserActivity()
         changeCoverPhoto()
         changeProfilePhoto()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.general_options_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menuLogOut -> {
+                FirebaseAuth.getInstance().signOut()
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun setUpAlertDialog() {
         alertDialog = SpotsDialog.Builder()
-            .setContext(context)
+            .setContext(this)
             .setTheme(R.style.Custom)
             .setCancelable(false)
             .build()
     }
 
     private fun setUpAlerDialogBuilder() {
-        alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(getString(R.string.choose))
         options = arrayOf(getString(R.string.gallery_image), getString(R.string.camera_photo))
     }
 
     private fun validFields() {
 
-        binding.materialEditTextCompleteUsername.validate { username ->
+        materialEditTextCompleteUsername.validate { username ->
             if (isValidUsername(username)) {
-                binding.materialEditTextCompleteUsername.error = null
+                materialEditTextCompleteUsername.error = null
             } else {
-                binding.materialEditTextCompleteUsername.error = getString(R.string.username_is_no_valid)
+                materialEditTextCompleteUsername.error = getString(R.string.username_is_no_valid)
             }
         }
 
-        binding.materialEditTextCompletePhone.validate { phone ->
+        materialEditTextCompletePhone.validate { phone ->
             if (isValidPhoneNumber(phone)) {
-                binding.materialEditTextCompletePhone.error = null
+                materialEditTextCompletePhone.error = null
             } else {
-                binding.materialEditTextCompletePhone.error = getString(R.string.phone_number_is_no_valid)
+                materialEditTextCompletePhone.error = getString(R.string.phone_number_is_no_valid)
             }
         }
     }
 
-    private fun validateFields(view: View) {
-        val username: String = binding.materialEditTextCompleteUsername.text.toString()
-        val phone: String = binding.materialEditTextCompletePhone.text.toString()
-        val gender: String = binding.materialEditTextCompleteGender.text.toString()
+    private fun validateFields() {
+        val username: String = materialEditTextCompleteUsername.text.toString()
+        val phone: String = materialEditTextCompletePhone.text.toString()
+        val gender: String = materialEditTextCompleteGender.text.toString()
 
         if (username.isNotEmpty() && phone.isNotEmpty() && gender.isNotEmpty()) {
             if (isValidUsername(username) && isValidPhoneNumber(phone)) {
                 /**SELECCIONO LAS DOS IMAGENES DE GALERIA**/
                 if (fileProfileGallery != null && fileCoverGallery != null) {
-                    saveUserInfo(username, phone, gender, fileProfileGallery!!, fileCoverGallery!!, view)
+                    saveUserInfo(username, phone, gender, fileProfileGallery!!, fileCoverGallery!!)
                 }
                 /**TOMO LAS DOS FOTOS DE LA CAMARA**/
                 else if (fileProfileCamera != null && fileCoverCamera != null) {
-                    saveUserInfo(username, phone, gender, fileProfileCamera!!, fileCoverCamera!!, view)
+                    saveUserInfo(username, phone, gender, fileProfileCamera!!, fileCoverCamera!!)
                 }
                 /**SELECCIONO UNA IMAGEN DE GALERIA Y LA OTRA LA TOMO DESDE LA CAMARA**/
                 else if (fileProfileGallery != null && fileCoverCamera != null) {
-                    saveUserInfo(username, phone, gender, fileProfileGallery!!, fileCoverCamera!!, view)
+                    saveUserInfo(username, phone, gender, fileProfileGallery!!, fileCoverCamera!!)
                 }
                 /**TOMO UNA FOTO DE LA CAMARA Y LA OTRA LA SELECCIONO DESDE GALERIA**/
                 else if (fileProfileCamera != null && fileCoverGallery != null) {
-                    saveUserInfo(username, phone, gender, fileProfileCamera!!, fileCoverGallery!!, view)
+                    saveUserInfo(username, phone, gender, fileProfileCamera!!, fileCoverGallery!!)
                 }
                 else {
-                    Toast.makeText(context, "You need a cover photo and a profile photo to continue", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "You need a cover photo and a profile photo to continue", Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
-            Toast.makeText(context, "Fill in all the fields", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Fill in all the fields", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun launchFindUserFragment(view: View) {
-        val goFindUser = binding.buttonCompleteOk
+    private fun launchFindUserActivity() {
+        val goFindUser = buttonCompleteOk
         goFindUser.setOnClickListener {
-            validateFields(view)
+            validateFields()
         }
     }
 
     private fun changeProfilePhoto() {
-        val gallery = binding.buttonCompletePhoto
+        val gallery = buttonCompletePhoto
 
         gallery.setOnClickListener {
             selectOptionsImage(1)
@@ -155,7 +166,7 @@ class CompleteInfoFragment : Fragment() {
     }
 
     private fun changeCoverPhoto() {
-        val gallery = binding.buttonCompleteCover
+        val gallery = buttonCompleteCover
 
         gallery.setOnClickListener {
             selectOptionsImage(2)
@@ -163,37 +174,37 @@ class CompleteInfoFragment : Fragment() {
     }
 
     private fun selectOptionsImage(numberImage: Int) {
-        alertDialogBuilder.setItems(options, DialogInterface.OnClickListener { dialogInterface, i ->
+        alertDialogBuilder.setItems(options) { _, i ->
             if (i == 0) {
                 if (numberImage == 1) {
                     openGallery(Constants.REQUEST_CODE_GALLERY_PROFILE_PHOTO)
-                } else if(numberImage == 2) {
+                } else if (numberImage == 2) {
                     openGallery(Constants.REQUEST_CODE_GALLERY_COVER_PHOTO)
                 }
-            } else if(i == 1) {
+            } else if (i == 1) {
                 if (numberImage == 1) {
                     openCamera(Constants.REQUEST_CODE_PROFILE_CAMERA)
-                } else if(numberImage == 2) {
+                } else if (numberImage == 2) {
                     openCamera(Constants.REQUEST_CODE_COVER_CAMERA)
                 }
             }
-        })
+        }
         alertDialogBuilder.show()
     }
 
     private fun openCamera(requestCode: Int) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (activity?.let { intent.resolveActivity(it.packageManager) } != null) {
+        if (intent.resolveActivity(packageManager) != null) {
             var cameraFile: File? = null
             try {
                 cameraFile = createPhotoFile(requestCode)
 
             } catch (e: Exception) {
-                Toast.makeText(context, "Hubo un error en el archivo" + e.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Hubo un error en el archivo" + e.message, Toast.LENGTH_LONG).show()
 
             }
             if (cameraFile != null) {
-                val photoUri = FileProvider.getUriForFile(requireContext(),"com.jonathan.loginfuturo", cameraFile)
+                val photoUri = FileProvider.getUriForFile(this,"com.jonathan.loginfuturo", cameraFile)
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 startActivityForResult(intent, requestCode)
             }
@@ -201,7 +212,7 @@ class CompleteInfoFragment : Fragment() {
     }
 
     private fun createPhotoFile(requestCode: Int): File? {
-        val storageDir: File? = activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val cameraFile = File.createTempFile(
             Date().toString() + "_photo",
             ".jpg",
@@ -217,14 +228,14 @@ class CompleteInfoFragment : Fragment() {
         return cameraFile
     }
 
-    private fun saveUserInfo(username: String, phone: String, gender: String, fileProfile: File, fileCover: File, view: View) {
+    private fun saveUserInfo(username: String, phone: String, gender: String, fileProfile: File, fileCover: File) {
         alertDialog.show()
-        imageProvider.saveImageProfile(requireContext(), fileProfile)
+        imageProvider.saveImageProfile(this, fileProfile)
             .addOnCompleteListener { taskProfile ->
                 if (taskProfile.isSuccessful) {
                     imageProvider.getStorage().downloadUrl.addOnSuccessListener { uriProfile ->
                         val profile: String = uriProfile.toString()
-                        imageProvider.saveImageProfile(requireContext(), fileCover)
+                        imageProvider.saveImageProfile(this, fileCover)
                             .addOnCompleteListener { taskCover ->
                                 if (taskCover.isSuccessful) {
                                     imageProvider.getStorage().downloadUrl.addOnSuccessListener { uriCover ->
@@ -237,24 +248,25 @@ class CompleteInfoFragment : Fragment() {
                                         userModel.setPhone(phone)
                                         userModel.setGender(gender)
                                         userProvider.completeUserInfo(userModel).addOnCompleteListener { task ->
-                                                alertDialog.dismiss()
-                                                if (task.isSuccessful) {
-                                                    navController = Navigation.findNavController(view)
-                                                    navController.navigate(R.id.searchBarFragment)
-                                                } else {
-                                                    Toast.makeText(context, "Data could not be saved", Toast.LENGTH_SHORT).show()
-                                                }
+                                            alertDialog.dismiss()
+                                            if (task.isSuccessful) {
+                                                val intent = Intent(this, FindUserActivity::class.java)
+                                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                startActivity(intent)
+                                            } else {
+                                                Toast.makeText(this, "Data could not be saved", Toast.LENGTH_SHORT).show()
                                             }
+                                        }
                                     }
                                 } else {
                                     alertDialog.dismiss()
-                                    Toast.makeText(context, "Cover photo failed", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "Cover photo failed", Toast.LENGTH_SHORT).show()
                                 }
                             }
                     }
                 } else {
                     alertDialog.dismiss()
-                    Toast.makeText(context, "There was an error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "There was an error", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -271,34 +283,34 @@ class CompleteInfoFragment : Fragment() {
         if(requestCode == Constants.REQUEST_CODE_GALLERY_PROFILE_PHOTO && resultCode == RESULT_OK) {
             try {
                 fileProfileCamera = null
-                fileProfileGallery = context?.let { data?.data?.let { it1 -> ConvertUriToFile.from(it, it1) } }
-                binding.circleCompletePhoto.setImageBitmap(BitmapFactory.decodeFile(fileProfileGallery?.absolutePath))
+                fileProfileGallery = data?.data?.let { from(this, it) }
+                circleCompletePhoto.setImageBitmap(BitmapFactory.decodeFile(fileProfileGallery?.absolutePath))
 
             } catch (e: Exception) {
                 Log.d("ERROR", "There was an error" +e.message)
-                Toast.makeText(context, "There was an error" +e.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "There was an error" +e.message, Toast.LENGTH_LONG).show()
             }
         }
         if(requestCode == Constants.REQUEST_CODE_GALLERY_COVER_PHOTO && resultCode == RESULT_OK) {
             try {
                 fileCoverCamera = null
-                fileCoverGallery = context?.let { data?.data?.let { it1 -> ConvertUriToFile.from(it, it1) } }
-                binding.imageViewCompleteCover.setImageBitmap(BitmapFactory.decodeFile(fileCoverGallery?.absolutePath))
+                fileCoverGallery =  data?.data?.let { from(this, it) }
+                imageViewCompleteCover.setImageBitmap(BitmapFactory.decodeFile(fileCoverGallery?.absolutePath))
 
             } catch (e: Exception) {
                 Log.d("ERROR", "There was an error" +e.message)
-                Toast.makeText(context, "There was an error" +e.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "There was an error" +e.message, Toast.LENGTH_LONG).show()
             }
         }
         if (requestCode == Constants.REQUEST_CODE_PROFILE_CAMERA && resultCode == RESULT_OK) {
             fileProfileGallery = null
             fileProfileCamera = File(absoluteProfilePhotoGalleryPath)
-            Picasso.get().load(profilePhotoGalleryPath).into(binding.circleCompletePhoto)
+            Picasso.get().load(profilePhotoGalleryPath).into(circleCompletePhoto)
         }
         if (requestCode == Constants.REQUEST_CODE_COVER_CAMERA && resultCode == RESULT_OK) {
             fileCoverGallery = null
             fileCoverCamera = File(absoluteCoverPhotoCameraPath)
-            Picasso.get().load(coverPhotoCameraPath).into(binding.imageViewCompleteCover)
+            Picasso.get().load(coverPhotoCameraPath).into(imageViewCompleteCover)
         }
     }
 }

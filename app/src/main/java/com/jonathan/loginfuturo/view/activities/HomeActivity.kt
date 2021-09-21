@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.R
@@ -106,12 +107,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun createToken() {
-        tokenProvider.create(authProvider.getUid()) //TODO CONSIDERAR SI SE CAMBIA AL HomeActivity
+        tokenProvider.create(authProvider.getUid())
     }
 
     override fun onStart() {
         super.onStart()
-        ViewedMessageHelper.updateState(true, this)  //TODO CONTINUAR 7 17
+        ViewedMessageHelper.updateState(true, this)
+        bottomNavigation.visibility = View.VISIBLE
     }
 
     override fun onPause() {
@@ -119,7 +121,3 @@ class HomeActivity : AppCompatActivity() {
         ViewedMessageHelper.updateState(false, this)
     }
 }
-
-   /* override fun onStop() {
-        super.onStop()
-        ViewedMessageHelper.updateOnline(false, this)*/

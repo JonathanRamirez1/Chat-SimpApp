@@ -1,108 +1,93 @@
 package com.jonathan.loginfuturo.view.adapters
 
-import android.app.Application
-import android.content.Intent
-import android.content.Intent.getIntent
-import android.content.Intent.getIntentOld
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.jonathan.loginfuturo.R
-import com.jonathan.loginfuturo.UserInformation
 import com.jonathan.loginfuturo.Utils.CircleTransform
 import com.jonathan.loginfuturo.databinding.ItemFindUserBinding
+import com.jonathan.loginfuturo.model.UserModel
 import com.jonathan.loginfuturo.providers.AuthProvider
+import com.jonathan.loginfuturo.providers.UserProvider
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_find_user.view.*
-import java.util.*
-import kotlin.collections.ArrayList
 
+class FindUserAdapter(options: FirestoreRecyclerOptions<UserModel>): FirestoreRecyclerAdapter<UserModel, FindUserAdapter.SearchBarHolder>(options) {
 
-class FindUserAdapter(private var findUser: List<UserInformation>, private var findUserFull: List<UserInformation>): RecyclerView.Adapter<FindUserAdapter.FindUserHolder>(), Filterable {
-
-    private lateinit var binding: ItemFindUserBinding
+    private lateinit var userProvider: UserProvider
     private lateinit var navController: NavController
+    private lateinit var authProvider: AuthProvider
 
-    private val firebaseAuth = AuthProvider()
-    private val mExtraidUser = getIntent("").getStringExtra("idUser")
+    private var context: Context? = null
+    private var bundle = Bundle()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FindUserHolder {
+    constructor(options: FirestoreRecyclerOptions<UserModel>, context: Context?) : this(options) {
+        super.updateOptions(options)
+        this.context = context
+        userProvider = UserProvider()
+        authProvider = AuthProvider()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FindUserAdapter.SearchBarHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        binding = ItemFindUserBinding.inflate(layoutInflater, parent, false)
-           launchChatFragment(parent)
-
-        return FindUserHolder(binding.root)
+        val binding = ItemFindUserBinding.inflate(layoutInflater, parent, false)
+        return SearchBarHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: FindUserHolder, position: Int) {
-       return holder.bind(findUser[position])
-    }
+    override fun onBindViewHolder(searchBarHolder: SearchBarHolder, position: Int, userModel: UserModel) {
+        val document = snapshots.getSnapshot(position)
+        val mExtraIdUser: String = document.getString("id").toString()
 
-    override fun getItemCount(): Int {
-        return findUser.size
-    }
+        if (authProvider.getUid() == mExtraIdUser) {
+            searchBarHolder.itemView.visibility = View.GONE
+            searchBarHolder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+        }
 
-    inner class FindUserHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(userInformation: UserInformation) = with(itemView) {
-            textViewEmailUser.text = userInformation.email
-            if (userInformation.photo.isEmpty()) {
-                Picasso.get()
-                    .load(R.drawable.person).resize(100, 100)
-                    .centerCrop()
-                    .transform(CircleTransform())
-                    .into(imageViewPhoto)
-            } else {
-                Picasso.get()
-                    .load(userInformation.photo).resize(100, 100)
-                    .centerCrop()
-                    .transform(CircleTransform())
-                    .into(imageViewPhoto)
-            }
+        getUserInfo(mExtraIdUser, searchBarHolder)
+        searchBarHolder.render(userModel)
+        searchBarHolder.bindingAdapterPosition
+
+        searchBarHolder.binding.root.setOnClickListener { view ->
+            navController = Navigation.findNavController(view)
+            bundle.putString("idEmisor", authProvider.getUid())
+            bundle.putString("idReceptor", mExtraIdUser)
+            navController.navigate(R.id.chatFragment2, bundle)
         }
     }
 
-    private fun launchChatFragment(itemView: View) {
-        val goToChat = binding.root
-        val bundle = Bundle()
-        navController = Navigation.findNavController(itemView)
-        goToChat.setOnClickListener {
-          /*  bundle.putString("idEmisor", firebaseAuth.getUid())
-            bundle.putString("idReceptor", mExtraidUser)*/
-            navController.navigate(R.id.chatFragment)
-        }
-    }
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val filteredList: MutableList<UserInformation> = ArrayList()
-                if (constraint == null || constraint.isEmpty()) {
-                    filteredList.addAll(findUserFull)
-                } else {
-                    val filterPattern = constraint.toString().toLowerCase(Locale.ROOT).trim()
-                    for (item in findUser) {
-                        if (item.toString().toLowerCase(Locale.ROOT).contains(filterPattern)) {
-                            filteredList.add(item)
-                        }
+    private fun getUserInfo(idUser: String, searchBarHolder: SearchBarHolder) {
+        userProvider.getUser(idUser).addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                if (documentSnapshot.contains("email")) {
+                    val username: String = documentSnapshot.getString("username").toString()
+                    searchBarHolder.binding.textViewUsernameFind.text = username
+                }
+                if (documentSnapshot.contains("email")) {
+                    val email: String = documentSnapshot.getString("email").toString()
+                    searchBarHolder.binding.textViewEmailFind.text = email
+                }
+                if (documentSnapshot.contains("photo")) {
+                    val photo: String = documentSnapshot.getString("photo").toString()
+                    if (photo.isNotEmpty()) {
+                        Picasso.get().load(photo).resize(100, 100)
+                            .centerCrop().transform(CircleTransform())
+                            .into(searchBarHolder.binding.imageViewPhoto)
                     }
                 }
-                val filterResult = FilterResults()
-                filterResult.values = filteredList
-                return filterResult
             }
+        }
+    }
 
-            override fun publishResults(constraint: CharSequence?, results: FilterResults) {
-                  //  (findUser as ArrayList<UserInformation>).clear()
-                   // (findUser as ArrayList<UserInformation>).addAll(results.values as ArrayList<UserInformation>)
-                findUser = results.values as ArrayList<UserInformation>
-                    notifyDataSetChanged()
-            }
+    inner class SearchBarHolder(val binding: ItemFindUserBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun render(userModel: UserModel) {
+            binding.textViewEmailFind.text = userModel.getEmail()
         }
     }
 }

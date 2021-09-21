@@ -37,18 +37,10 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/action_loginFragment_to_futuroFragment"
-            app:destination="@id/futuroFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.jonathan.loginfuturo.view.fragments.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password" />
-    <fragment
-        android:id="@+id/futuroFragment"
-        android:name="com.jonathan.loginfuturo.view.fragments.FuturoFragment"
-        android:label="fragment_futuro"
-        tools:layout="@layout/fragment_futuro" />
 </navigation>

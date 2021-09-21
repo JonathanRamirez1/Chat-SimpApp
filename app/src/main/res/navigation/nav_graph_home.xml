@@ -17,78 +17,10 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
-        <action
-            android:id="@+id/action_roomsFragment_to_findUserFragment"
-            app:destination="@id/findUserFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
-        <action
-            android:id="@+id/action_roomsFragment_to_completeInfoFragment"
-            app:destination="@id/completeInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.jonathan.loginfuturo.view.fragments.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat">
-        <action
-            android:id="@+id/action_chatFragment_to_roomsFragment"
-            app:destination="@id/roomsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
-    </fragment>
-    <fragment
-        android:id="@+id/findUserFragment"
-        android:name="com.jonathan.loginfuturo.view.fragments.FindUserFragment"
-        android:label="fragment_find_user"
-        tools:layout="@layout/fragment_find_user">
-        <action
-            android:id="@+id/action_findUserFragment_to_roomsFragment"
-            app:destination="@id/roomsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
-        <action
-            android:id="@+id/action_findUserFragment_to_chatFragment"
-            app:destination="@id/chatFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
-    </fragment>
-    <fragment
-        android:id="@+id/searchBarFragment"
-        android:name="com.jonathan.loginfuturo.view.fragments.SearchBarFragment"
-        android:label="SearchBarFragment" >
-        <action
-            android:id="@+id/action_searchBarFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
-        <action
-            android:id="@+id/action_searchBarFragment_to_roomsFragment"
-            app:destination="@id/roomsFragment" />
-        <action
-            android:id="@+id/action_searchBarFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/completeInfoFragment"
-        android:name="com.jonathan.loginfuturo.view.fragments.CompleteInfoFragment"
-        android:label="CompleteInfoFragment" >
-        <action
-            android:id="@+id/action_completeInfoFragment_to_searchBarFragment"
-            app:destination="@id/searchBarFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.jonathan.loginfuturo.view.fragments.ProfileFragment"
-        android:label="ProfileFragment" >
-        <action
-            android:id="@+id/action_profileFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_chat"/>
 </navigation>

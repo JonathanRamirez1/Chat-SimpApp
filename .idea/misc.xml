@@ -16,10 +16,12 @@
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/drawable/circular_count_message_view.xml" value="0.2890625" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/drawable/editext_rounded.xml" value="0.2890625" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/drawable/edittext_chat.xml" value="0.2890625" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/drawable/ic_back_rooms.xml" value="0.2890625" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/drawable/rounded_linear_layout.xml" value="0.2846153846153846" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/drawable/rounded_linear_layout_grey.xml" value="0.2846153846153846" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/activity_complete_info.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/activity_container_chat.xml" value="0.254981884057971" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/activity_find_user.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/activity_home.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/activity_login.xml" value="0.1480978260869565" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/card_view_message.xml" value="0.33" />
@@ -35,6 +37,7 @@
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_edit_profile.xml" value="0.22" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_find_user.xml" value="0.18" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_forgot_password.xml" value="0.21965579710144928" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_futuro.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_group_chat.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_information.xml" value="0.15052083333333333" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_login.xml" value="0.21965579710144928" />
@@ -42,9 +45,10 @@
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_rates.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_rates_item.xml" value="0.16077898550724637" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_register.xml" value="0.21965579710144928" />
-        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_rooms.xml" value="0.21965579710144928" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_rooms.xml" value="0.19" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/fragment_search_bar.xml" value="0.22" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/item_find_user.xml" value="0.25" />
+        <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/item_rates.xml" value="0.25" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/item_rooms.xml" value="0.22" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/layout/toolbar.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Administrator/Desktop/LoginFuturoCopia/app/src/main/res/menu/general_options_menu.xml" value="0.27291666666666664" />

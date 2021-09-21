@@ -4,44 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".view.fragments.FindUserFragment">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarFindUser"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:layout_height="match_parent">
 
-        <SearchView
-            android:id="@+id/searchViewFindUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:queryHint="@string/search"
-            android:layout_gravity="end"
-            app:iconifiedByDefault="false"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        tools:context=".view.fragments.FindUserFragment">
 
         <Button
-            android:id="@+id/buttonBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
+            android:id="@+id/buttonBackRooms"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="7dp"
             android:drawableStart="@drawable/ic_back_rooms"
             android:background="@color/colorPrimary"/>
 
-    </androidx.appcompat.widget.Toolbar>
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/searchBar"
+            style="@style/MaterialSearchBarLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mt_backIconTint="@color/colortTextBlack"
+            app:mt_clearIconTint="@color/colortTextBlack"
+            app:mt_hint="Search text"
+            app:mt_hintColor="@color/colortTextBlack"
+            app:mt_textColor="@color/colortTextBlack"
+            app:mt_leftTextSelectorTint="@color/colortTextBlack"
+            app:mt_maxSuggestionsCount="10"
+            app:mt_placeholder="Search by email..."
+            app:mt_placeholderColor="@color/colortTextBlack"
+            app:mt_searchBarColor="@color/colorPrimary"
+            app:mt_searchIconTint="@color/colortTextBlack">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewFindUser"
+        </com.mancj.materialsearchbar.MaterialSearchBar>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:orientation="vertical"
+        android:layout_marginTop="48dp"
+        android:background="@color/colorAccentDark">
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFindUser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+
+    </LinearLayout>
+    </FrameLayout>
 </layout>

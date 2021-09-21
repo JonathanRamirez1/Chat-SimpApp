@@ -93,7 +93,7 @@
             android:id="@+id/buttonSignUpLogin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/login__button_xl_height"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/button_ripple_create_account"
             android:text="@string/login_create_account"
             android:textColor="@color/colorSecondaryText"

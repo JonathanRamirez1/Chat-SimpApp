@@ -20,7 +20,6 @@ import com.jonathan.loginfuturo.providers.AuthProvider
 import com.jonathan.loginfuturo.providers.ChatProvider
 import com.jonathan.loginfuturo.providers.MessageProvider
 import com.jonathan.loginfuturo.providers.UserProvider
-import kotlinx.android.synthetic.main.item_rooms.view.*
 
 class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecyclerAdapter<ChatModel, RoomsAdapter.RoomsHolder>(options) {
 
@@ -70,12 +69,13 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
             bundle.putString("idReceptor", chatModel.getIdReceptor())
             navController.navigate(R.id.chatFragment, bundle)
         }
+
         getLastMessage(roomsId, roomsHolder)
         var idEmisor = ""
-        if (authProvider.getUid() == chatModel.getIdEmisor()) {
-            idEmisor = chatModel.getIdReceptor()
+        idEmisor = if (authProvider.getUid() == chatModel.getIdEmisor()) {
+            chatModel.getIdReceptor()
         } else {
-            idEmisor = chatModel.getIdEmisor()
+            chatModel.getIdEmisor()
         }
         getMessageNotRead(roomsId, idEmisor, roomsHolder)
     }
@@ -90,7 +90,7 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
                 if (documentSnapshot.contains("photo")) {
                     val photo: String = documentSnapshot.getString("photo").toString()
                     if (photo.isNotEmpty()) {
-                        Picasso.get().load(photo).resize(100, 100)
+                        Picasso.get().load(photo).resize(50, 50)
                             .centerCrop().transform(CircleTransform()).into(roomsHolder.binding.imageViewPhoto)
                     }
                 }

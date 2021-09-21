@@ -62,6 +62,10 @@ dependencies {
     //Google Sign In
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
+    //Facebook Sign In
+    implementation 'com.facebook.android:facebook-login:5.15.0'
+    implementation 'com.facebook.android:facebook-android-sdk:5.15.0'
+
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 

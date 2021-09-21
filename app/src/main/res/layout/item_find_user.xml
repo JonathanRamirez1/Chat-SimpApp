@@ -8,46 +8,47 @@
         android:id="@+id/linearLayoutFindUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/imageViewPhoto"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/person"/>
+
+        <LinearLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="116dp">
-
-            <ImageView
-                android:id="@+id/imageViewPhoto"
-                android:layout_width="75dp"
-                android:layout_height="68dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:src="@drawable/person"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewEmailUser"
+                android:id="@+id/textViewUsernameFind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:text="User Email"
-                app:layout_constraintStart_toEndOf="@+id/imageViewPhoto"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:hint="Username"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textViewEmailFind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Email"/>
 
-        <View
-            android:id="@+id/viewSeparatorFindUser"
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:background="@color/colorDivider"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            tools:layout_editor_absoluteX="16dp" />
+            <View
+                android:id="@+id/viewSeparatorFindUser"
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorDivider"/>
 
+        </LinearLayout>
     </LinearLayout>
 </layout>

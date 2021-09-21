@@ -8,14 +8,14 @@ import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.model.Rate
 import com.jonathan.loginfuturo.Utils.CircleTransform
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_rates_item.view.*
+import kotlinx.android.synthetic.main.item_rates.view.*
 import java.text.SimpleDateFormat
 
 class RatesAdapter(private  val items : List<Rate>) : RecyclerView.Adapter<RatesAdapter.RatesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) :  RatesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return RatesViewHolder(layoutInflater.inflate(R.layout.fragment_rates_item, parent, false))
+        return RatesViewHolder(layoutInflater.inflate(R.layout.item_rates, parent, false))
     }
 
     override fun getItemCount(): Int {

@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jonathan.loginfuturo">
 
-    <uses-feature android:name="android.hardware.camera2"
-        android:required="false"/>
-    
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:allowBackup="true"
@@ -16,31 +17,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".view.activities.CompleteInfoActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.activities.FindUserActivity"
+            android:exported="true" />
+
         <provider
-            android:authorities="com.jonathan.loginfuturo"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.jonathan.loginfuturo"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
-        <activity android:name=".view.activities.HomeActivity"/>
-        <activity android:name=".view.activities.MainActivity"/>
+
+        <activity
+            android:name=".view.activities.HomeActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".view.activities.MainActivity" />
         <activity
             android:name=".view.activities.MainEmptyActivity"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".view.activities.LoginActivity"
             android:theme="@style/NoPreview"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
 
         <service
             android:name=".services.MyFirebaseMessagingClient"
@@ -54,9 +65,10 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <receiver android:name=".receivers.MessageReceiver"
+        <receiver
+            android:name=".receivers.MessageReceiver"
             android:enabled="true"
-            android:exported="false"/>
-
+            android:exported="false" />
     </application>
+
 </manifest>

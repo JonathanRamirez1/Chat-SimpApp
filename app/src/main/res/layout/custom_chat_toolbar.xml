@@ -9,10 +9,10 @@
         android:id="@+id/buttonBackRooms"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
-        android:drawableStart="@drawable/ic_back_rooms"
-        android:background="@color/colorPrimaryDark"/>
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:drawableStart="@drawable/ic_back_rooms"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewChat"
@@ -44,7 +44,6 @@
         android:text="Hace un momento"
         android:textSize="12sp"
         android:layout_toEndOf="@+id/circleImageViewChat"
-        android:layout_below="@+id/textViewUsernameChat" />
-
+        android:layout_below="@+id/textViewUsernameChat"/>
 
 </RelativeLayout>

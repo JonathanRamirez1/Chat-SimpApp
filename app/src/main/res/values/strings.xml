@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LoginFuturo</string>
+    <string name="app_name">WhatsApp</string>
 
     <!-- Login View -->
     <string name="login_username">Username</string>

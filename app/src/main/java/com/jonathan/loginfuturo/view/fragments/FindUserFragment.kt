@@ -2,137 +2,118 @@ package com.jonathan.loginfuturo.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.*
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.Query
 import com.jonathan.loginfuturo.R
-import com.jonathan.loginfuturo.UserInformation
 import com.jonathan.loginfuturo.databinding.FragmentFindUserBinding
+import com.jonathan.loginfuturo.model.UserModel
 import com.jonathan.loginfuturo.providers.AuthProvider
-import com.jonathan.loginfuturo.providers.MessageProvider
+import com.jonathan.loginfuturo.providers.UserProvider
+import com.jonathan.loginfuturo.view.activities.HomeActivity
+import com.mancj.materialsearchbar.MaterialSearchBar
 import com.jonathan.loginfuturo.view.adapters.FindUserAdapter
-import kotlin.collections.ArrayList
-import java.util.EventListener
+import java.util.*
 
-class FindUserFragment : Fragment() {
+class FindUserFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
 
-    private lateinit var firebaseUser: FirebaseUser
-    private lateinit var navController: NavController
     private lateinit var binding: FragmentFindUserBinding
-    private lateinit var findUserAdapter: FindUserAdapter
-    private lateinit var findUserDataBaseReference: CollectionReference
+    private lateinit var userProvider: UserProvider
+    private lateinit var authProvider: AuthProvider
 
-    private val listFindUser: ArrayList<UserInformation> = ArrayList()
-    private val listFindUserFull: ArrayList<UserInformation> = ArrayList()
-    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val fireBaseStore: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val mExtraidUser = Intent.getIntent("").getStringExtra("idUser")
+    private var findUserAdapter: FindUserAdapter? = null
+    private var mFindUserAdapter: FindUserAdapter? = null
 
-    private var findUserSubscription: ListenerRegistration? = null
-
-    private var userEmisor = String()
-    private var userReceptor = String()
-    private var idChat = String()
-    private var messageProvider = MessageProvider()
-    private var authProvider = AuthProvider()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, avedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_find_user, container, false)
+        binding.searchBar.setOnSearchActionListener(this)
+
+        userProvider = UserProvider()
+        authProvider = AuthProvider()
+        authProvider.setUPCurrentUser()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        launchRoomsFragment(view)
-        setUPCurrentUser()
-        setUpRecyclerViewFindUser()
-        setUpSearchViewFindUser()
+        launchGoBackRooms()
     }
 
-    /**Oculta el toolbar en este fragment al ponerlo en onResume y onStop**/
+    private fun launchGoBackRooms() {
+        val backRooms = binding.buttonBackRooms
+
+        backRooms.setOnClickListener {
+            val intent = Intent(context, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+    }
+
+    override fun onSearchStateChanged(enabled: Boolean) {
+      if (!enabled) {
+          getAllEmail()
+      }
+        if (enabled) {
+            binding.buttonBackRooms.visibility = View.GONE
+        } else {
+            binding.buttonBackRooms.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onSearchConfirmed(text: CharSequence?) {
+        searchByEmail(text.toString().lowercase(Locale.getDefault()))
+    }
+
+    override fun onButtonClicked(buttonCode: Int) {}
+
+    private fun searchByEmail(email: String) {
+        val layoutManager = LinearLayoutManager(context)
+        val query: Query = userProvider.getUserByEmail(email)
+        val options = FirestoreRecyclerOptions.Builder<UserModel>()
+            .setQuery(query, UserModel::class.java)
+            .build()
+        mFindUserAdapter = FindUserAdapter(options, context)
+        binding.recyclerViewFindUser.layoutManager = layoutManager
+        mFindUserAdapter?.notifyDataSetChanged()
+        binding.recyclerViewFindUser.adapter = mFindUserAdapter
+        mFindUserAdapter?.startListening()
+    }
+
+    private fun getAllEmail() {
+        val layoutManager = LinearLayoutManager(context)
+        val query: Query = userProvider.getAll()
+        val options = FirestoreRecyclerOptions.Builder<UserModel>()
+            .setQuery(query, UserModel::class.java)
+            .build()
+        findUserAdapter = FindUserAdapter(options, context)
+        binding.recyclerViewFindUser.layoutManager = layoutManager
+        findUserAdapter?.notifyDataSetChanged()
+        binding.recyclerViewFindUser.adapter = findUserAdapter
+        findUserAdapter?.startListening()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getAllEmail()
+    }
+
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+        (activity as AppCompatActivity?)?.supportActionBar?.hide()
     }
 
     override fun onStop() {
         super.onStop()
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-    }
-
-    private fun launchRoomsFragment(view: View) {
-        val backRooms = binding.buttonBack
-
-        navController = Navigation.findNavController(view)
-        backRooms.setOnClickListener {
-            navController.navigate(R.id.roomsFragment)
+        (activity as AppCompatActivity?)?.supportActionBar?.show()
+            findUserAdapter?.stopListening()
+        if (mFindUserAdapter != null) {
+            mFindUserAdapter?.stopListening()
         }
-    }
-
-    private fun setUPCurrentUser() {
-        firebaseUser = firebaseAuth.currentUser!!
-    }
-
-    private fun setUpRecyclerViewFindUser() {
-        val layoutManager = LinearLayoutManager(context)
-        findUserAdapter = FindUserAdapter(listFindUser, listFindUserFull)
-
-        binding.recyclerViewFindUser.setHasFixedSize(true)
-        binding.recyclerViewFindUser.layoutManager = layoutManager
-        binding.recyclerViewFindUser.itemAnimator = DefaultItemAnimator()
-        binding.recyclerViewFindUser.adapter = findUserAdapter
-    }
-
-    private fun setUpSearchViewFindUser() {
-        binding.searchViewFindUser.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(query: String?): Boolean {
-                findUserDataBaseReference = fireBaseStore.collection("Register")
-                fireBaseStore.collection("Register")
-                    .document(firebaseAuth.currentUser!!.email.toString()).get().addOnSuccessListener {
-                        findUserSubscription = findUserDataBaseReference
-                            .orderBy("email", Query.Direction.DESCENDING)
-                            .addSnapshotListener(object : EventListener, com.google.firebase.firestore.EventListener<QuerySnapshot> {
-                                override fun onEvent(snapshot: QuerySnapshot?, exception: FirebaseFirestoreException?) {
-                                    exception?.let {
-                                        Toast.makeText(context, "Exception!", Toast.LENGTH_SHORT).show()
-                                        return
-                                    }
-                                    snapshot?.let {
-                                        val findUser = it.toObjects(UserInformation::class.java)
-                                        listFindUserFull.clear()
-                                        listFindUser.addAll(findUser)
-                                        listFindUserFull.addAll(findUser)
-                                        findUserAdapter.filter.filter(query)
-                                        binding.recyclerViewFindUser.scrollToPosition(listFindUser.size)
-                                        findUserAdapter.notifyDataSetChanged()
-                                    }
-                                }
-                            })
-                    }
-                return true
-            }
-        })
-    }
-
-    override fun onDestroy() {
-        findUserSubscription?.remove()
-        super.onDestroy()
     }
 }

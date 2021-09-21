@@ -45,6 +45,18 @@ fun Fragment.isValidUsername(username: String) : Boolean {
     return pattern.matcher(username).matches()
 }
 
+fun Activity.isValidUsername(username: String) : Boolean {
+    val usernamePattern = "^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"
+    val pattern = Pattern.compile(usernamePattern)
+    return pattern.matcher(username).matches()
+}
+fun Activity.isValidPhoneNumber(phone: String): Boolean {
+    val phonePatterns = "^\\+(?:[0-9] ?){6,14}[0-9]\$"
+    val pattern = Pattern.compile(phonePatterns)
+    return pattern.matcher(phone).matches()
+}
+
+
 /** Caracteres permitidos en el email**/
 
  fun Fragment.isValidEmail(email: String) : Boolean {

@@ -1,7 +1,7 @@
 package com.jonathan.loginfuturo.view.fragments
 
 import android.content.Context.*
-import android.location.GnssAntennaInfo
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.*
@@ -29,11 +27,12 @@ import com.jonathan.loginfuturo.Utils.ViewedMessageHelper
 import com.jonathan.loginfuturo.Utils.WrapContentLinearLayoutManager
 import com.squareup.picasso.Picasso
 import android.net.ConnectivityManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.jonathan.loginfuturo.model.FCMBody
 import com.jonathan.loginfuturo.model.FCMResponse
 import com.jonathan.loginfuturo.providers.*
-import com.jonathan.loginfuturo.view.adapters.RoomsAdapter
+import com.jonathan.loginfuturo.view.activities.HomeActivity
 import retrofit2.Callback
 import kotlin.collections.HashMap
 import retrofit2.Call
@@ -42,8 +41,8 @@ import retrofit2.Response
 class ChatFragment : Fragment() {
 
     private lateinit var binding: FragmentChatBinding
-    private lateinit var navController: NavController
     private lateinit var chatProvider: ChatProvider
+    private lateinit var chatModel: ChatModel
     private lateinit var message: Message
     private lateinit var messageProvider: MessageProvider
     private lateinit var authProvider: AuthProvider
@@ -54,11 +53,10 @@ class ChatFragment : Fragment() {
 
     private var messageAdapter: MessageAdapter? = null
     private var chatRegistration: ListenerRegistration? = null
-    private var messageRegistration: ListenerRegistration? = null
 
     private var idUserEmisor: String = ""
     private var idUserReceptor: String = ""
-    private var idChat: String = "" //TODO ALGUN ERROR QUITAR EL STRING
+    private var idChat: String = ""
     private var usernameEmisor: String = ""
     private var usernameReceptor: String = ""
     private var imageEmisor: String = ""
@@ -69,6 +67,7 @@ class ChatFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat, container, false)
 
         chatProvider = ChatProvider()
+        chatModel = ChatModel()
         messageProvider = MessageProvider()
         authProvider = AuthProvider()
         userProvider = UserProvider()
@@ -82,17 +81,18 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getDataUsers()
+        getIds()
         getInfoUserForNotifications()
-        checkChatExist()
         sendMessage()
-        launchRoomsFragment(view)
+        launchRoomsFragment()
         getUserInfo()
     }
 
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+        (activity as AppCompatActivity?)?.supportActionBar?.hide()
+        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottomNavigation)
+        navBar?.visibility = View.GONE
     }
 
     override fun onStart() {
@@ -101,7 +101,7 @@ class ChatFragment : Fragment() {
             messageAdapter?.startListening()
         }
          ViewedMessageHelper.updateState(true, requireContext())
-        //getConnectivity()
+        getAllMessagesUser()
     }
 
     override fun onPause() {
@@ -112,7 +112,6 @@ class ChatFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         messageAdapter?.stopListening()
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
 
     override fun onDestroy() {
@@ -122,10 +121,8 @@ class ChatFragment : Fragment() {
         }
     }
 
-     private fun getDataUsers() {
-         wrapContentLinearLayoutManager = WrapContentLinearLayoutManager(context)
-         wrapContentLinearLayoutManager.stackFromEnd = true
-         binding.recyclerViewChat.layoutManager = wrapContentLinearLayoutManager
+    /**Recuperación de los ids enviados desde roomsAdapter**/
+     private fun getIds() {
         idUserEmisor = arguments?.getString("idEmisor").toString()
         idUserReceptor = arguments?.getString("idReceptor").toString()
         idChat = arguments?.getString("idChat").toString()
@@ -136,44 +133,44 @@ class ChatFragment : Fragment() {
             .addOnSuccessListener { querySnapshot ->
                 val size: Int = querySnapshot.size()
                 if (size == 0) {
-                    createChat() //TODO CORREGIR ERROR QUE SE AGREGA EL CHAT SIN ESCRIBIR NINGUN MENSAJE
-                } else if (size > 0) {
+                    createChat()
+                } else {
                     idChat = querySnapshot.documents[0].id
                     idNotificationChat = querySnapshot.documents[0].getLong("idNotification")
-                    getAllMessagesUser()
                     updateViewed()
                 }
             }
     }
 
     private fun createChat() {
-        val chat = ChatModel()
         val random = Random()
         val n: Int = random.nextInt(1000000)
-        chat.setIdEmisor(idUserEmisor)
-        chat.setIdReceptor(idUserReceptor)
-        chat.setWritting(false)
-        chat.setTimeStamp(Date())
-        chat.setId(idUserEmisor + idUserReceptor)
-        chat.setIdNotification(n)
+        chatModel.setIdEmisor(idUserEmisor)
+        chatModel.setIdReceptor(idUserReceptor)
+        chatModel.setWritting(false)
+        chatModel.setTimeStamp(Date())
+        chatModel.setIdNotification(n)
         idNotificationChat = n.toLong()
 
         val ids: ArrayList<String> = ArrayList()
         ids.add(idUserEmisor)
         ids.add(idUserReceptor)
-        chat.setIds(ids)
-        chatProvider.createCollectionUsers(chat)
-        idChat = chat.getId()
-        getAllMessagesUser()
+        chatModel.setIds(ids)
+        chatProvider.createCollectionUsers(chatModel)
     }
 
     private fun getAllMessagesUser() {
+        chatModel.setId(idUserEmisor + idUserReceptor)
+        idChat = chatModel.getId()
         val query: Query = messageProvider.getMessageByChat(idChat)
         val options = FirestoreRecyclerOptions.Builder<Message>()
             .setQuery(query, Message::class.java)
             .build()
         messageAdapter = MessageAdapter(options, context)
         binding.recyclerViewChat.adapter = messageAdapter
+        wrapContentLinearLayoutManager = WrapContentLinearLayoutManager(context)
+        wrapContentLinearLayoutManager.stackFromEnd = true
+        binding.recyclerViewChat.layoutManager = wrapContentLinearLayoutManager
         messageAdapter?.startListening()
         messageAdapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
@@ -207,6 +204,7 @@ class ChatFragment : Fragment() {
     private fun sendMessage() {
         binding.buttonSend.setOnClickListener {
             saveMessage()
+            checkChatExist()
         }
     }
 
@@ -238,12 +236,13 @@ class ChatFragment : Fragment() {
         }
     }
 
-    private fun launchRoomsFragment(view: View) {
+    private fun launchRoomsFragment() {
         val goRooms = binding.buttonBackRooms
 
-        navController = Navigation.findNavController(view)
         goRooms.setOnClickListener {
-            navController.navigate(R.id.roomsFragment)
+            val intent = Intent(context, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 
@@ -346,22 +345,10 @@ class ChatFragment : Fragment() {
         }
         messageProvider.getLastMessageEmisor(idChat, idUserEmisorForNotification).get().addOnSuccessListener { querySnapshot ->
                 val size: Int = querySnapshot.size()
-                var lastMessage = ""
                 if (size == 0) {
-                    data["title"] = "NEW MESSAGE"
-                    data["body"] = message.getMessage()
-                    data["idNotification"] = idNotificationChat.toString()
-                    data["messages"] = messages
-                    data["usernameEmisor"] = usernameEmisor.uppercase(Locale.getDefault())
-                    data["usernameReceptor"] = usernameReceptor.uppercase(Locale.getDefault())
-                    data["imageEmisor"] = imageEmisor
-                    data["imageReceptor"] = imageReceptor
-                    data["idEmisor"] = message.getIdEmisor()
-                    data["idReceptor"] = message.getIdReceptor()
-                    data["idChat"] = message.getIdChat()
+                    receiverNotificationAll(messages, data)
                   //  lastMessage = querySnapshot.documents[0].getString("message").toString()
-                    data["lastMessage"] = lastMessage
-                }  else if(lastMessage.isNullOrEmpty()) {
+                } else {
                     receiverNotification(messages)
                 }
                 val body = FCMBody(token, "high", "4500s", data)
@@ -380,8 +367,23 @@ class ChatFragment : Fragment() {
 
                         override fun onFailure(call: Call<FCMResponse?>?, t: Throwable?) {}
                     })
-
         }
+    }
+
+    private fun receiverNotificationAll(messages: String, data: MutableMap<String, String> = HashMap()) {
+        var lastMessage = ""
+        data["title"] = "NEW MESSAGE"
+        data["body"] = message.getMessage()
+        data["idNotification"] = idNotificationChat.toString()
+        data["messages"] = messages
+        data["usernameEmisor"] = usernameEmisor.uppercase(Locale.getDefault())
+        data["usernameReceptor"] = usernameReceptor.uppercase(Locale.getDefault())
+        data["imageEmisor"] = imageEmisor
+        data["imageReceptor"] = imageReceptor
+        data["idEmisor"] = message.getIdEmisor()
+        data["idReceptor"] = message.getIdReceptor()
+        data["idChat"] = message.getIdChat()
+        data["lastMessage"] = lastMessage
     }
 
     private fun receiverNotification(messages: String) {

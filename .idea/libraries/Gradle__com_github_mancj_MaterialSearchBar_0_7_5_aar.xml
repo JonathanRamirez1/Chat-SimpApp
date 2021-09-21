@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.mancj:MaterialSearchBar:0.7.5@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/99cbbdb6a024989a06f2b6b0fa12bcdb/jetified-MaterialSearchBar-0.7.5/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/99cbbdb6a024989a06f2b6b0fa12bcdb/jetified-MaterialSearchBar-0.7.5/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/99cbbdb6a024989a06f2b6b0fa12bcdb/jetified-MaterialSearchBar-0.7.5/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dc9b125cc3ace05423272e62affc66c2/jetified-MaterialSearchBar-0.7.5/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dc9b125cc3ace05423272e62affc66c2/jetified-MaterialSearchBar-0.7.5/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dc9b125cc3ace05423272e62affc66c2/jetified-MaterialSearchBar-0.7.5/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mancj/MaterialSearchBar/0.7.5/4d59aa9b70f50bbfb84d9465ffcf49353e1183de/MaterialSearchBar-0.7.5-javadoc.jar!/" />

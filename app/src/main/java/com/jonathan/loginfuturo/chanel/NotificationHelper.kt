@@ -113,6 +113,47 @@ class NotificationHelper(context: Context?) : ContextWrapper(context) {
             .addAction(action)
     }
 
+    fun getNotificationMessageEmisor(messages: Array<Message>,
+                               usernameEmisor: String,
+                               bitmapEmisor: Bitmap?,
+                               action: NotificationCompat.Action
+    ): NotificationCompat.Builder {
+        var person2: Person? = null
+        person2 = if (bitmapEmisor == null) {
+            Person.Builder()
+                .setName(usernameEmisor)
+                .setIcon(IconCompat.createWithResource(applicationContext, R.drawable.person))
+                .build()
+        } else {
+            Person.Builder()
+                .setName(usernameEmisor)
+                .setIcon(IconCompat.createWithBitmap(bitmapEmisor))
+                .build()
+        }
+
+        val message = Message()
+        val messagingStyle: NotificationCompat.MessagingStyle = NotificationCompat.MessagingStyle(person2)
+        val message1: NotificationCompat.MessagingStyle.Message = NotificationCompat.MessagingStyle.Message(
+            message.getMessage(),
+            Date().time,
+            person2)
+        messagingStyle.addMessage(message1)
+
+        for (message: Message in messages) {
+            val message2: NotificationCompat.MessagingStyle.Message = NotificationCompat.MessagingStyle.Message(
+                message.getMessage(),
+                message.getTimeStamp(),
+                person2)
+            messagingStyle.addMessage(message2)
+        }
+
+        return NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setStyle(messagingStyle)
+            .addAction(action)
+    }
+
+
     companion object {
         private const val CHANNEL_ID = "com.jonathan.loginfuturo"
         private const val CHANNEL_NAME = "LoginFuturo"
