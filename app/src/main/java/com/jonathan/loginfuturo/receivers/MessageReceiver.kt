@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.core.app.RemoteInput
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.gson.Gson
 import com.jonathan.loginfuturo.model.FCMBody
 import com.jonathan.loginfuturo.model.FCMResponse
@@ -25,6 +26,12 @@ import kotlin.collections.ArrayList
 
 class MessageReceiver: BroadcastReceiver() {
 
+    private lateinit var tokenProvider: TokenProvider
+    private lateinit var notificationProvider: NotificationProvider
+    private lateinit var authProvider: AuthProvider
+    private lateinit var messageProvider: MessageProvider
+    private lateinit var message: Message
+
     private var idEmisor: String = ""
     private var idReceptor: String = ""
     private var idChat: String = ""
@@ -34,10 +41,7 @@ class MessageReceiver: BroadcastReceiver() {
     private var imageReceptor: String = ""
     private var idNotification: Int = 0
 
-    private lateinit var tokenProvider: TokenProvider
-    private lateinit var notificationProvider: NotificationProvider
-    private lateinit var authProvider: AuthProvider
-    private lateinit var messageProvider: MessageProvider
+    private var lastMessageEmisorRegistration: ListenerRegistration? = null
 
     override fun onReceive(context: Context, intent: Intent) {
         idEmisor = intent.getStringExtra("idEmisor").toString()
@@ -53,6 +57,7 @@ class MessageReceiver: BroadcastReceiver() {
         notificationProvider = NotificationProvider()
         authProvider = AuthProvider()
         messageProvider = MessageProvider()
+        message = Message()
 
         val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(idNotification)
@@ -62,7 +67,6 @@ class MessageReceiver: BroadcastReceiver() {
     }
 
     private fun sendMessage(messageNotification: String) {
-        val message = Message()
         message.setIdChat(idChat)
         message.setIdEmisor(idReceptor)
         message.setIdReceptor(idEmisor)
@@ -74,12 +78,12 @@ class MessageReceiver: BroadcastReceiver() {
         val messageProvider = MessageProvider()
         messageProvider.create(message).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                getToken(message)
+                getToken()
             }
         }
     }
 
-    private fun getToken(message: Message) {
+    private fun getToken() {
         tokenProvider.getToken(idEmisor).addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot != null) {
                 if (documentSnapshot.exists()) {
@@ -89,43 +93,19 @@ class MessageReceiver: BroadcastReceiver() {
                         val messageArrayList: ArrayList<Message> = ArrayList()
                         messageArrayList.add(message)
                         val messages = gson.toJson(messageArrayList)
-                        sendNotification(token, messages, message)
+                        sendNotification(token, messages)
                     }
                 }
             }
         }
     }
 
-    private fun sendNotification(token: String, messages: String, message: Message) {
-        val data: MutableMap<String, String> = HashMap()
-        var idUserEmisorForNotification = ""
-        idUserEmisorForNotification = if (authProvider.getUid() == idEmisor) {
-            idReceptor
-        } else {
-            idEmisor
-        }
-        messageProvider.getLastMessageEmisor(idChat, idUserEmisorForNotification).get()
-            .addOnSuccessListener { querySnapshot ->
-                val size: Int = querySnapshot.size()
-              //  var lastMessage = ""
-                if (size == 0) {
-                    receiverNotificationAll(messages, message, data)
-                   // lastMessage = querySnapshot.documents[0].getString("message").toString()
-                } else {
-                    receiverNotification(messages, message, idUserEmisorForNotification)
-                }
-                val body = FCMBody(token, "high", "4500s", data)
-                notificationProvider.sendNotification(body)?.enqueue(object : Callback<FCMResponse?> {
-                        override fun onResponse(call: Call<FCMResponse?>?, response: Response<FCMResponse?>) {}
-
-                        override fun onFailure(call: Call<FCMResponse?>?, t: Throwable) {
-                            Log.d("ERROR", "El error fue: " + t.message)
-                        }
-                    })
-            }
+    fun getListenerLastMessageEmisor(): ListenerRegistration? {
+        return lastMessageEmisorRegistration
     }
-    private fun receiverNotificationAll(messages: String, message: Message, data: MutableMap<String, String> = HashMap()) {
-        val lastMessage = ""
+
+    private fun sendNotification(token: String, messages: String) {
+        val data: MutableMap<String, String> = HashMap()
         data["title"] = "NEW MESSAGE"
         data["body"] = message.getMessage()
         data["idNotification"] = idNotification.toString()
@@ -137,19 +117,30 @@ class MessageReceiver: BroadcastReceiver() {
         data["idEmisor"] = message.getIdEmisor()
         data["idReceptor"] = message.getIdReceptor()
         data["idChat"] = message.getIdChat()
-        data["lastMessage"] = lastMessage
-    }
 
-    private fun receiverNotification(messages: String, message: Message, idNotificationChat: String) {
-        val data: MutableMap<String, String> = HashMap()
-        data["title"] = "NEW MESSAGE"
-        data["body"] = message.getMessage()
-        data["idNotification"] = idNotificationChat
-        data["messages"] = messages
-        data["usernameEmisor"] = usernameEmisor.uppercase(Locale.getDefault())
-        data["imageEmisor"] = imageEmisor
-        data["idEmisor"] = message.getIdEmisor()
-        data["idChat"] = message.getIdChat()
+        var idUserEmisorForNotification = ""
+        idUserEmisorForNotification = if (authProvider.getUid() == idEmisor) {
+            idReceptor
+        } else {
+            idEmisor
+        }
+       lastMessageEmisorRegistration =  messageProvider.getLastMessageEmisor(idChat, idUserEmisorForNotification).addSnapshotListener { querySnapshot, _ ->
+           if (querySnapshot != null) {
+               val size: Int = querySnapshot.size()
+               var lastMessage = ""
+               if (size > 0) {
+                   lastMessage = querySnapshot.documents[0].getString("message").toString()
+                   data["lastMessage"] = lastMessage
+               }
+               val body = FCMBody(token, "high", "4500s", data)
+               notificationProvider.sendNotification(body)?.enqueue(object : Callback<FCMResponse?> {
+                       override fun onResponse(call: Call<FCMResponse?>?, response: Response<FCMResponse?>) {}
+                       override fun onFailure(call: Call<FCMResponse?>?, t: Throwable) {
+                           Log.d("ERROR", "El error fue: " + t.message)
+                       }
+                   })
+           }
+       }
     }
 
     private fun getMessageNotification(intent: Intent): CharSequence? {

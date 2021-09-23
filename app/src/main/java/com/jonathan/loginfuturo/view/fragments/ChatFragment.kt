@@ -32,6 +32,7 @@ import com.google.gson.Gson
 import com.jonathan.loginfuturo.model.FCMBody
 import com.jonathan.loginfuturo.model.FCMResponse
 import com.jonathan.loginfuturo.providers.*
+import com.jonathan.loginfuturo.receivers.MessageReceiver
 import com.jonathan.loginfuturo.view.activities.HomeActivity
 import retrofit2.Callback
 import kotlin.collections.HashMap
@@ -52,7 +53,9 @@ class ChatFragment : Fragment() {
     private lateinit var wrapContentLinearLayoutManager: WrapContentLinearLayoutManager
 
     private var messageAdapter: MessageAdapter? = null
-    private var chatRegistration: ListenerRegistration? = null
+    private var userInfoRegistration: ListenerRegistration? = null
+    private var lastMessageEmisorRegistration: ListenerRegistration? = null
+    private var messageReceiver: MessageReceiver? = null
 
     private var idUserEmisor: String = ""
     private var idUserReceptor: String = ""
@@ -100,7 +103,7 @@ class ChatFragment : Fragment() {
         if (messageAdapter != null) {
             messageAdapter?.startListening()
         }
-         ViewedMessageHelper.updateState(true, requireContext())
+        ViewedMessageHelper.updateState(true, requireContext())
         getAllMessagesUser()
     }
 
@@ -116,13 +119,13 @@ class ChatFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (chatRegistration != null) {
-            chatRegistration?.remove()
-        }
+        userInfoRegistration?.remove()
+        lastMessageEmisorRegistration?.remove()
+        messageReceiver?.getListenerLastMessageEmisor()?.remove()
     }
 
     /**Recuperación de los ids enviados desde roomsAdapter**/
-     private fun getIds() {
+    private fun getIds() {
         idUserEmisor = arguments?.getString("idEmisor").toString()
         idUserReceptor = arguments?.getString("idReceptor").toString()
         idChat = arguments?.getString("idChat").toString()
@@ -177,7 +180,8 @@ class ChatFragment : Fragment() {
                 super.onItemRangeInserted(positionStart, itemCount)
                 updateViewed()
                 val numberMessage: Int = messageAdapter!!.itemCount
-                val lastMessagePosition = wrapContentLinearLayoutManager.findLastCompletelyVisibleItemPosition()
+                val lastMessagePosition =
+                    wrapContentLinearLayoutManager.findLastCompletelyVisibleItemPosition()
 
                 if (lastMessagePosition == -1 || (positionStart >= (numberMessage - 1) && lastMessagePosition == (positionStart - 1))) {
                     binding.recyclerViewChat.scrollToPosition(positionStart)
@@ -253,7 +257,7 @@ class ChatFragment : Fragment() {
         } else {
             idUserEmisor
         }
-        chatRegistration = userProvider.getUserRealTime(idUserInfo)
+        userInfoRegistration = userProvider.getUserRealTime(idUserInfo)
             .addSnapshotListener { documentSnapshot, _ ->
                 if (documentSnapshot != null) {
                     if (documentSnapshot.exists()) {
@@ -267,7 +271,8 @@ class ChatFragment : Fragment() {
                                 binding.TextViewTimeChat.text = resources.getString(R.string.online)
 
                             } else if (documentSnapshot.contains("lastConnect")) {
-                                val lastConnect: Long = documentSnapshot.getLong("lastConnect")!!.toLong()
+                                val lastConnect: Long =
+                                    documentSnapshot.getLong("lastConnect")!!.toLong()
                                 val relativeTime = RelativeTime.getTimeAgo(lastConnect, context)
                                 binding.TextViewTimeChat.text = relativeTime
                             }
@@ -294,13 +299,17 @@ class ChatFragment : Fragment() {
         }
         tokenProvider.getToken(idUserForToken).addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot != null) {
-                if(documentSnapshot.exists()) {
+                if (documentSnapshot.exists()) {
                     if (documentSnapshot.contains("token")) {
                         val token: String = documentSnapshot.getString("token").toString()
                         getLastThreeMessages(message, token)
                     }
                 } else {
-                    Toast.makeText(context, "El token de notificaciones del usuario no existe", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "El token de notificaciones del usuario no existe",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -329,7 +338,20 @@ class ChatFragment : Fragment() {
     }
 
     private fun sendNotification(token: String, messages: String, message: Message) {
+        var lastMessage = ""
         val data: MutableMap<String, String> = HashMap()
+        data["title"] = "NEW MESSAGE"
+        data["body"] = message.getMessage()
+        data["idNotification"] = idNotificationChat.toString()
+        data["messages"] = messages
+        data["usernameEmisor"] = usernameEmisor.uppercase(Locale.getDefault())
+        data["usernameReceptor"] = usernameReceptor.uppercase(Locale.getDefault())
+        data["imageEmisor"] = imageEmisor
+        data["imageReceptor"] = imageReceptor
+        data["idEmisor"] = message.getIdEmisor()
+        data["idReceptor"] = message.getIdReceptor()
+        data["idChat"] = message.getIdChat()
+
         if (imageEmisor.isEmpty()) {
             imageEmisor = "IMAGEN_NO_VALIDA"
         }
@@ -343,59 +365,33 @@ class ChatFragment : Fragment() {
         } else {
             idUserEmisor
         }
-        messageProvider.getLastMessageEmisor(idChat, idUserEmisorForNotification).get().addOnSuccessListener { querySnapshot ->
-                val size: Int = querySnapshot.size()
-                if (size == 0) {
-                    receiverNotificationAll(messages, data)
-                  //  lastMessage = querySnapshot.documents[0].getString("message").toString()
-                } else {
-                    receiverNotification(messages)
-                }
-                val body = FCMBody(token, "high", "4500s", data)
-                notificationProvider.sendNotification(body)?.enqueue(object : Callback<FCMResponse?> {
-                        override fun onResponse(call: Call<FCMResponse?>?, response: Response<FCMResponse?>) {
-                            if (response.body() != null) {
-                                if (response.body()!!.getSuccess() == 1) {
-                                    //Toast.makeText(context, "La notificacion se envio correcatemente", Toast.LENGTH_SHORT).show()
+        lastMessageEmisorRegistration = messageProvider.getLastMessageEmisor(idChat, idUserEmisorForNotification)
+            .addSnapshotListener { querySnapshot, _ ->
+                if (querySnapshot != null) {
+                    val size: Int = querySnapshot.size()
+                    if (size > 0) {
+                        lastMessage = querySnapshot.documents[0].getString("message").toString()
+                        data["lastMessage"] = lastMessage
+                    } else {
+                        data["lastMessage"] = "No messages yet"
+                    }
+                    val body = FCMBody(token, "high", "4500s", data)
+                    notificationProvider.sendNotification(body)?.enqueue(object : Callback<FCMResponse?> {
+                            override fun onResponse(call: Call<FCMResponse?>?, response: Response<FCMResponse?>) {
+                                if (response.body() != null) {
+                                    if (response.body()!!.getSuccess() == 1) {
+                                       // Toast.makeText(context, "La notificacion se envio correctamente", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(context, "La notificacion no se pudo enviar", Toast.LENGTH_SHORT).show()
+                                    }
                                 } else {
                                     Toast.makeText(context, "La notificacion no se pudo enviar", Toast.LENGTH_SHORT).show()
                                 }
-                            } else {
-                                Toast.makeText(context, "La notificacion no se pudo enviar", Toast.LENGTH_SHORT).show()
                             }
-                        }
-
-                        override fun onFailure(call: Call<FCMResponse?>?, t: Throwable?) {}
-                    })
-        }
-    }
-
-    private fun receiverNotificationAll(messages: String, data: MutableMap<String, String> = HashMap()) {
-        var lastMessage = ""
-        data["title"] = "NEW MESSAGE"
-        data["body"] = message.getMessage()
-        data["idNotification"] = idNotificationChat.toString()
-        data["messages"] = messages
-        data["usernameEmisor"] = usernameEmisor.uppercase(Locale.getDefault())
-        data["usernameReceptor"] = usernameReceptor.uppercase(Locale.getDefault())
-        data["imageEmisor"] = imageEmisor
-        data["imageReceptor"] = imageReceptor
-        data["idEmisor"] = message.getIdEmisor()
-        data["idReceptor"] = message.getIdReceptor()
-        data["idChat"] = message.getIdChat()
-        data["lastMessage"] = lastMessage
-    }
-
-    private fun receiverNotification(messages: String) {
-        val data: MutableMap<String, String> = HashMap()
-        data["title"] = "NEW MESSAGE"
-        data["body"] = message.getMessage()
-        data["idNotification"] = idNotificationChat.toString()
-        data["messages"] = messages
-        data["usernameEmisor"] = usernameEmisor.uppercase(Locale.getDefault())
-        data["imageEmisor"] = imageEmisor
-        data["idEmisor"] = message.getIdEmisor()
-        data["idChat"] = message.getIdChat()
+                            override fun onFailure(call: Call<FCMResponse?>?, t: Throwable?) {}
+                        })
+                }
+            }
     }
 
     private fun getInfoUserForNotifications() {

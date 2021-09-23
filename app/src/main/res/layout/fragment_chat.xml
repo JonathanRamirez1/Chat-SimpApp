@@ -6,6 +6,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:context=".view.fragments.ChatFragment">
 
         <ImageView
@@ -14,7 +15,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="65dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/fondo" />
+            android:src="@drawable/background_chat" />
 
         <RelativeLayout
             android:id="@+id/relative"
@@ -72,22 +73,24 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_marginTop="69dp"
             android:layout_marginBottom="65dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewChat"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="69dp"/>
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="bottom"
-            android:layout_margin="10dp">
+            android:layout_marginEnd="55dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp">
 
             <EditText
                 android:id="@+id/editTextMessage"
@@ -95,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_chat"
                 android:ems="10"
+                android:maxLines="6"
                 android:hint="@string/chat_edittext_message_hint"
                 android:inputType="textMultiLine"
                 android:padding="8dp"
@@ -102,14 +106,23 @@
                 android:textColor="@color/colortTextBlack"
                 android:textColorHint="@color/colorPrimaryText" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="360dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
             <ImageButton
                 android:id="@+id/buttonSend"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:background="@drawable/button_chat_send"
                 android:tint="@color/colorPrimaryText"
-                android:layout_marginLeft="10dp"
-                app:srcCompat="@drawable/ic_send"/>
+                app:srcCompat="@drawable/ic_send" />
 
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -36,7 +36,7 @@
 
         <activity
             android:name=".view.activities.HomeActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity android:name=".view.activities.MainActivity" />
         <activity
             android:name=".view.activities.MainEmptyActivity"
@@ -69,6 +69,6 @@
             android:name=".receivers.MessageReceiver"
             android:enabled="true"
             android:exported="false" />
-    </application>
 
+    </application>
 </manifest>
