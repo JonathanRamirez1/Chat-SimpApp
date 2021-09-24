@@ -14,11 +14,19 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.*
 import com.jonathan.loginfuturo.Constants.REQUEST_CODE_GOOGLE_SIGN_IN
 import com.jonathan.loginfuturo.databinding.FragmentLoginBinding
@@ -38,6 +46,10 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
     private lateinit var userProvider: UserProvider
     private lateinit var alertDialog: AlertDialog
     private lateinit var userModel: UserModel
+
+    private val callbackManager = CallbackManager.Factory.create()
+    private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private val loginManager : LoginManager by lazy {  LoginManager.getInstance() }
 
     private val mGoogleApiClient: GoogleApiClient by lazy { getGoogleApiClient()!! }
 
@@ -77,12 +89,12 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //setUpLoginDataBase()
         launchLoginByEmailAndPassword()
         validEmailAndPassword()
         launchRegisterFragment(view)
         launchForgotPasswordFragment(view)
         launchLoginByGoogle()
+        loginByFacebookAccountIntoFirebase()
     }
 
    private fun setUpAlertDialog() {
@@ -127,26 +139,6 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         navController = Navigation.findNavController(view)
         forgotPassword.setOnClickListener {
             navController.navigate(R.id.forgotPasswordFragment)
-        }
-    }
-
-    //TODO VERIFICAR SI ESTO SE NECESITA SINO BORRAR
-    private fun setUpLoginDataBase() {
-        val id = authProvider.getUid().toString()
-        userProvider.getUser(id).addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                Toast.makeText(context, "Document Exit", Toast.LENGTH_SHORT).show()
-            } else {
-                val user = UserModel()
-                user.setId(id)
-                userProvider.createCollection(user).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(context, "Document Create", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(context, "Document No Create", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
         }
     }
 
@@ -215,6 +207,41 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
                 }
             }
         }
+    }
+
+    private fun handlerFacebookAccessToken(token : AccessToken) {
+        binding.buttonLogInFacebook.setOnClickListener {
+            val credential = FacebookAuthProvider.getCredential(token.token)
+            firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val intent = Intent(context, HomeActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }
+                }
+        }
+    }
+
+    private fun loginByFacebookAccountIntoFirebase() {
+        loginManager.logInWithReadPermissions(this, listOf("email", "public_profile"))
+        loginManager.registerCallback(callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult?) {
+                    result?.let {
+                        handlerFacebookAccessToken(result.accessToken)
+                    }
+                }
+
+                override fun onCancel() {
+                    Toast.makeText(context, "facebook:onCancel", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onError(error: FacebookException?) {
+                    Toast.makeText(context, "facebook:onError", Toast.LENGTH_SHORT).show()
+                }
+
+            })
     }
 
     private fun launchLoginByGoogle() {

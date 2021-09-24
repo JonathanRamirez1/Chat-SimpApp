@@ -49,8 +49,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Facebook Sign In -->
-    <string name="facebook_app_id">2871054539831513cambiar</string>
-    <string name="fb_login_protocol_scheme">fb2871054539831513cambiar</string>
+    <string name="facebook_app_id">4389468264471839
+    </string> <string name="fb_login_protocol_scheme">fb4389468264471839</string>
 
     <!-- CompleteInfoFragment -->
     <string name="search">Search…</string>
@@ -71,7 +71,8 @@
     <string name="new_message">NEW MESSAGE</string>
     <string name="your_message">Your Message…</string>
     <string name="reply_message">Reply</string>
+    <string name="default_notification_channel_id"
+        translatable="false">fcm_default_channel</string>
 
-    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
 </resources>
