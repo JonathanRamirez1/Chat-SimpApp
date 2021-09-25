@@ -1,5 +1,8 @@
 package com.jonathan.loginfuturo.providers
 
+import com.facebook.AccessToken
+import com.facebook.FacebookCallback
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
@@ -24,6 +27,11 @@ class AuthProvider {
 
     fun googleLogin(googleSingAccount: GoogleSignInAccount): Task<AuthResult> {
         val credential: AuthCredential = GoogleAuthProvider.getCredential(googleSingAccount.idToken, null)
+        return firebaseAuth.signInWithCredential(credential)
+    }
+
+    fun facebookLogin(token: AccessToken): Task<AuthResult> {
+        val credential = FacebookAuthProvider.getCredential(token.token)
         return firebaseAuth.signInWithCredential(credential)
     }
 

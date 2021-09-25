@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.viewpager.widget.ViewPager
+import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.Utils.ViewedMessageHelper
@@ -98,6 +99,7 @@ class HomeActivity : AppCompatActivity() {
         when(item.itemId) {
             R.id.menuLogOut -> {
                 FirebaseAuth.getInstance().signOut()
+                LoginManager.getInstance().logOut()
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
