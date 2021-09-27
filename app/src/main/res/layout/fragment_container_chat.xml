@@ -6,7 +6,7 @@
     android:id="@+id/containerChat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.ContainerChatFragment">
+    tools:context=".ui.view.fragments.ContainerChatFragment">
 
     <fragment
         android:id="@+id/fragmentChat"

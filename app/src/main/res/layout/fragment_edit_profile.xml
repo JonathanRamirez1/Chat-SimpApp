@@ -7,7 +7,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.EditProfileFragment">
+    tools:context=".ui.view.fragments.EditProfileFragment">
 
     <ImageView
         android:layout_width="match_parent"

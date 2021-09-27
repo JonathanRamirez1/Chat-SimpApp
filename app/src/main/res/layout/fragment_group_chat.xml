@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.fragments.GroupChatFragment">
+        tools:context=".ui.view.fragments.GroupChatFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarChat"

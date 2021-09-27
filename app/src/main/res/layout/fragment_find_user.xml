@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/colorPrimary"
-        tools:context=".view.fragments.FindUserFragment">
+        tools:context=".ui.view.fragments.FindUserFragment">
 
         <Button
             android:id="@+id/buttonBackRooms"
