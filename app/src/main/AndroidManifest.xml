@@ -18,10 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.activities.CompleteInfoActivity"
+            android:name="com.jonathan.loginfuturo.ui.view.activities.CompleteInfoActivity"
             android:exported="true" />
         <activity
-            android:name=".view.activities.FindUserActivity"
+            android:name="com.jonathan.loginfuturo.ui.view.activities.FindUserActivity"
             android:exported="true" />
 
         <provider
@@ -35,11 +35,11 @@
         </provider>
 
         <activity
-            android:name=".view.activities.HomeActivity"
+            android:name="com.jonathan.loginfuturo.ui.view.activities.HomeActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-        <activity android:name=".view.activities.MainActivity" />
+        <activity android:name="com.jonathan.loginfuturo.ui.view.activities.MainActivity" />
         <activity
-            android:name=".view.activities.MainEmptyActivity"
+            android:name="com.jonathan.loginfuturo.ui.view.activities.MainEmptyActivity"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
@@ -49,12 +49,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activities.LoginActivity"
+            android:name="com.jonathan.loginfuturo.ui.view.activities.LoginActivity"
             android:theme="@style/NoPreview"
             android:windowSoftInputMode="adjustPan" />
 
         <service
-            android:name=".services.MyFirebaseMessagingClient"
+            android:name=".core.firebase.MyFirebaseMessagingClient"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -66,7 +66,7 @@
             android:value="@string/default_notification_channel_id" />
 
         <receiver
-            android:name=".receivers.MessageReceiver"
+            android:name="com.jonathan.loginfuturo.core.firebase.MessageReceiver"
             android:enabled="true"
             android:exported="false" />
 

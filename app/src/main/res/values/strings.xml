@@ -14,6 +14,12 @@
     <string name="login_create_account">Create a new account</string>
     <string name="login_go_to_login">Go back to Login</string>
 
+    <!-- Register -->
+    <string name="register_send_email">An email has been sent to you. Confirm before logging in</string>
+    <string name="register_error_create">Unexpected error occurred. Please try again</string>
+    <string name="register_user_saved">User successfully saved</string>
+    <string name="register_user_saved_error">Unexpected Error</string>
+
     <!-- Sign In and Sign Up -->
     <string name="username_is_no_valid">Username is not valid</string>
     <string name="email_is_no_valid">Email is not valid</string>

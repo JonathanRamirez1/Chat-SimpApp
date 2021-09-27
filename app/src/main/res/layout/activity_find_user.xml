@@ -6,7 +6,7 @@
     android:id="@+id/containerFindUser"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activities.FindUserActivity">
+    tools:context=".ui.view.activities.FindUserActivity">
 
     <fragment
         android:id="@+id/fragment"

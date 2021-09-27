@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/roomsFragment"
-        android:name="com.jonathan.loginfuturo.view.fragments.RoomsFragment"
+        android:name="com.jonathan.loginfuturo.ui.view.fragments.RoomsFragment"
         android:label="fragment_rooms"
         tools:layout="@layout/fragment_rooms">
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.jonathan.loginfuturo.view.fragments.ChatFragment"
+        android:name="com.jonathan.loginfuturo.ui.view.fragments.ChatFragment"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat"/>
 </navigation>
