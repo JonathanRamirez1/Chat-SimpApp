@@ -79,19 +79,21 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
 
-        authProvider = AuthProvider()
-        userProvider = UserProvider()
-        userModel = UserModel()
-
         //loginViewModel = ViewModelProvider(this).get()
         //registerViewModel = ViewModelProvider(this).get()
 
         return binding.root
     }
 
+    //TODO refactor
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
+
+        authProvider = AuthProvider()
+        userProvider = UserProvider()
+        userModel = UserModel()
+
         setUpAlertDialog()
         launchLoginByEmailAndPassword()
         validEmailAndPassword()
