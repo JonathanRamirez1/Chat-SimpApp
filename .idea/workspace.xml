@@ -35,12 +35,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3ae19e8b-e23b-4da4-8ed4-fe0d8bb33bc7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_3_1_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_ktx_1_3_1_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_3_6_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_ktx_1_3_6_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/RegisterFragment.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/viewmodels/RegisterViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -51,108 +45,9 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_2_4_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_ktx_1_2_3_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_4_0_alpha07_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_ktx_1_4_0_alpha07_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/app/LoginFuturo.app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/LoginFuturo.app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/BaseCommand.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Chat.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Connection.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/Constants.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Event.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/Event.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/EventObserver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/EventObserver.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Extensions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/Extensions.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/NewUserEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/NewUserEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/SingleLiveEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/SingleLiveEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/TotalMessagesEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/TotalMessagesEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/UserInformation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/UserInformation.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Utils/CircleTransform.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/CircleTransform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Utils/CompressorBitmapImage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/CompressorBitmapImage.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Utils/ConvertUriToFile.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/ConvertUriToFile.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Utils/RelativeTime.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/RelativeTime.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Utils/RxBus.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/RxBus.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Utils/ViewedMessageHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/ViewedMessageHelper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/Utils/WrapContentLinearLayoutManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/WrapContentLinearLayoutManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/chanel/NotificationHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/firebase/NotificationHelper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/dialogues/RateDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/RateDialog.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/ChatModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/ChatModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/FCMBody.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/FCMBody.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/FCMResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/FCMResponse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/LoginModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/LoginModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/Message.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/Message.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/NewRateEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/NewRateEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/NewUserEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/NewUserEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/OtherUserId.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/OtherUserId.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/Rate.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/Rate.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/Token.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/Token.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/model/UserModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/UserModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/providers/AuthProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/providers/AuthProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/providers/ChatProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/providers/ChatProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/providers/ImageProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/providers/ImageProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/providers/MessageProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/providers/MessageProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/providers/NotificationProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/providers/NotificationProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/providers/OtherUserIdProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/providers/OtherUserIdProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/providers/TokenProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/providers/TokenProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/providers/UserProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/model/providers/UserProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/receivers/MessageReceiver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/firebase/MessageReceiver.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/retrofit2/IFCMApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/data/network/IFCMApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/retrofit2/RetrofitClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/RetrofitClient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/services/MyFirebaseMessagingClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/core/firebase/MyFirebaseMessagingClient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/activities/CompleteInfoActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/activities/CompleteInfoActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/activities/FindUserActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/activities/FindUserActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/activities/HomeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/activities/HomeActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/activities/LoginActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/activities/LoginActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/activities/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/activities/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/activities/MainEmptyActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/activities/MainEmptyActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/adapters/FindUserAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/adapters/FindUserAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/adapters/GroupChatAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/adapters/GroupChatAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/adapters/MessageAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/adapters/MessageAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/adapters/PagerAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/adapters/PagerAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/adapters/RatesAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/adapters/RatesAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/adapters/RoomsAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/adapters/RoomsAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/ChatFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/ChatFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/ContainerChatFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/ContainerChatFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/EditProfileFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/EditProfileFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/FindUserFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/FindUserFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/ForgotPasswordFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/ForgotPasswordFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/GroupChatFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/GroupChatFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/LoginFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/LoginFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/ProfileFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/ProfileFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/RatesFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/RatesFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/RegisterFragment.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/view/fragments/RoomsFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/view/fragments/RoomsFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/viewmodels/LoginViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/viewmodels/LoginViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/viewmodels/RegisterViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/viewmodels/UserViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/viewmodels/UserViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_complete_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_complete_info.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_find_user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_find_user.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_chat.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_container_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_container_chat.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_profile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_find_user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_find_user.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_forgot_password.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_forgot_password.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_group_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_group_chat.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_login.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_profile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_rates.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_rates.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_register.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_rooms.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_rooms.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_find_user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_find_user.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph_login.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/google-services.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/viewmodels/RegisterViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/jonathan/loginfuturo/ui/viewmodels/RegisterViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,14 +145,14 @@
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="ignore.virus.scanning.warn.message" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
-    <property name="last_opened_file_path" value="D:/DESCARGAS/FUTURO/Proyects Android Studio/appmvvm/android-kotlin-fundamentals-apps/GuessTheWordLiveData" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../mvvm/kotlin-mvvm/KotlinMVVM" />
     <property name="multi-representation-previewC:/Users/Administrator/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.1.0/f2bdf79e1977939817f54a9d3e2f6bc52b63bdd0/recyclerview-1.1.0-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_selected" value="Custom views" />
     <property name="multi-representation-previewC:/Users/Administrator/AppData/Local/Android/Sdk/sources/android-30/android/view/View.java_selected" value="Custom views" />
     <property name="multi-representation-previewC:/Users/Administrator/AppData/Local/Android/Sdk/sources/android-30/android/view/ViewGroup.java_selected" value="Custom views" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="emulator" />
   </component>
   <component name="RecentsManager">
     <key name="android.template.-714180210">
@@ -287,9 +182,9 @@
       <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia\app" />
       <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia\app\src\main\java\com\jonathan\loginfuturo\core" />
       <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia\app\src\main\res\drawable" />
-      <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia\app" />
       <recent name="C:\Users\Administrator\Desktop\LoginFuturoCopia" />
       <recent name="D:\LoginFuturo\app" />
     </key>
@@ -437,7 +332,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="Login" />
+                        <option value="HEAD" />
                       </list>
                     </value>
                   </entry>
