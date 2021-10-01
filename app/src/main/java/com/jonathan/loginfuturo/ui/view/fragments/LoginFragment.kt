@@ -3,6 +3,7 @@ package com.jonathan.loginfuturo.ui.view.fragments
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +11,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.facebook.*
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.Auth
@@ -22,16 +24,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.jonathan.loginfuturo.core.Constants.REQUEST_CODE_GOOGLE_SIGN_IN
 import com.jonathan.loginfuturo.R
+import com.jonathan.loginfuturo.core.Constants.REQUEST_CODE_GOOGLE_SIGN_IN
 import com.jonathan.loginfuturo.core.UserInformation
+import com.jonathan.loginfuturo.core.ext.createFactory
 import com.jonathan.loginfuturo.core.isValidEmail
 import com.jonathan.loginfuturo.core.isValidPassword
 import com.jonathan.loginfuturo.core.validate
-import com.jonathan.loginfuturo.databinding.FragmentLoginBinding
 import com.jonathan.loginfuturo.data.model.UserModel
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.UserProvider
+import com.jonathan.loginfuturo.databinding.FragmentLoginBinding
 import com.jonathan.loginfuturo.ui.view.activities.HomeActivity
 import com.jonathan.loginfuturo.ui.viewmodels.LoginViewModel
 import com.jonathan.loginfuturo.ui.viewmodels.RegisterViewModel
@@ -52,34 +55,43 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
 
     private val mGoogleApiClient: GoogleApiClient by lazy { getGoogleApiClient()!! }
 
-        /*  loginViewModel.isLogin.value = null
-        loginViewModel.isLogin.observe(this, Observer {
-            launchLoginByEmail()
-        })
+    private val logInViewModel by viewModels<LoginViewModel> {
+        LoginViewModel().createFactory()
+    }
 
-        loginViewModel.isLoginByGoogle.value = null
-        loginViewModel.isLoginByGoogle.observe(this, Observer {
-            val intent = Intent(context, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        })*/
+    /*  loginViewModel.isLogin.value = null
+    loginViewModel.isLogin.observe(this, Observer {
+        launchLoginByEmail()
+    })
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+    loginViewModel.isLoginByGoogle.value = null
+    loginViewModel.isLoginByGoogle.observe(this, Observer {
+        val intent = Intent(context, HomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    })*/
+
+    //TODO refactor
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
 
         authProvider = AuthProvider()
         userProvider = UserProvider()
         userModel = UserModel()
 
-        loginViewModel = ViewModelProvider(this).get()
-        registerViewModel = ViewModelProvider(this).get()
+        //loginViewModel = ViewModelProvider(this).get()
+        //registerViewModel = ViewModelProvider(this).get()
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setObservers()
         setUpAlertDialog()
         launchLoginByEmailAndPassword()
         validEmailAndPassword()
@@ -87,9 +99,37 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         launchForgotPasswordFragment(view)
         launchLoginByGoogle()
         launchLoginFacebook()
+
+        //mockData
+        binding.editTextEmailLogin.setText("emedinaa@gmail.com")
+        binding.editTextPasswordLogin.setText("Emedinaa#123456")
     }
 
-   private fun setUpAlertDialog() {
+
+    private fun setObservers() {
+        logInViewModel.isAuthenticated.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), "Login successful !! $it", Toast.LENGTH_SHORT).show()
+            it?.let { data->
+                goToHomeView(data)
+            }
+        }
+
+        logInViewModel.isViewLoading.observe(viewLifecycleOwner) {
+            val visibility = if (it == true) View.VISIBLE else View.GONE
+            Log.d("CONSOLE", "isViewLoading $visibility ")
+        }
+
+        loginViewModel.onError.observe(viewLifecycleOwner) {
+            Log.d("CONSOLE", "onError $it ")
+        }
+    }
+
+    //TODO to implement
+    private fun goToHomeView(data:Any) {
+        Log.d("CONSOLE", "goToHomeView() $data ")
+    }
+
+    private fun setUpAlertDialog() {
         alertDialog = SpotsDialog.Builder()
             .setContext(context)
             .setTheme(R.style.Custom)
@@ -134,19 +174,24 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         }
     }
 
+    //TODO refactor
     private fun launchLoginByEmailAndPassword() {
         val loginUser = binding.buttonLogin
         val userInformation = UserInformation()
 
         loginUser.setOnClickListener {
-            userInformation.email = binding.editTextEmailLogin.text.toString()
-            userInformation.password = binding.editTextPasswordLogin.text.toString()
+            userInformation.email = binding.editTextEmailLogin.text.toString().trim()
+            userInformation.password = binding.editTextPasswordLogin.text.toString().trim()
+            val email = binding.editTextEmailLogin.text.toString().trim()
+            val password = binding.editTextPasswordLogin.text.toString().trim()
+            loginViewModel.logIn(email,password)
 
-            if (isValidEmail(userInformation.email) && isValidPassword(userInformation.password)) {
-                    logInByEmailAndPassword(userInformation)
+            /*if (isValidEmail(userInformation.email) && isValidPassword(userInformation.password)) {
+                logInByEmailAndPassword(userInformation)
             } else {
-                Toast.makeText(context, "Please make sure all data is correct", Toast.LENGTH_SHORT).show()
-            }
+                Toast.makeText(context, "Please make sure all data is correct", Toast.LENGTH_SHORT)
+                    .show()
+            }*/
         }
     }
 
@@ -160,13 +205,22 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
                         if (authProvider.isEmailVerified()) {
                             registerViewModel.saveUserInformation(userInformation.email)
                             val intent = Intent(context, HomeActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         } else {
-                            Toast.makeText(context, "User must confirm email first", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "User must confirm email first",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     } else {
-                        Toast.makeText(context, "Sign In Failure. Authentication failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Sign In Failure. Authentication failed",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -192,10 +246,15 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
                     alertDialog.dismiss()
                     if (task.isSuccessful) {
                         val intent = Intent(context, HomeActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     } else {
-                        Toast.makeText(context, "The information could not be saved", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "The information could not be saved",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -217,9 +276,14 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
                         val token = it.accessToken
                         authProvider.facebookLogin(token).addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                Toast.makeText(context, "Iniciaste Sesion con Facebook", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    "Iniciaste Sesion con Facebook",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 val intent = Intent(context, HomeActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 startActivity(intent)
                             }
                         }
@@ -245,7 +309,7 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         }
     }
 
-    private fun getGoogleApiClient() : GoogleApiClient? {
+    private fun getGoogleApiClient(): GoogleApiClient? {
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
