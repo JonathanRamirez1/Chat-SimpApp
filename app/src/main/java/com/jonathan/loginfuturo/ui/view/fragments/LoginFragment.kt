@@ -42,10 +42,13 @@ import dmax.dialog.SpotsDialog
 
 class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
 
-    private lateinit var loginViewModel: LoginViewModel
-    private lateinit var registerViewModel: RegisterViewModel
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+
+
+    //private lateinit var loginViewModel: LoginViewModel
+    //private lateinit var registerViewModel: RegisterViewModel
     private lateinit var navController: NavController
-    private lateinit var binding: FragmentLoginBinding
     private lateinit var authProvider: AuthProvider
     private lateinit var userProvider: UserProvider
     private lateinit var alertDialog: AlertDialog
@@ -76,13 +79,11 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
-
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
         //loginViewModel = ViewModelProvider(this).get()
         //registerViewModel = ViewModelProvider(this).get()
-
-        return binding.root
     }
 
     //TODO refactor
@@ -121,7 +122,7 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
             Log.d("CONSOLE", "isViewLoading $visibility ")
         }
 
-        loginViewModel.onError.observe(viewLifecycleOwner) {
+        logInViewModel.onError.observe(viewLifecycleOwner) {
             Log.d("CONSOLE", "onError $it ")
         }
     }
@@ -186,7 +187,7 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
             userInformation.password = binding.editTextPasswordLogin.text.toString().trim()
             val email = binding.editTextEmailLogin.text.toString().trim()
             val password = binding.editTextPasswordLogin.text.toString().trim()
-            loginViewModel.logIn(email,password)
+            logInViewModel.logIn(email,password)
 
             /*if (isValidEmail(userInformation.email) && isValidPassword(userInformation.password)) {
                 logInByEmailAndPassword(userInformation)
@@ -205,7 +206,7 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
                 if (task.isSuccessful) {
                     if (task.isSuccessful) {
                         if (authProvider.isEmailVerified()) {
-                            registerViewModel.saveUserInformation(userInformation.email)
+                            //registerViewModel.saveUserInformation(userInformation.email)
                             val intent = Intent(context, HomeActivity::class.java)
                             intent.flags =
                                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -357,4 +358,10 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
     override fun onConnectionFailed(p0: ConnectionResult) {
         Toast.makeText(context, "Connection Failed!!", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }
