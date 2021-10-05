@@ -52,15 +52,15 @@ class AuthProvider {
     }
 
     fun isEmailVerified(): Boolean {
-       return firebaseAuth.currentUser!!.isEmailVerified
+       return firebaseAuth.currentUser?.isEmailVerified?:false
     }
 
      fun sendEmailVerification(): Task<Void> {
-        return firebaseAuth.currentUser!!.sendEmailVerification()
+        return firebaseAuth.currentUser?.sendEmailVerification()?:throw Exception("horror!")
     }
 
     fun setUPCurrentUser() {
-        firebaseUser = firebaseAuth.currentUser!!
+        firebaseUser = firebaseAuth.currentUser?:throw Exception("horror!")
     }
 
      fun updatePhoto() {
