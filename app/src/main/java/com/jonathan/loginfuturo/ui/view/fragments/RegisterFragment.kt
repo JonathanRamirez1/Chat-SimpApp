@@ -1,83 +1,97 @@
 package com.jonathan.loginfuturo.ui.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.jonathan.loginfuturo.*
 import com.jonathan.loginfuturo.core.*
+import com.jonathan.loginfuturo.core.ext.createFactory
 import com.jonathan.loginfuturo.databinding.FragmentRegisterBinding
 import com.jonathan.loginfuturo.ui.viewmodels.RegisterViewModel
-import kotlinx.android.synthetic.main.fragment_register.*
 
 
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
-    private lateinit var registerViewModel: RegisterViewModel
     private lateinit var navController: NavController
 
+    private val registerViewModel by viewModels<RegisterViewModel> {
+        RegisterViewModel().createFactory()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
-        registerViewModel = ViewModelProvider(this).get()
-
-        registerViewModel.isLoading.observe(viewLifecycleOwner)  { loading ->
-            binding.linearLayoutRegister.visibility = if (loading == true) View.VISIBLE else View.GONE
-           /* if (progress) {
-                setUpProgress().show()
-            } else {
-                setUpProgress().dismiss()
-            }*/
-        }
-
-        registerViewModel.showToast.observe(viewLifecycleOwner, Observer { event ->  //TODO HACER QUE FUNCIONE LOS TOAST
-            event.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            }
-        })
-            return binding.root
+        binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setObservers()
 
         validFields()
-        validateFields(view)
+        validateFields()
         launchLoginFragment(view)
+    }
+
+    private fun setObservers() {
+
+        registerViewModel.isEmailValid.observe(viewLifecycleOwner) { email ->
+            if (email  != null) {
+                binding.editTextEmailSignUp.error = getString(R.string.email_is_no_valid)
+            }
+        }
+
+        registerViewModel.isPasswordValid.observe(viewLifecycleOwner) { password ->
+            if (password != null) {
+                binding.editTextPasswordSignUp.error = getString(R.string.password_is_no_valid)
+            }
+        }
+
+        registerViewModel.isConfirmPasswordValid.observe(viewLifecycleOwner) { confirmPassword ->
+            if (confirmPassword != null) {
+                binding.editTextConfirmPassword.error = getString(R.string.confirm_password_is_no_valid)
+            }
+        }
+
+        registerViewModel.showToast.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            Log.d("CONSOLE", "onError $it ")
+        }
+
+        registerViewModel.isRegister.observe(viewLifecycleOwner) { register ->
+            if (register == true) {
+                view?.let { goToLoginView(it) }
+            }
+        }
+    }
+
+    private fun goToLoginView(view: View) {
+        navController = Navigation.findNavController(view)
+        navController.navigate(R.id.loginFragment)
     }
 
     private fun validFields() {
 
         binding.editTextEmailSignUp.validate { email ->
-            if (isValidEmail(email)) {
-                binding.editTextEmailSignUp.error = null
-            } else {
-                binding.editTextEmailSignUp.error = getString(R.string.email_is_no_valid)
-            }
+            registerViewModel.validEmail(email)
         }
 
         binding.editTextPasswordSignUp.validate { password ->
-            if (isValidPassword(password)) {
-                binding.editTextPasswordSignUp.error = null
-            } else {
-                binding.editTextPasswordSignUp.error = getString(R.string.password_is_no_valid)
-            }
+            registerViewModel.validPassword(password)
         }
 
         binding.editTextConfirmPassword.validate { confirmPassword ->
-            if (isValidConfirmPassword((binding.editTextPasswordSignUp.text.toString()), confirmPassword)) {
-                binding.editTextConfirmPassword.error = null
-            } else {
-                binding.editTextConfirmPassword.error = getString(R.string.confirm_password_is_no_valid)
-            }
+            val password = binding.editTextPasswordSignUp.text.toString()
+            registerViewModel.validConfirmPassword(password, confirmPassword)
         }
     }
 
@@ -91,21 +105,14 @@ class RegisterFragment : Fragment() {
     }
 
     /**Valida si los campos son correctos de acuerdo a los expresiones regulares (Ver Extensions.kt)**/
-    private fun validateFields(view: View) {
+    private fun validateFields() {
         val signUpUser = binding.buttonSignUp
 
         signUpUser.setOnClickListener {
             val email = binding.editTextEmailSignUp.text.toString()
             val password = binding.editTextPasswordSignUp.text.toString()
             val confirmPassword = binding.editTextConfirmPassword.text.toString()
-
-            if (isValidEmail(email) && isValidPassword(password) && isValidConfirmPassword(password, confirmPassword)) {
-                registerViewModel.signUpByEmail(email, password)
-                navController = Navigation.findNavController(view)
-                navController.navigate(R.id.loginFragment)
-            } else {
-                Toast.makeText(context, "Please make sure all data is correct", Toast.LENGTH_SHORT).show()
-            }
+            registerViewModel.onRegister(email, password, confirmPassword)
         }
     }
 }

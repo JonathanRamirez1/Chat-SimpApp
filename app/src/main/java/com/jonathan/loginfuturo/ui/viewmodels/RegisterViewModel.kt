@@ -1,74 +1,79 @@
 package com.jonathan.loginfuturo.ui.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.jonathan.loginfuturo.R
-import com.jonathan.loginfuturo.core.Event
-import com.jonathan.loginfuturo.core.IdResourceString
-import com.jonathan.loginfuturo.core.ResourceString
-import com.jonathan.loginfuturo.core.SingleLiveEvent
-import com.jonathan.loginfuturo.data.model.UserModel
+import androidx.lifecycle.ViewModel
+import com.jonathan.loginfuturo.core.*
 import  com.jonathan.loginfuturo.data.model.providers.AuthProvider
-import com.jonathan.loginfuturo.data.model.providers.UserProvider
-import java.util.*
 
-class RegisterViewModel(application: Application): AndroidViewModel(application) {
+class RegisterViewModel: ViewModel() {
 
     //Providers
     private val authProvider = AuthProvider()
-    private val userProvider = UserProvider()
 
-    //Models
-    private val userModel = UserModel()
+    private val _isRegister: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val isRegister: LiveData<Boolean> = _isRegister
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean>
-    get() = _isLoading
+    private val _showToast : SingleLiveEvent<String> = SingleLiveEvent()
+    val showToast : LiveData<String> = _showToast
 
-    private val _showToast = SingleLiveEvent<Event<String>>()
-    val showToast : LiveData<Event<String>>
-    get() = _showToast
+    private val _isEmailValid: SingleLiveEvent<String> =  SingleLiveEvent()
+    val isEmailValid: LiveData<String> = _isEmailValid
 
-     fun signUpByEmail(email: String, password: String) {
-         _isLoading.value = true
-        authProvider.register(email, password).addOnCompleteListener { task ->
-            _isLoading.value = false
-                if (task.isSuccessful) {
-                    _isLoading.value = false
-                    authProvider.sendEmailVerification().addOnCompleteListener {
-                        _showToast.value = Event("An email has been sent to you. Confirm before logging in")
-                    }
-                } else {
-                    _isLoading.value = false
-                  //  _showToast.value = IdResourceString(R.string.register_error_create)
-                }
-            }
-    }
+    private val _isPasswordValid: SingleLiveEvent<String> =  SingleLiveEvent()
+    val isPasswordValid: LiveData<String> = _isPasswordValid
 
-    /**Guarda los datos de usuarios registrados, en la Base de Datos de Firestore**/
-     fun saveUserInformation(email: String) {
-        val id: String = authProvider.getUid()
-        val timeStamp = Date()
-        val username = ""
-        userModel.setEmail(email)
-        userModel.setId(id)
-        userModel.setTimeStamp(timeStamp)
-        userModel.setUsername(username)
+    private val _isConfirmPasswordValid: SingleLiveEvent<String> =  SingleLiveEvent()
+    val isConfirmPasswordValid: LiveData<String> = _isConfirmPasswordValid
 
-        userProvider.createCollection(userModel).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-             //   _showToast.value = IdResourceString(R.string.register_user_saved)
-            } else {
-               // _showToast.value = IdResourceString(R.string.register_user_saved_error)
-            }
+    fun validEmail(email: String) {
+        if (isValidEmail(email)) {
+            _isEmailValid.value = null
+        } else {
+            _isEmailValid.value = email
         }
     }
 
-  /*  private fun userClicksOnButton(message: String) {
-        _showToast.value = SingleLiveEvent(message)
-    }*/
+    fun validPassword(password: String) {
+        if (isValidPassword(password)) {
+            _isPasswordValid.value = null
+        } else {
+            _isPasswordValid.value = password
+        }
+    }
+
+    fun validConfirmPassword(password: String, confirmPassword: String) {
+        if (isValidConfirmPassword(password, confirmPassword)) {
+            _isConfirmPasswordValid.value = null
+        } else {
+            _isConfirmPasswordValid.value = confirmPassword
+        }
+    }
+
+    fun onRegister(email: String, password: String, confirmPassword: String) {
+        if (isValidEmail(email) && isValidPassword(password) && isValidConfirmPassword(password, confirmPassword)) {
+            signUpByEmail(email, password)
+        } else {
+            _showToast.value = "Please make sure all data is correct"
+        }
+    }
+
+    private fun signUpByEmail(email: String, password: String) {
+        authProvider.register(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                authProvider.sendEmailVerification().addOnCompleteListener { verifyEmail ->
+                    if (verifyEmail.isSuccessful) {
+                        _isRegister.value = true
+                        _showToast.value = "An email has been sent to you. Confirm before logging in"
+                    } else {
+                        _isRegister.value = false
+                    }
+                }
+            } else {
+                _isRegister.value = false
+                _showToast.value = "This email is already registered"
+            }
+        }
+    }
 }
 
 
