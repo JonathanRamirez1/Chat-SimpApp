@@ -14,6 +14,7 @@ import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.MessageProvider
 import com.jonathan.loginfuturo.data.model.providers.UserProvider
 import com.squareup.picasso.Picasso
+import java.util.*
 
 class ProfileFragment : Fragment() {
 
@@ -55,9 +56,9 @@ class ProfileFragment : Fragment() {
                             val phone: String = documentSnapshot.getString("phone").toString()
                             binding.texViewPhone.text = phone
                         }
-                        if (documentSnapshot.contains("gender")) {
-                            val gender: String = documentSnapshot.getString("gender").toString()
-                            binding.textViewGender.text = gender
+                        if (documentSnapshot.contains("timeStamp")) {
+                            val timeStamp: Date? = documentSnapshot.getDate("timeStamp")
+                            binding.textViewGender.text = timeStamp.toString()
                         }
                         if (documentSnapshot.contains("cover")) {
                             val cover: String = documentSnapshot.getString("cover").toString()

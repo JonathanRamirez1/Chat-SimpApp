@@ -1,143 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".ui.view.activities.CompleteInfoActivity">
+
+    <include
+        android:id="@+id/toolbarView"
+        layout="@layout/toolbar" />
+
+    <ImageView
+        android:id="@+id/imageViewCompleteCover"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="54dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/person"
+        android:transitionName="@string/search"
+        app:layout_anchor="@+id/imageViewCompleteCover"
+        app:layout_anchorGravity="center"
+        app:layout_collapseMode="parallax" />
+
+    <Button
+        android:id="@+id/buttonCompleteCover"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="360dp"
+        android:layout_marginTop="260dp"
+        android:background="@drawable/ic_photo" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleCompletePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginTop="225dp"
+        android:src="@drawable/person"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="5dp"
+        app:civ_circle_background_color="@color/colorPrimaryDark" />
+
+    <Button
+        android:id="@+id/buttonCompletePhoto"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="225dp"
+        android:layout_marginTop="310dp"
+        android:background="@drawable/ic_photo" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
-        tools:context=".ui.view.activities.CompleteInfoActivity">
-
-   <include
-       android:id="@+id/toolbarView"
-       layout="@layout/toolbar"/>
-
-        <ImageView
-            android:id="@+id/imageViewCompleteCover"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/person"
-            android:transitionName="@string/search"
-            android:layout_marginTop="54dp"
-            app:layout_anchor="@+id/imageViewCompleteCover"
-            app:layout_anchorGravity="center"
-            app:layout_collapseMode="parallax"/>
-
-        <Button
-            android:id="@+id/buttonCompleteCover"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_photo"
-            android:layout_marginTop="260dp"
-            android:layout_marginStart="340dp"/>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleCompletePhoto"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:src="@drawable/person"
-            app:civ_circle_background_color="@color/colorPrimaryDark"
-            android:layout_marginTop="225dp"
-            app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="5dp"/>
-
-        <Button
-            android:id="@+id/buttonCompletePhoto"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/ic_photo"
-            android:layout_marginTop="310dp"
-            android:layout_marginStart="220dp"/>
+        android:layout_marginTop="200dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="200dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="190dp"
+            android:layout_marginRight="30dp"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="190dp">
+                android:background="@drawable/editext_rounded">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/materialEditTextCompleteUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editext_rounded">
+                    android:hint="@string/username"
+                    android:inputType="text">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/materialEditTextCompleteUsername"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/username"
-                        android:inputType="text">
-
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/editext_rounded">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/materialEditTextCompletePhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/phone_number"
-                        android:maxLength="13">
-
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/editext_rounded">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/materialEditTextCompleteGender"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/gender"
-                        android:inputType="text">
-
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-
-        <Button
-            android:id="@+id/buttonCompleteOk"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/complete"
-            android:layout_margin="20dp"
-            android:textColor="@color/colorPrimaryText"
-            android:layout_gravity="bottom"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/editext_rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/materialEditTextCompletePhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/phone_number"
+                    android:maxLength="13">
+
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonCompleteOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/complete"
+        android:textColor="@color/colorPrimaryText" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

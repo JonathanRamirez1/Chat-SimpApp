@@ -22,6 +22,7 @@ import com.jonathan.loginfuturo.core.*
 import com.jonathan.loginfuturo.core.Constants.REQUEST_CODE_GOOGLE_SIGN_IN
 import com.jonathan.loginfuturo.core.ext.createFactory
 import com.jonathan.loginfuturo.databinding.FragmentLoginBinding
+import com.jonathan.loginfuturo.ui.view.activities.CompleteInfoActivity
 import com.jonathan.loginfuturo.ui.view.activities.HomeActivity
 import com.jonathan.loginfuturo.ui.viewmodels.LoginViewModel
 
@@ -55,7 +56,12 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
 
     private fun setObservers() {
 
-        loginViewModel.isEmailValid.observe(viewLifecycleOwner) { email ->
+        loginViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
+            val visibility = if (loading == true) setUpProgress().show() else setUpProgress().dismiss()
+            Log.d("CONSOLE", "isViewLoading $visibility ")
+        }
+
+        loginViewModel.emailValid.observe(viewLifecycleOwner) { email ->
             if (email != null) {
                 binding.editTextEmailLogin.error = getString(R.string.email_is_no_valid)
             }
@@ -67,9 +73,11 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
             }
         }
 
-        loginViewModel.isAuthenticated.observe(viewLifecycleOwner) { login ->
-            if (login == true) {
+        loginViewModel.isDestinyView.observe(viewLifecycleOwner) { home ->
+            if (home == true) {
                 goToHomeView()
+            } else if (home == false) {
+                goToCompleteInfoView()
             }
         }
 
@@ -87,6 +95,12 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
 
     private fun goToHomeView() {
         val intent = Intent(context, HomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    private fun goToCompleteInfoView() {
+        val intent = Intent(context, CompleteInfoActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
@@ -126,7 +140,7 @@ class LoginFragment : Fragment(), GoogleApiClient.OnConnectionFailedListener {
         loginUser.setOnClickListener {
             val email = binding.editTextEmailLogin.text.toString().trim()
             val password = binding.editTextPasswordLogin.text.toString().trim()
-            loginViewModel.onLogin(email, password)
+            loginViewModel.onLoginEmailAndPassword(email, password)
         }
     }
 

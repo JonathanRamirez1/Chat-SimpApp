@@ -8,6 +8,7 @@ import android.util.Patterns
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import com.jonathan.loginfuturo.R
 import dmax.dialog.SpotsDialog
@@ -44,6 +45,17 @@ fun Activity.isValidPhoneNumber(phone: String): Boolean {
     return pattern.matcher(phone).matches()
 }
 
+fun ViewModel.isValidUsername(username: String) : Boolean {
+    val usernamePattern = "^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"
+    val pattern = Pattern.compile(usernamePattern)
+    return pattern.matcher(username).matches()
+}
+fun ViewModel.isValidPhoneNumber(phone: String): Boolean {
+    val phonePatterns = "^\\+(?:[0-9] ?){6,14}[0-9]\$"
+    val pattern = Pattern.compile(phonePatterns)
+    return pattern.matcher(phone).matches()
+}
+
 /** Caracteres permitidos en el email**/
 fun ViewModel.isValidEmail(email: String) : Boolean {
     val patterns = Patterns.EMAIL_ADDRESS
@@ -73,4 +85,12 @@ fun Fragment.setUpProgress(): AlertDialog {
        .setTheme(R.style.Custom)
        .setCancelable(false)
        .build()
+}
+
+fun Activity.setUpProgress(): AlertDialog {
+    return SpotsDialog.Builder()
+        .setContext(this)
+        .setTheme(R.style.Custom)
+        .setCancelable(false)
+        .build()
 }

@@ -17,7 +17,6 @@ class ImageProvider {
         val storageProfile: StorageReference = FirebaseStorage.getInstance().reference.child(Date().toString() + ".jpg")
         storageReference = storageProfile
         return storageProfile.putBytes(imageByte)
-
     }
 
     fun getStorage(): StorageReference {

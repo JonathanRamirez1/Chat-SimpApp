@@ -6,7 +6,7 @@ import com.jonathan.loginfuturo.data.model.UserModel
 import java.util.*
 import kotlin.collections.HashMap
 
-class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19:49
+class UserProvider {
 
     private val userCollection: CollectionReference = FirebaseFirestore.getInstance().collection("UsersRegister")
 
@@ -23,10 +23,10 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
     }
 
     /**SI SE QUIERE ACTUALIZAR ALGUN CAMPO AGREGAR LOS MAPS IGUAL AL DE USERNAME**/
-    fun updateCollection(userModel: UserModel): Task<Void> { //TODO SE SACO DE LA CARPETA 3 VIDEO 2; 10:36
+    fun updateCollection(userModel: UserModel): Task<Void> {
         val updateUser: MutableMap<String, Any> = HashMap()
         updateUser["photo"] = userModel.getPhoto()
-        return userCollection.document(userModel.getId()).update(updateUser) //TODO ALGUN ERROR DE NULLPOINTEXCEPTION SE DEBE PASAR EL ID (userModel.setId(id) EN FRAGMENT REQUERIDO)
+        return userCollection.document(userModel.getId()).update(updateUser)
     }
 
     fun completeUserInfo(userModel: UserModel): Task<Void> {
@@ -35,7 +35,6 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
         complete["photo"] = userModel.getPhoto()
         complete["username"] = userModel.getUsername()
         complete["phone"] = userModel.getPhone()
-        complete["gender"] = userModel.getGender()
         return userCollection.document(userModel.getId()).update(complete)
     }
 
@@ -64,7 +63,7 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
     }
 
     fun getUserByEmail(email: String) : Query {
-        return userCollection.orderBy("email").startAt(email).endAt(email+'\uf8ff')  //TODO CONTINUAR EN CARPETA 6 VIDEO 18; 3:21
+        return userCollection.orderBy("email").startAt(email).endAt(email+'\uf8ff')
     }
 
     //TODO USAR PARA OBTENER DOS RESULTADOS

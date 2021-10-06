@@ -82,14 +82,6 @@ class UserModel {
         this.phone = phone
     }
 
-    fun getGender(): String {
-        return gender
-    }
-
-    fun setGender(gender: String) {
-        this.gender = gender
-    }
-
     fun getTimeStamp(): Date {
         return timeStamp
     }

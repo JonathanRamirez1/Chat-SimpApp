@@ -65,28 +65,11 @@ class RoomsFragment : Fragment() {
 
     private fun checkCompleteInfo() {
         val goCompleteFragment = binding.floatingButtonCompleteInfo
-        val id: String = authProvider.getUid()
 
         goCompleteFragment.setOnClickListener {
-
-            userProvider.getUser(id).addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    val cover: String = documentSnapshot.getString("cover").toString()
-                    val phone: String = documentSnapshot.getString("phone").toString()
-                    val photo: String = documentSnapshot.getString("photo").toString()
-                    val username: String = documentSnapshot.getString("username").toString()
-                    val gender: String = documentSnapshot.getString("gender").toString()
-                    if (cover.isEmpty() && phone.isEmpty() && photo.isEmpty() && username.isEmpty() && gender.isEmpty()) {
-                        val intent = Intent(context, CompleteInfoActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                    } else {
-                        val intent = Intent(context, FindUserActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                    }
-                }
-            }
+            val intent = Intent(context, FindUserActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 
@@ -102,8 +85,3 @@ class RoomsFragment : Fragment() {
         roomsAdapter?.startListening()
     }
 }
-
-
-
-
-

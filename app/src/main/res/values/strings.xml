@@ -37,7 +37,7 @@
 
     <!-- InfoFragment -->
     <string name="phone_number_profile">Phone Number</string>
-    <string name="gender_profile">Gender</string>
+    <string name="registration_date">Registration Date</string>
     <string name="username_profile">Username</string>
     <string name="email_profile">Email</string>
     <string name="info_no_name">Name is not available</string>
