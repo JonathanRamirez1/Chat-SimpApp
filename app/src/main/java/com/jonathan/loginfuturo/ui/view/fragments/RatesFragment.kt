@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdError
@@ -30,7 +29,6 @@ import io.reactivex.disposables.Disposable
 import java.util.EventListener
 import kotlin.collections.ArrayList
 
-
 class RatesFragment : Fragment() {
 
     private lateinit var binding: FragmentRatesBinding
@@ -47,7 +45,7 @@ class RatesFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rates, container, false)
+        binding = FragmentRatesBinding.inflate(inflater, container, false)
         return  binding.root
     }
 
@@ -70,7 +68,7 @@ class RatesFragment : Fragment() {
         ratesDataBaseReference = fireBaseStore.collection("rates")
     }
 
-    /** SI EL USUAROI ESTA LOGGEADO LO DA Y SINO LO MANDA A LA PANTALLA DE LOGGIN O CUALQUIER OTRA ACCION**/
+    /** SI EL USUARIO ESTA LOGEADO LO DA Y SINO LO MANDA A LA PANTALLA DE LOGIN O CUALQUIER OTRA ACCION**/
 
     private fun setUPCurrentUser() {
             firebaseUser = firebaseAuth.currentUser!!
@@ -133,7 +131,6 @@ class RatesFragment : Fragment() {
             })
     }
 
-    //TODO QUITAR
     private fun subscribeToNewRatings() {
         rateBusListener =  RxBus.listern(NewRateEvent::class.java).subscribe {
             saveRate(it.rate)

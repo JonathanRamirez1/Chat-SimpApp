@@ -3,10 +3,13 @@ package com.jonathan.loginfuturo.ui.view.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.data.model.Rate
 import com.jonathan.loginfuturo.core.CircleTransform
+import com.jonathan.loginfuturo.databinding.ItemRatesBinding
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_rates.view.*
 import java.text.SimpleDateFormat
@@ -15,7 +18,8 @@ class RatesAdapter(private  val items : List<Rate>) : RecyclerView.Adapter<Rates
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) :  RatesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return RatesViewHolder(layoutInflater.inflate(R.layout.item_rates, parent, false))
+        val binding = ItemRatesBinding.inflate(layoutInflater, parent, false)
+        return RatesViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -26,19 +30,19 @@ class RatesAdapter(private  val items : List<Rate>) : RecyclerView.Adapter<Rates
         return holder.bind(items[position])
     }
 
-    class RatesViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(rate: Rate) = with(itemView) {
-            textViewRate.text = rate.text
-            textViewStar.text = rate.rate.toString()
-            textViewCalendar.text = SimpleDateFormat("dd MMMM, yyyy").format(rate.createAt)
+    class RatesViewHolder(val binding: ItemRatesBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(rate: Rate) = with(binding) {
+            binding.textViewRate.text = rate.text
+            binding.textViewStar.text = rate.rate.toString()
+            binding.textViewCalendar.text = SimpleDateFormat("dd MMMM, yyyy").format(rate.createAt)
             if (rate.profileImageUrl.isEmpty()) {
                 Picasso.get().load(R.drawable.person).resize(100, 100)
                     .centerCrop().transform(CircleTransform())
-                    .into(imageViewProfile)
+                    .into(binding.imageViewProfile)
             } else {
                 Picasso.get().load(rate.profileImageUrl).resize(100, 100)
                     .centerCrop().transform(CircleTransform())
-                    .into(imageViewProfile)
+                    .into(binding.imageViewProfile)
             }
         }
     }
