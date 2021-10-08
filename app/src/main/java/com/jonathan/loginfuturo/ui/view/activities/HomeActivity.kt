@@ -24,7 +24,6 @@ import com.jonathan.loginfuturo.ui.view.adapters.PagerAdapter
 import com.jonathan.loginfuturo.ui.view.fragments.ContainerChatFragment
 import com.jonathan.loginfuturo.ui.view.fragments.ProfileFragment
 import com.jonathan.loginfuturo.ui.view.fragments.RatesFragment
-import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -82,7 +81,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setUpBottomNavigationBar() {
 
-        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+        binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bottom_nav_info -> {
                     binding.viewPager.currentItem = 0
@@ -150,7 +149,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         ViewedMessageHelper.updateState(true, this)
-        binding. bottomNavigation.visibility = View.VISIBLE
+        binding.bottomNavigation.visibility = View.VISIBLE
     }
 
     override fun onPause() {
