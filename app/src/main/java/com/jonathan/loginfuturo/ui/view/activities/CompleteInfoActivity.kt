@@ -3,7 +3,6 @@ package com.jonathan.loginfuturo.ui.view.activities
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -17,20 +16,15 @@ import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.*
 import com.jonathan.loginfuturo.core.*
-import com.jonathan.loginfuturo.core.ConvertUriToFile.from
 import com.jonathan.loginfuturo.core.ext.createFactory
-import com.jonathan.loginfuturo.data.model.UserModel
-import com.jonathan.loginfuturo.data.model.providers.AuthProvider
-import com.jonathan.loginfuturo.data.model.providers.ImageProvider
-import com.jonathan.loginfuturo.data.model.providers.UserProvider
 import com.jonathan.loginfuturo.databinding.ActivityCompleteInfoBinding
-import com.jonathan.loginfuturo.databinding.ToolbarBinding
 import com.jonathan.loginfuturo.ui.viewmodels.CompleteInfoViewModel
-import com.squareup.picasso.Picasso
-import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_complete_info.*
 import java.io.File
 import java.util.*
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 
 class CompleteInfoActivity : AppCompatActivity() {
 
@@ -56,6 +50,8 @@ class CompleteInfoActivity : AppCompatActivity() {
         validFields()
         changeCoverPhoto()
         changeProfilePhoto()
+        setTemplateNativeAdvanced()
+        setTemplateNativeAdvanced2()
     }
 
     private fun setObservers() {
@@ -217,5 +213,31 @@ class CompleteInfoActivity : AppCompatActivity() {
         val imageProfile = binding.circleCompletePhoto
         val imageCover = binding.imageViewCompleteCover
        completeInfoViewModel.onActivityResult(requestCode, resultCode, data, imageProfile, imageCover)
+    }
+
+    private fun setTemplateNativeAdvanced() {
+        val adRequest = AdRequest.Builder().build()
+        MobileAds.initialize(this)
+        val adLoader: AdLoader = AdLoader.Builder(this, "ca-app-pub-3940256099942544/2247696110")
+            .forNativeAd { nativeAd ->
+                val template = binding.templateComplete
+                template.setNativeAd(nativeAd)
+            }
+            .build()
+
+        adLoader.loadAd(adRequest)
+    }
+
+    private fun setTemplateNativeAdvanced2() {
+        val adRequest = AdRequest.Builder().build()
+        MobileAds.initialize(this)
+        val adLoader: AdLoader = AdLoader.Builder(this, "ca-app-pub-3940256099942544/1044960115")
+            .forNativeAd { nativeAd ->
+                val template = binding.templateComplete2
+                template.setNativeAd(nativeAd)
+            }
+            .build()
+
+        adLoader.loadAd(adRequest)
     }
 }

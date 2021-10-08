@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark">
 
     <EditText
@@ -118,4 +119,19 @@
             android:textColor="@color/colorPrimaryText" />
 
     </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/bannerRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/test_banner"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSignUp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

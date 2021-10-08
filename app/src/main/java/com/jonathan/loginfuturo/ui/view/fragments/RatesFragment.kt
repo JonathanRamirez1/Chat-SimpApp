@@ -1,5 +1,6 @@
 package com.jonathan.loginfuturo.ui.view.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.*
@@ -34,6 +41,7 @@ class RatesFragment : Fragment() {
 
     private val ratesList: ArrayList<Rate> = ArrayList()
     private var ratesSubscription: ListenerRegistration? = null
+    private var interstitial: InterstitialAd? = null
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val fireBaseStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
@@ -52,6 +60,8 @@ class RatesFragment : Fragment() {
         sepUpFab()
         subscribeToRatings()
         subscribeToNewRatings()
+        initInterstitialAd()
+        initListeners()
     }
 
     /** CUANDO SE AGREGA ALGUN VALOR VERIFICA SI EXISTE, DE EXISTIR LA AÑADE Y SINO LA CREA**/
@@ -79,6 +89,8 @@ class RatesFragment : Fragment() {
     private fun sepUpFab() {
         binding.fabRating.setOnClickListener {
             fragmentManager?.let { it1 -> RateDialog().show(it1, "") }
+            showAds()
+            initInterstitialAd()
         }
     }
 
@@ -121,10 +133,32 @@ class RatesFragment : Fragment() {
             })
     }
 
+    //TODO QUITAR
     private fun subscribeToNewRatings() {
         rateBusListener =  RxBus.listern(NewRateEvent::class.java).subscribe {
             saveRate(it.rate)
         }
+    }
+
+    private fun initListeners() {
+        interstitial?.fullScreenContentCallback = object : FullScreenContentCallback() {
+
+            override fun onAdDismissedFullScreenContent() {}
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {}
+            override fun onAdShowedFullScreenContent() { interstitial = null }
+        }
+    }
+
+    //TODO CAMBIAR LOS IDS DE ADS(ANUNCIOS) EN EL XML Y EL MANIFEST CUANDO SE TERMINE LA APP, LOS ACTUALES SON DE PRUEBA (Ver strings o video de ari)
+    private fun initInterstitialAd() {
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(requireContext(), getString(R.string.test_interstitial), adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdLoaded(interstitialAd: InterstitialAd) { interstitial = interstitialAd }
+            override fun onAdFailedToLoad(p0: LoadAdError) { interstitial = null } })
+    }
+
+    private fun showAds() {
+        interstitial?.show(context as Activity)
     }
 
     override fun onDestroyView() {

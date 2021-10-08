@@ -1,5 +1,6 @@
 package com.jonathan.loginfuturo.ui.view.fragments
 
+import android.app.Activity
 import android.content.Context.*
 import android.content.Intent
 import android.os.Bundle
@@ -27,6 +28,12 @@ import com.jonathan.loginfuturo.core.ViewedMessageHelper
 import com.jonathan.loginfuturo.core.WrapContentLinearLayoutManager
 import com.squareup.picasso.Picasso
 import android.net.ConnectivityManager
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.jonathan.loginfuturo.data.model.FCMBody
@@ -56,6 +63,7 @@ class ChatFragment : Fragment() {
     private var userInfoRegistration: ListenerRegistration? = null
     private var lastMessageEmisorRegistration: ListenerRegistration? = null
     private var messageReceiver: MessageReceiver? = null
+    private var interstitial: InterstitialAd? = null
 
     private var idUserEmisor: String = ""
     private var idUserReceptor: String = ""
@@ -89,6 +97,8 @@ class ChatFragment : Fragment() {
         sendMessage()
         launchRoomsFragment()
         getUserInfo()
+        initInterstitialAd()
+        initListeners()
     }
 
     override fun onResume() {
@@ -247,6 +257,8 @@ class ChatFragment : Fragment() {
             val intent = Intent(context, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+            showAds()
+            initInterstitialAd()
         }
     }
 
@@ -405,6 +417,27 @@ class ChatFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun initListeners() {
+        interstitial?.fullScreenContentCallback = object : FullScreenContentCallback() {
+
+            override fun onAdDismissedFullScreenContent() {}
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {}
+            override fun onAdShowedFullScreenContent() { interstitial = null }
+        }
+    }
+
+    //TODO CAMBIAR LOS IDS DE ADS(ANUNCIOS) EN EL XML Y EL MANIFEST CUANDO SE TERMINE LA APP, LOS ACTUALES SON DE PRUEBA (Ver strings o video de ari)
+    private fun initInterstitialAd() {
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(requireContext(), getString(R.string.test_interstitial), adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdLoaded(interstitialAd: InterstitialAd) { interstitial = interstitialAd }
+            override fun onAdFailedToLoad(p0: LoadAdError) { interstitial = null } })
+    }
+
+    private fun showAds() {
+        interstitial?.show(context as Activity)
     }
 
     private fun getConnectivity() {

@@ -86,8 +86,7 @@ class CompleteInfoViewModel(application: Application): AndroidViewModel(applicat
                 /**TOMO UNA FOTO DE LA CAMARA Y LA OTRA LA SELECCIONO DESDE GALERIA**/
                 else if (fileProfileCamera != null && fileCoverGallery != null) {
                     saveUserInfo(username, phone, fileProfileCamera!!, fileCoverGallery!!)
-                }
-                else {
+                } else {
                     _showToast.value = "You need a cover photo and a profile photo to continue"
                 }
             }
@@ -97,21 +96,20 @@ class CompleteInfoViewModel(application: Application): AndroidViewModel(applicat
     }
 
     private fun saveUserInfo(username: String, phone: String, fileProfile: File, fileCover: File) {
-        _isLoading.value = true
         imageProvider.saveImageProfile(getApplication(), fileProfile)
             .addOnCompleteListener { taskProfile ->
                 if (taskProfile.isSuccessful) {
                     imageProvider.getStorage().downloadUrl.addOnSuccessListener { uriProfile ->
                         val profile: String = uriProfile.toString()
-                        imageProvider.saveImageProfile(getApplication(), fileCover)
-                            .addOnCompleteListener { taskCover ->
-                                if (taskCover.isSuccessful) {
-                                    saveImageInStorage(username, phone, profile)
-                                } else {
-                                    _isLoading.value = false
-                                    _showToast.value = "Cover photo failed"
-                                }
+                        imageProvider.saveImageProfile(getApplication(), fileCover).addOnCompleteListener { taskCover ->
+                            if (taskCover.isSuccessful) {
+                                _isLoading.value = true
+                                saveImageInStorage(username, phone, profile)
+                            } else {
+                                _isLoading.value = false
+                                _showToast.value = "Cover photo failed"
                             }
+                        }
                     }
                 } else {
                     _isLoading.value = false

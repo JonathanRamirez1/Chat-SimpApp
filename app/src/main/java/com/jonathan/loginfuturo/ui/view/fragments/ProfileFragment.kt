@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.firestore.ListenerRegistration
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.core.CircleTransform
@@ -14,6 +17,8 @@ import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.MessageProvider
 import com.jonathan.loginfuturo.data.model.providers.UserProvider
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_rates.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class ProfileFragment : Fragment() {
@@ -37,6 +42,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getUser()
+        setTemplateNativeAdvanced()
     }
 
     private fun getUser() {
@@ -58,7 +64,7 @@ class ProfileFragment : Fragment() {
                         }
                         if (documentSnapshot.contains("timeStamp")) {
                             val timeStamp: Date? = documentSnapshot.getDate("timeStamp")
-                            binding.textViewGender.text = timeStamp.toString()
+                            binding.textViewGender.text = SimpleDateFormat("dd MMMM, yyyy").format(timeStamp)
                         }
                         if (documentSnapshot.contains("cover")) {
                             val cover: String = documentSnapshot.getString("cover").toString()
@@ -82,6 +88,19 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+    }
+
+    private fun setTemplateNativeAdvanced() {
+        val adRequest = AdRequest.Builder().build()
+        MobileAds.initialize(requireContext())
+        val adLoader: AdLoader = AdLoader.Builder(requireContext(), getString(R.string.test_native_advanced))
+            .forNativeAd { nativeAd ->
+                val template = binding.templateProfile
+                template.setNativeAd(nativeAd)
+            }
+            .build()
+
+        adLoader.loadAd(adRequest)
     }
 
     override fun onDestroy() {

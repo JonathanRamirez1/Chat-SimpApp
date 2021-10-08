@@ -13,10 +13,9 @@
             android:layout_height="350dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:layout_height="match_parent">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -25,7 +24,7 @@
 
                     <ImageView
                         android:id="@+id/imageViewCover"
-                        android:layout_width="411dp"
+                        android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/person"
@@ -123,16 +122,21 @@
                     </LinearLayout>
 
                 </FrameLayout>
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="390dp"
-            android:layout_marginTop="0dp"
-            android:background="@color/colorPrimaryDark"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimaryDark">
 
-        </androidx.core.widget.NestedScrollView>
+            <com.google.android.ads.nativetemplates.TemplateView
+                android:id="@+id/templateProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:gnt_template_type="@layout/gnt_medium_template_view" />
+
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -17,7 +17,7 @@ import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.MessageProvider
 import com.jonathan.loginfuturo.data.model.providers.NotificationProvider
 import com.jonathan.loginfuturo.data.model.providers.TokenProvider
-import com.jonathan.loginfuturo.core.firebase.MyFirebaseMessagingClient.Companion.NOTIFICATION_REPLY
+import com.jonathan.loginfuturo.data.network.MyFirebaseMessagingClient.Companion.NOTIFICATION_REPLY
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
