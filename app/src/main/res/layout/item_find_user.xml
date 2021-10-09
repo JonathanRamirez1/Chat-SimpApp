@@ -1,54 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayoutFindUser"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/imageViewPhoto"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/person" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutFindUser"
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp">
+        android:layout_height="match_parent"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageViewPhoto"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/person"/>
+        <TextView
+            android:id="@+id/textViewUsernameFind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/username" />
 
-        <LinearLayout
-            android:id="@+id/constraintLayout"
+        <TextView
+            android:id="@+id/textViewEmailFind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/email_profile" />
+
+        <View
+            android:id="@+id/viewSeparatorFindUser"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:orientation="vertical">
+            android:layout_height="0.3dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/colorDivider" />
 
-            <TextView
-                android:id="@+id/textViewUsernameFind"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Username"/>
-
-            <TextView
-                android:id="@+id/textViewEmailFind"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Email"/>
-
-            <View
-                android:id="@+id/viewSeparatorFindUser"
-                android:layout_width="match_parent"
-                android:layout_height="0.3dp"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/colorDivider"/>
-
-        </LinearLayout>
     </LinearLayout>
-</layout>
+</LinearLayout>

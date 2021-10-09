@@ -31,17 +31,16 @@ class FindUserFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     private var mFindUserAdapter: FindUserAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, avedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_find_user, container, false)
-        binding.searchBar.setOnSearchActionListener(this)
-
-        userProvider = UserProvider()
-        authProvider = AuthProvider()
-        authProvider.setUPCurrentUser()
+        binding = FragmentFindUserBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.searchBar.setOnSearchActionListener(this)
+        userProvider = UserProvider()
+        authProvider = AuthProvider()
+        authProvider.setUPCurrentUser()
         launchGoBackRooms()
     }
 
@@ -56,9 +55,9 @@ class FindUserFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     }
 
     override fun onSearchStateChanged(enabled: Boolean) {
-      if (!enabled) {
-          getAllEmail()
-      }
+        if (!enabled) {
+            getAllEmail()
+        }
         if (enabled) {
             binding.buttonBackRooms.visibility = View.GONE
         } else {
@@ -111,7 +110,7 @@ class FindUserFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity?)?.supportActionBar?.show()
-            findUserAdapter?.stopListening()
+        findUserAdapter?.stopListening()
         if (mFindUserAdapter != null) {
             mFindUserAdapter?.stopListening()
         }

@@ -35,7 +35,7 @@
     <string name="navigation_bottom_rates">Rates</string>
     <string name="navigation_bottom_chat">Chat</string>
 
-    <!-- InfoFragment -->
+    <!-- ProfileFragment -->
     <string name="phone_number_profile">Phone Number</string>
     <string name="registration_date">Registration Date</string>
     <string name="username_profile">Username</string>
@@ -44,6 +44,7 @@
     <string name="options_menu_log_out">Log out</string>
 
     <string name="user_message">User Message</string>
+    <string name="username_rooms">Username</string>
 
     <!-- AlertDialog-->
     <string name="alert_dialog_title">Rate the App!</string>

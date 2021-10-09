@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -37,17 +36,17 @@ class RoomsFragment : Fragment() {
     private var interstitial: InterstitialAd? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rooms, container, false)
-
-        authProvider = AuthProvider()
-        chatProvider = ChatProvider()
-        userProvider = UserProvider()
+        binding = FragmentRoomsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkCompleteInfo()
+        authProvider = AuthProvider()
+        chatProvider = ChatProvider()
+        userProvider = UserProvider()
+
+        goFindUser()
         initInterstitialAd()
         initListeners()
     }
@@ -72,10 +71,10 @@ class RoomsFragment : Fragment() {
         }
     }
 
-    private fun checkCompleteInfo() {
-        val goCompleteFragment = binding.floatingButtonCompleteInfo
+    private fun goFindUser() {
+        val goFindUserFragment = binding.floatingButtonFindUser
 
-        goCompleteFragment.setOnClickListener {
+        goFindUserFragment.setOnClickListener {
             val intent = Intent(context, FindUserActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
