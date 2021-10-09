@@ -1,53 +1,71 @@
 package com.jonathan.loginfuturo.ui.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.R
+import com.jonathan.loginfuturo.core.ext.createFactory
 import com.jonathan.loginfuturo.databinding.FragmentForgotPasswordBinding
-import com.jonathan.loginfuturo.core.isValidEmail
 import com.jonathan.loginfuturo.core.validate
-
+import com.jonathan.loginfuturo.ui.viewmodels.ForgotPasswordViewModel
 
 class ForgotPasswordFragment : Fragment() {
 
     private lateinit var binding: FragmentForgotPasswordBinding
     private lateinit var navController: NavController
 
-    private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private val forgotPasswordViewModel by viewModels<ForgotPasswordViewModel> {
+        ForgotPasswordViewModel().createFactory()
+    }
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_forgot_password, container, false)
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setObservers()
         validResetPassword()
         launchLoginFragmentFromForgotPassword(view)
-        resetPassword(view)
+        resetPassword()
+    }
+
+    private fun setObservers() {
+
+        forgotPasswordViewModel.emailValid.observe(viewLifecycleOwner) { email ->
+            if (email != null) {
+                binding.editTextEmail.error = getString(R.string.email_is_no_valid)
+            }
+        }
+
+        forgotPasswordViewModel.showToast.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            Log.d("CONSOLE", "onError $it ")
+        }
+
+        forgotPasswordViewModel.isResetPassword.observe(viewLifecycleOwner) { resetPassword ->
+            if (resetPassword == true) {
+                view?.let { goToLoginView(it) }
+            }
+        }
+    }
+
+    private fun goToLoginView(view: View) {
+        navController = Navigation.findNavController(view)
+        navController.navigate(R.id.loginFragment)
     }
 
     private fun validResetPassword() {
         binding.editTextEmail.validate { email ->
-            if (isValidEmail(email)) {
-                binding.editTextEmail.error = null
-            } else {
-                binding.editTextEmail.error = getString(R.string.login_forgot_password)
-            }
+            forgotPasswordViewModel.validEmail(email)
         }
     }
 
@@ -56,29 +74,16 @@ class ForgotPasswordFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
         goLogin.setOnClickListener {
-
             navController.navigate(R.id.loginFragment)
-            //TODO IMPLEMENTAR TRANSACCION Y FLAG intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            // overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 
-    private fun resetPassword(view: View) {
+    private fun resetPassword() {
         val resetPassword = binding.buttonForgotPassword
 
         resetPassword.setOnClickListener {
             val email = binding.editTextEmail.text.toString()
-            if (isValidEmail(email)) {
-                firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
-                    Toast.makeText(context, "Email has been sent to reset your password", Toast.LENGTH_SHORT).show()
-                    navController = Navigation.findNavController(view)
-                    navController.navigate(R.id.loginFragment)
-                    //TODO IMPLEMENTAR TRANSACCION Y FLAG intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                }
-            } else {
-                Toast.makeText(context, "Please make sure the email is correct", Toast.LENGTH_SHORT).show()
-            }
+            forgotPasswordViewModel.onResetPassword(email)
         }
     }
 }

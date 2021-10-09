@@ -21,6 +21,10 @@ class AuthProvider {
         return firebaseAuth.createUserWithEmailAndPassword(email, password)
     }
 
+    fun resetPassword(email: String): Task<Void> {
+        return firebaseAuth.sendPasswordResetEmail(email)
+    }
+
     fun googleLogin(googleSingAccount: GoogleSignInAccount): Task<AuthResult> {
         val credential: AuthCredential = GoogleAuthProvider.getCredential(googleSingAccount.idToken, null)
         return firebaseAuth.signInWithCredential(credential)
