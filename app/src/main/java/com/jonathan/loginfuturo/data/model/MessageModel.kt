@@ -1,6 +1,6 @@
 package com.jonathan.loginfuturo.data.model
 
-class Message {
+class MessageModel {
     private var id: String = ""
     private var idEmisor: String = ""
     private var idReceptor: String = ""
@@ -9,21 +9,6 @@ class Message {
     private var timeStamp: Long = 123
     private var viewed: Boolean = false
     private var profileImageUrl: String = ""
-
-    fun Message() {
-
-    }
-
-    fun Message(id: String, idEmisor: String, idReceptor: String, idChat: String, message: String, timeStamp: Long, viewed: Boolean, profileImageUrl: String) {
-        this.id = id
-        this.idEmisor = idEmisor
-        this.idReceptor = idReceptor
-        this.idChat = idChat
-        this.message = message
-        this.timeStamp = timeStamp
-        this.viewed = viewed
-        this.profileImageUrl = profileImageUrl
-    }
 
     fun getId(): String {
         return id

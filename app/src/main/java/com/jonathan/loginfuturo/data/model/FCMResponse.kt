@@ -7,7 +7,7 @@ class FCMResponse(private var multicast_id: Long,
                   private var success: Int,
                   private var failure: Int,
                   private var canonical_ids: Int,
-                  results: ArrayList<Any>) { //TODO 7 4; 2:58
+                  results: ArrayList<Any>) {
 
     private var results = ArrayList<Any>()
 
