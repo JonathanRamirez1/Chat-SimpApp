@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.*
 import com.jonathan.loginfuturo.R
-import com.jonathan.loginfuturo.core.RxBus
+import com.jonathan.loginfuturo.core.objects.RxBus
 import com.jonathan.loginfuturo.data.model.Rate
 import com.jonathan.loginfuturo.core.RateDialog
 import com.jonathan.loginfuturo.databinding.FragmentRatesBinding

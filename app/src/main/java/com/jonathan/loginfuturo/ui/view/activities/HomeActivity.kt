@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.facebook.login.LoginManager
 import com.google.android.gms.ads.AdError
@@ -16,7 +17,8 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.R
-import com.jonathan.loginfuturo.core.ViewedMessageHelper
+import com.jonathan.loginfuturo.core.objects.UpdateStateHelper
+import com.jonathan.loginfuturo.core.ext.createFactory
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.TokenProvider
 import com.jonathan.loginfuturo.databinding.ActivityHomeBinding
@@ -24,6 +26,7 @@ import com.jonathan.loginfuturo.ui.view.adapters.PagerAdapter
 import com.jonathan.loginfuturo.ui.view.fragments.ContainerChatFragment
 import com.jonathan.loginfuturo.ui.view.fragments.ProfileFragment
 import com.jonathan.loginfuturo.ui.view.fragments.RatesFragment
+import com.jonathan.loginfuturo.ui.viewmodels.ChatViewModel
 
 class HomeActivity : AppCompatActivity() {
 
@@ -33,6 +36,10 @@ class HomeActivity : AppCompatActivity() {
 
     private var previewBottomSelected: MenuItem? = null
     private var interstitial: InterstitialAd? = null
+
+    private val chatViewModel by viewModels<ChatViewModel> {
+        ChatViewModel().createFactory()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,12 +155,13 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        ViewedMessageHelper.updateState(true, this)
+        UpdateStateHelper.updateState("true", "false",this)
+        chatViewModel.setOnDisconnect()
         binding.bottomNavigation.visibility = View.VISIBLE
     }
 
     override fun onPause() {
         super.onPause()
-        ViewedMessageHelper.updateState(false, this)
+        UpdateStateHelper.updateState("false", "false",this)
     }
 }

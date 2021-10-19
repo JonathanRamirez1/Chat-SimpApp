@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.R
+import com.jonathan.loginfuturo.core.objects.RxBus
 import com.jonathan.loginfuturo.databinding.DialogRateBinding
 import com.jonathan.loginfuturo.data.model.NewRateEvent
 import com.jonathan.loginfuturo.data.model.Rate

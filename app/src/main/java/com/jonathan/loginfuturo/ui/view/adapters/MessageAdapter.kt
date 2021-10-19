@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.jonathan.loginfuturo.R
-import com.jonathan.loginfuturo.core.RelativeTime
+import com.jonathan.loginfuturo.core.objects.RelativeTime
 import com.jonathan.loginfuturo.databinding.CardViewMessageBinding
 import com.jonathan.loginfuturo.data.model.MessageModel
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider

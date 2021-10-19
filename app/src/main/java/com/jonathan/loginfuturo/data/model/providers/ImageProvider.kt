@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
-import com.jonathan.loginfuturo.core.CompressorBitmapImage
+import com.jonathan.loginfuturo.core.objects.CompressorBitmapImage
 import java.io.File
 import java.util.*
 

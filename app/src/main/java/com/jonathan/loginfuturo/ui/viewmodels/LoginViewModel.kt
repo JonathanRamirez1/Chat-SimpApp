@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.GoogleApiClient
 import com.jonathan.loginfuturo.core.*
+import com.jonathan.loginfuturo.core.objects.Constants
 import com.jonathan.loginfuturo.data.model.UserModel
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.UserProvider

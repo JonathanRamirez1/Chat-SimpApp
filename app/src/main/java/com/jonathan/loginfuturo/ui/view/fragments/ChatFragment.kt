@@ -17,8 +17,8 @@ import com.jonathan.loginfuturo.databinding.FragmentChatBinding
 import com.jonathan.loginfuturo.data.model.MessageModel
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.ui.view.adapters.MessageAdapter
-import com.jonathan.loginfuturo.core.RelativeTime
-import com.jonathan.loginfuturo.core.ViewedMessageHelper
+import com.jonathan.loginfuturo.core.objects.RelativeTime
+import com.jonathan.loginfuturo.core.objects.UpdateStateHelper
 import com.jonathan.loginfuturo.core.WrapContentLinearLayoutManager
 import android.net.ConnectivityManager
 import androidx.fragment.app.viewModels
@@ -61,6 +61,7 @@ class ChatFragment : Fragment() {
         sendMessage()
         launchRoomsFragment()
         chatViewModel.getUserInfo()
+        chatViewModel.getStateUser()
         initInterstitialAd()
         initListeners()
     }
@@ -77,23 +78,21 @@ class ChatFragment : Fragment() {
             }
         }
 
-        chatViewModel.showToast.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        chatViewModel.showToast.observe(viewLifecycleOwner) { toastMessage ->
+            Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_SHORT).show()
         }
 
-        chatViewModel.usernameChat.observe(viewLifecycleOwner) {
-            binding.textViewUsernameChat.text
+        chatViewModel.usernameChat.observe(viewLifecycleOwner) { usernameChat ->
+            binding.textViewUsernameChat.text = usernameChat
         }
 
-        chatViewModel.isOnline.observe(viewLifecycleOwner) { online ->
-            when (online) {
-                true -> {
-                    binding.TextViewTimeChat.text = resources.getString(R.string.online)
-                }
-                false -> {
-                    val relativeTime = RelativeTime.getTimeAgo(chatViewModel.lastConnect, context)
-                    binding.TextViewTimeChat.text = relativeTime
-                }
+        chatViewModel.online.observe(viewLifecycleOwner) { online ->
+            getConnectivity(online)
+        }
+
+        chatViewModel.isOffline.observe(viewLifecycleOwner) { offline ->
+            if (offline == true) {
+                binding.TextViewTimeChat.text = resources.getString(R.string.offline)
             }
         }
 
@@ -116,6 +115,7 @@ class ChatFragment : Fragment() {
         val options = FirestoreRecyclerOptions.Builder<MessageModel>()
             .setQuery(query, MessageModel::class.java)
             .build()
+
         messageAdapter = MessageAdapter(options, context)
         binding.recyclerViewChat.adapter = messageAdapter
         wrapContentLinearLayoutManager = WrapContentLinearLayoutManager(context)
@@ -123,13 +123,12 @@ class ChatFragment : Fragment() {
         binding.recyclerViewChat.layoutManager = wrapContentLinearLayoutManager
         messageAdapter?.startListening()
         messageAdapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 chatViewModel.updateViewed()
                 val numberMessage: Int = messageAdapter!!.itemCount
-                val lastMessagePosition =
-                    wrapContentLinearLayoutManager.findLastCompletelyVisibleItemPosition()
-
+                val lastMessagePosition = wrapContentLinearLayoutManager.findLastCompletelyVisibleItemPosition()
                 if (lastMessagePosition == -1 || (positionStart >= (numberMessage - 1) && lastMessagePosition == (positionStart - 1))) {
                     binding.recyclerViewChat.scrollToPosition(positionStart)
                 }
@@ -194,11 +193,22 @@ class ChatFragment : Fragment() {
         interstitial?.show(context as Activity)
     }
 
-    override fun onResume() {
-        super.onResume()
-        (activity as AppCompatActivity?)?.supportActionBar?.hide()
-        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottomNavigation)
-        navBar?.visibility = View.GONE
+    private fun getConnectivity(online: Boolean) {
+        val connectivityManager = context?.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        if (networkInfo != null && networkInfo.isConnected) {
+            when (online) {
+                true -> {
+                    binding.TextViewTimeChat.text = resources.getString(R.string.online)
+                }
+                false -> {
+                    val relativeTime = RelativeTime.getTimeAgo(chatViewModel.lastConnect, context)
+                    binding.TextViewTimeChat.text = relativeTime
+                }
+            }
+        } else {
+            binding.TextViewTimeChat.visibility = View.GONE
+        }
     }
 
     override fun onStart() {
@@ -206,13 +216,21 @@ class ChatFragment : Fragment() {
         if (messageAdapter != null) {
             messageAdapter?.startListening()
         }
-        ViewedMessageHelper.updateState(true, requireContext())
+        UpdateStateHelper.updateState("true", "false", requireContext())
+        chatViewModel.setOnDisconnect()
         getAllMessagesUser()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity?)?.supportActionBar?.hide()
+        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottomNavigation)
+        navBar?.visibility = View.GONE
     }
 
     override fun onPause() {
         super.onPause()
-        ViewedMessageHelper.updateState(false, requireContext())
+        UpdateStateHelper.updateState("false", "false", requireContext())
     }
 
     override fun onStop() {
@@ -225,16 +243,5 @@ class ChatFragment : Fragment() {
         chatViewModel.getUserInfoListener()?.remove()
         chatViewModel.getLastMessageListener()?.remove()
         messageReceiver?.getListenerLastMessageEmisor()?.remove()
-    }
-
-    private fun getConnectivity() {
-        val connectivityManager =
-            context?.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        if (networkInfo != null && networkInfo.isConnected) {
-            ViewedMessageHelper.updateState(true, requireContext())
-        } else {
-            binding.TextViewTimeChat.text = resources.getString(R.string.offline)
-        }
     }
 }

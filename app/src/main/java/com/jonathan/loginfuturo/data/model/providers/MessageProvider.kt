@@ -57,5 +57,4 @@ class MessageProvider {
     fun getChat(id: String): DocumentReference {
         return messageDataBaseReference.document(id)
     }
-
 }

@@ -1,6 +1,8 @@
 package com.jonathan.loginfuturo.data.model.providers
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.*
 import com.jonathan.loginfuturo.data.model.UserModel
 import java.util.*
@@ -8,6 +10,7 @@ import kotlin.collections.HashMap
 
 class UserProvider {
 
+    //Crea una coleccion en Cloud Firestore
     private val userCollection: CollectionReference = FirebaseFirestore.getInstance().collection("UsersRegister")
 
     fun getUser(id: String): Task<DocumentSnapshot> {
@@ -36,13 +39,6 @@ class UserProvider {
         complete["username"] = userModel.getUsername()
         complete["phone"] = userModel.getPhone()
         return userCollection.document(userModel.getId()).update(complete)
-    }
-
-    fun updateState(id: String, state: Boolean): Task<Void> {
-        val updateState: MutableMap<String, Any> = HashMap()
-        updateState["online"] = state
-        updateState["lastConnect"] = Date().time
-        return userCollection.document(id).update(updateState)
     }
 
     fun taskUser(userModel: UserModel): Task<Void> {

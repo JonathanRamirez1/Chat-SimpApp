@@ -10,6 +10,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jonathan.loginfuturo.core.*
+import com.jonathan.loginfuturo.core.objects.Constants
+import com.jonathan.loginfuturo.core.objects.ConvertUriToFile
 import com.jonathan.loginfuturo.data.model.UserModel
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.ImageProvider

@@ -1,11 +1,15 @@
 package com.jonathan.loginfuturo.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.*
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.gson.Gson
+import com.jonathan.loginfuturo.core.objects.OfflinePersistence
 import com.jonathan.loginfuturo.core.CircleTransform
 import com.jonathan.loginfuturo.core.SingleLiveEvent
 import com.jonathan.loginfuturo.data.model.ChatModel
@@ -61,8 +65,11 @@ class ChatViewModel : ViewModel() {
     private val _usernameChat = MutableLiveData<String>()
     val usernameChat: LiveData<String> = _usernameChat
 
-    private val _isOnline = MutableLiveData<Boolean>()
-    val isOnline: LiveData<Boolean> = _isOnline
+    private val _online: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val online: LiveData<Boolean> = _online
+
+    private val _isOffline: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val isOffline: LiveData<Boolean> = _isOffline
 
     private val _imageChat = MutableLiveData<RequestCreator>()
     val imageChat: LiveData<RequestCreator> = _imageChat
@@ -82,15 +89,6 @@ class ChatViewModel : ViewModel() {
                             usernameReceptor = documentSnapshot.getString("username").toString()
                             _usernameChat.value = usernameReceptor
                         }
-                        if (documentSnapshot.contains("online")) {
-                            val online: Boolean? = documentSnapshot.getBoolean("online")
-                            if (online == true) {
-                                _isOnline.value = true
-                            } else if (documentSnapshot.contains("lastConnect")) {
-                                lastConnect = documentSnapshot.getLong("lastConnect")!!.toLong()
-                                _isOnline.value = false
-                            }
-                        }
                         if (documentSnapshot.contains("photo")) {
                             imageReceptor = documentSnapshot.getString("photo").toString()
                             if (imageReceptor.isNotEmpty()) {
@@ -106,6 +104,7 @@ class ChatViewModel : ViewModel() {
             }
     }
 
+    /**Comprueba si un chat existe, sino existe se agrega a firestore y se muestra en el RoomsFragment**/
     fun checkChatExist() {
         chatProvider.getOneToOneChat(idUserEmisor, idUserReceptor).get()
             .addOnSuccessListener { querySnapshot ->
@@ -299,6 +298,52 @@ class ChatViewModel : ViewModel() {
         }
     }
 
+    /**Obtiene el estado del usuario en Firebase RealTime Database**/
+    fun getStateUser() {
+        var idUserRealTime = ""
+        idUserRealTime = if (authProvider.getUid() == idUserEmisor) {
+            idUserReceptor
+        } else {
+            idUserEmisor
+        }
+        OfflinePersistence.getUserRealTimeDatabase(idUserRealTime)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (dataSnapshot.child("userState").hasChild("online")) {
+                            val online: String = dataSnapshot.child("userState").child("online").value.toString()
+                            if (online == "true") {
+                                _online.value = true
+                            } else if (dataSnapshot.child("userState").hasChild("lastConnect")) {
+                                lastConnect = dataSnapshot.child("userState").child("lastConnect").value.toString().toLong()
+                                _online.value = false
+                            }
+                            if (dataSnapshot.child("userState").hasChild("offline")) {
+                                val offline: String = dataSnapshot.child("userState").child("offline").value.toString()
+                                if (offline == "true") {
+                                    _isOffline.value = true
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("Cancel", "Se cancelo la operacion{$error}")
+                }
+
+            })
+    }
+
+    /**Si el usuario se desconecta (No Internet) del servidor, se llama a este metodo, que pondra el estado "offline" del usuario en "true"**/
+    fun setOnDisconnect(): Task<Void> {
+        return OfflinePersistence.getUserRealTimeDatabase(authProvider.getUid())
+            .child("userState")
+            .child("offline")
+            .onDisconnect()
+            .setValue("true")
+    }
+
     fun getUserInfoListener(): ListenerRegistration? {
         return userInfoRegistration
     }
@@ -306,5 +351,4 @@ class ChatViewModel : ViewModel() {
     fun getLastMessageListener(): ListenerRegistration? {
         return lastMessageEmisorRegistration
     }
-
 }

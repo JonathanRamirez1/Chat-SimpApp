@@ -1,21 +1,18 @@
-package com.jonathan.loginfuturo.core
+package com.jonathan.loginfuturo.core.objects
 
 import android.app.ActivityManager
 import android.content.Context
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider
-import com.jonathan.loginfuturo.data.model.providers.UserProvider
 
+object UpdateStateHelper {
 
-object ViewedMessageHelper {
-
-    fun updateState(state: Boolean, context: Context) {
-        val userProvider = UserProvider()
+    fun updateState(online: String, offline: String, context: Context) {
         val authProvider = AuthProvider()
         if (authProvider.getUid() != null) {
             if (isApplicationSendToBackground(context)) {
-                userProvider.updateState(authProvider.getUid(), state)
-            } else if (state) {
-                userProvider.updateState(authProvider.getUid(), state)
+                OfflinePersistence.updateUserStatus(authProvider.getUid(), online, offline)
+            } else  {
+                OfflinePersistence.updateUserStatus(authProvider.getUid(), online, offline)
             }
         }
     }

@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jonathan.loginfuturo.core.Constants.GLOBAL_MESSAGE
-import com.jonathan.loginfuturo.core.Constants.MY_MESSAGE
+import com.jonathan.loginfuturo.core.objects.Constants.GLOBAL_MESSAGE
+import com.jonathan.loginfuturo.core.objects.Constants.MY_MESSAGE
 import com.jonathan.loginfuturo.data.model.MessageModel
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.core.CircleTransform

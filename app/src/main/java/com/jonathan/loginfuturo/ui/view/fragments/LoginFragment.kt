@@ -19,7 +19,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.core.*
-import com.jonathan.loginfuturo.core.Constants.REQUEST_CODE_GOOGLE_SIGN_IN
+import com.jonathan.loginfuturo.core.objects.Constants.REQUEST_CODE_GOOGLE_SIGN_IN
 import com.jonathan.loginfuturo.core.ext.createFactory
 import com.jonathan.loginfuturo.databinding.FragmentLoginBinding
 import com.jonathan.loginfuturo.ui.view.activities.CompleteInfoActivity

@@ -14,7 +14,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.core.CircleTransform
-import com.jonathan.loginfuturo.core.Constants
+import com.jonathan.loginfuturo.core.objects.Constants
 import com.jonathan.loginfuturo.core.firebase.MessageReceiver
 import com.jonathan.loginfuturo.core.firebase.NotificationHelper
 import com.jonathan.loginfuturo.data.model.MessageModel

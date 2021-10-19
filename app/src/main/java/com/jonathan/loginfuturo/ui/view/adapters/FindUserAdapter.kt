@@ -64,7 +64,7 @@ class FindUserAdapter(options: FirestoreRecyclerOptions<UserModel>): FirestoreRe
     private fun getUserInfo(idUser: String, searchBarHolder: SearchBarHolder) {
         userProvider.getUser(idUser).addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
-                if (documentSnapshot.contains("email")) {
+                if (documentSnapshot.contains("username")) {
                     val username: String = documentSnapshot.getString("username").toString()
                     searchBarHolder.binding.textViewUsernameFind.text = username
                 }

@@ -25,6 +25,7 @@ import java.util.*
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.jonathan.loginfuturo.core.objects.Constants
 
 class CompleteInfoActivity : AppCompatActivity() {
 
