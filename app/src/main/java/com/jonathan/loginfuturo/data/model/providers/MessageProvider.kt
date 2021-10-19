@@ -5,17 +5,17 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.jonathan.loginfuturo.data.model.Message
+import com.jonathan.loginfuturo.data.model.MessageModel
 
 
 class MessageProvider {
 
      private val messageDataBaseReference: CollectionReference = FirebaseFirestore.getInstance().collection("Messages")
 
-    fun create(message: Message): Task<Void> {
+    fun create(messageModel: MessageModel): Task<Void> {
         val document : DocumentReference = messageDataBaseReference.document()
-        message.setId(document.id)
-        return document.set(message)
+        messageModel.setId(document.id)
+        return document.set(messageModel)
     }
 
     fun getMessageByChat(idChat: String): Query {
@@ -57,5 +57,4 @@ class MessageProvider {
     fun getChat(id: String): DocumentReference {
         return messageDataBaseReference.document(id)
     }
-
 }

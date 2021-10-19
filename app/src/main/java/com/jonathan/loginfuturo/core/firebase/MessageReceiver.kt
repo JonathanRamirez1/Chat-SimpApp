@@ -12,12 +12,12 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.gson.Gson
 import com.jonathan.loginfuturo.data.model.FCMBody
 import com.jonathan.loginfuturo.data.model.FCMResponse
-import com.jonathan.loginfuturo.data.model.Message
+import com.jonathan.loginfuturo.data.model.MessageModel
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.MessageProvider
 import com.jonathan.loginfuturo.data.model.providers.NotificationProvider
 import com.jonathan.loginfuturo.data.model.providers.TokenProvider
-import com.jonathan.loginfuturo.core.firebase.MyFirebaseMessagingClient.Companion.NOTIFICATION_REPLY
+import com.jonathan.loginfuturo.data.network.MyFirebaseMessagingClient.Companion.NOTIFICATION_REPLY
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +30,7 @@ class MessageReceiver: BroadcastReceiver() {
     private lateinit var notificationProvider: NotificationProvider
     private lateinit var authProvider: AuthProvider
     private lateinit var messageProvider: MessageProvider
-    private lateinit var message: Message
+    private lateinit var messageModel: MessageModel
 
     private var idEmisor: String = ""
     private var idReceptor: String = ""
@@ -57,7 +57,7 @@ class MessageReceiver: BroadcastReceiver() {
         notificationProvider = NotificationProvider()
         authProvider = AuthProvider()
         messageProvider = MessageProvider()
-        message = Message()
+        messageModel = MessageModel()
 
         val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(idNotification)
@@ -67,16 +67,16 @@ class MessageReceiver: BroadcastReceiver() {
     }
 
     private fun sendMessage(messageNotification: String) {
-        message.setIdChat(idChat)
-        message.setIdEmisor(idReceptor)
-        message.setIdReceptor(idEmisor)
-        message.setTimeStamp(Date().time)
-        message.setViewed(false)
-        message.setIdChat(idChat)
-        message.setMessage(messageNotification)
+        messageModel.setIdChat(idChat)
+        messageModel.setIdEmisor(idReceptor)
+        messageModel.setIdReceptor(idEmisor)
+        messageModel.setTimeStamp(Date().time)
+        messageModel.setViewed(false)
+        messageModel.setIdChat(idChat)
+        messageModel.setMessage(messageNotification)
 
         val messageProvider = MessageProvider()
-        messageProvider.create(message).addOnCompleteListener { task ->
+        messageProvider.create(messageModel).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 getToken()
             }
@@ -90,9 +90,9 @@ class MessageReceiver: BroadcastReceiver() {
                     if (documentSnapshot.contains("token")) {
                         val token: String = documentSnapshot.getString("token").toString()
                         val gson = Gson()
-                        val messageArrayList: ArrayList<Message> = ArrayList()
-                        messageArrayList.add(message)
-                        val messages = gson.toJson(messageArrayList)
+                        val messageModelArrayList: ArrayList<MessageModel> = ArrayList()
+                        messageModelArrayList.add(messageModel)
+                        val messages = gson.toJson(messageModelArrayList)
                         sendNotification(token, messages)
                     }
                 }
@@ -100,23 +100,19 @@ class MessageReceiver: BroadcastReceiver() {
         }
     }
 
-    fun getListenerLastMessageEmisor(): ListenerRegistration? {
-        return lastMessageEmisorRegistration
-    }
-
     private fun sendNotification(token: String, messages: String) {
         val data: MutableMap<String, String> = HashMap()
         data["title"] = "NEW MESSAGE"
-        data["body"] = message.getMessage()
+        data["body"] = messageModel.getMessage()
         data["idNotification"] = idNotification.toString()
         data["messages"] = messages
         data["usernameEmisor"] = usernameReceptor.uppercase(Locale.getDefault())
         data["usernameReceptor"] = usernameEmisor.uppercase(Locale.getDefault())
         data["imageEmisor"] = imageReceptor
         data["imageReceptor"] = imageEmisor
-        data["idEmisor"] = message.getIdEmisor()
-        data["idReceptor"] = message.getIdReceptor()
-        data["idChat"] = message.getIdChat()
+        data["idEmisor"] = messageModel.getIdEmisor()
+        data["idReceptor"] = messageModel.getIdReceptor()
+        data["idChat"] = messageModel.getIdChat()
 
         var idUserEmisorForNotification = ""
         idUserEmisorForNotification = if (authProvider.getUid() == idEmisor) {
@@ -149,5 +145,9 @@ class MessageReceiver: BroadcastReceiver() {
             return remoteInput.getCharSequence(NOTIFICATION_REPLY)
         }
         return null
+    }
+
+    fun getListenerLastMessageEmisor(): ListenerRegistration? {
+        return lastMessageEmisorRegistration
     }
 }

@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.GoogleApiClient
 import com.jonathan.loginfuturo.core.*
+import com.jonathan.loginfuturo.core.objects.Constants
 import com.jonathan.loginfuturo.data.model.UserModel
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.UserProvider
@@ -27,14 +28,17 @@ class LoginViewModel : ViewModel() {
     private val authProvider = AuthProvider()
     private val userProvider = UserProvider()
 
-    private val _isAuthenticated: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    val isAuthenticated: LiveData<Boolean> = _isAuthenticated
+    private val _isDestinyView: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val isDestinyView: LiveData<Boolean> = _isDestinyView
+
+    private val _isLoading: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private val _showToast: SingleLiveEvent<String> = SingleLiveEvent()
     val showToast: LiveData<String> = _showToast
 
-    private val _isEmailValid: SingleLiveEvent<String> = SingleLiveEvent()
-    val isEmailValid: LiveData<String> = _isEmailValid
+    private val _emailValid: SingleLiveEvent<String> = SingleLiveEvent()
+    val emailValid: LiveData<String> = _emailValid
 
     private val _isPasswordValid: SingleLiveEvent<String> = SingleLiveEvent()
     val isPasswordValid: LiveData<String> = _isPasswordValid
@@ -50,9 +54,9 @@ class LoginViewModel : ViewModel() {
 
     fun validEmail(email: String) {
         if (isValidEmail(email)) {
-            _isEmailValid.value = null
+            _emailValid.value = null
         } else {
-            _isEmailValid.value = email
+            _emailValid.value = email
         }
     }
 
@@ -64,7 +68,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun onLogin(email: String, password: String) {
+    fun onLoginEmailAndPassword(email: String, password: String) {
         if (isValidEmail(email) && isValidPassword(password)) {
             logInByEmailAndPassword(email, password)
         } else {
@@ -76,15 +80,15 @@ class LoginViewModel : ViewModel() {
         authProvider.login(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 if (authProvider.isEmailVerified()) {
-                    _isAuthenticated.value = true
-                    saveUserInformation(email)
+                    _isLoading.value = true
+                    checkUserExist()
                 } else {
-                    _isAuthenticated.value = false
+                    _isLoading.value = false
                     _showToast.value = "User must confirm email first"
                 }
             } else {
-                _isAuthenticated.value = false
-                _showToast.value = "Sign In Failure. Authentication failed"
+                _isLoading.value = false
+                _showToast.value = "Wrong email or password"
             }
         }
     }
@@ -94,28 +98,15 @@ class LoginViewModel : ViewModel() {
         val id: String = authProvider.getUid()
         userProvider.getUser(id).addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
-                _isAuthenticated.value = true
+                setDestinyView()
             } else {
-                val timeStamp = Date()
-                email = authProvider.getEmail()
-                userModel.setId(id)
-                userModel.setEmail(email)
-                userModel.setTimeStamp(timeStamp)
-                userProvider.createCollection(userModel).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        _isAuthenticated.value = true
-                    } else {
-                        _isAuthenticated.value = false
-                        _showToast.value = "The information could not be saved"
-                    }
-                }
+                saveUserInformation(id)
             }
         }
     }
 
     /** Inicio de sesion con google **/
     private fun onLoginGoogle(googleAccount: GoogleSignInAccount) {
-        //  alertDialog.show()
         authProvider.googleLogin(googleAccount).addOnCompleteListener { task ->
             if (googleSignInAccount != null) {
                 if (googleSignInAccount.isConnected) {
@@ -123,9 +114,10 @@ class LoginViewModel : ViewModel() {
                 }
             }
             if (task.isSuccessful) {
+                _isLoading.value = true
                 checkUserExist()
             } else {
-                // alertDialog.dismiss()
+                _isLoading.value = false
                 _showToast.value = "Could not login with google"
             }
         }
@@ -158,21 +150,33 @@ class LoginViewModel : ViewModel() {
             })
     }
 
-    /**Guarda los datos de usuarios registrados, en la Base de Datos de Firestore**/
-    private fun saveUserInformation(email: String) {
+     private fun setDestinyView() {
         val id: String = authProvider.getUid()
-        val timeStamp = Date()
+        userProvider.getUser(id).addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val cover: String = documentSnapshot.getString("cover").toString()
+                val phone: String = documentSnapshot.getString("phone").toString()
+                val photo: String = documentSnapshot.getString("photo").toString()
+                val username: String = documentSnapshot.getString("username").toString()
+                _isDestinyView.value = !(cover.isEmpty() && phone.isEmpty() && photo.isEmpty() && username.isEmpty())
+            }
+        }
+    }
+
+    /**Guarda los datos de usuarios registrados, en la Base de Datos de Firestore**/
+    private fun saveUserInformation(id: String) {
         val username = ""
-        userModel.setEmail(email)
+        val timeStamp = Date()
+        email = authProvider.getEmail()
         userModel.setId(id)
+        userModel.setEmail(email)
         userModel.setTimeStamp(timeStamp)
         userModel.setUsername(username)
-
         userProvider.createCollection(userModel).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                _showToast.value = "User successfully saved"
+                setDestinyView()
             } else {
-                _showToast.value = "Unexpected Error"
+                _showToast.value = "The information could not be saved"
             }
         }
     }

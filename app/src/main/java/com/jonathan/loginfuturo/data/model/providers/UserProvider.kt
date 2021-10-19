@@ -1,13 +1,16 @@
 package com.jonathan.loginfuturo.data.model.providers
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.*
 import com.jonathan.loginfuturo.data.model.UserModel
 import java.util.*
 import kotlin.collections.HashMap
 
-class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19:49
+class UserProvider {
 
+    //Crea una coleccion en Cloud Firestore
     private val userCollection: CollectionReference = FirebaseFirestore.getInstance().collection("UsersRegister")
 
     fun getUser(id: String): Task<DocumentSnapshot> {
@@ -23,10 +26,10 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
     }
 
     /**SI SE QUIERE ACTUALIZAR ALGUN CAMPO AGREGAR LOS MAPS IGUAL AL DE USERNAME**/
-    fun updateCollection(userModel: UserModel): Task<Void> { //TODO SE SACO DE LA CARPETA 3 VIDEO 2; 10:36
+    fun updateCollection(userModel: UserModel): Task<Void> {
         val updateUser: MutableMap<String, Any> = HashMap()
         updateUser["photo"] = userModel.getPhoto()
-        return userCollection.document(userModel.getId()).update(updateUser) //TODO ALGUN ERROR DE NULLPOINTEXCEPTION SE DEBE PASAR EL ID (userModel.setId(id) EN FRAGMENT REQUERIDO)
+        return userCollection.document(userModel.getId()).update(updateUser)
     }
 
     fun completeUserInfo(userModel: UserModel): Task<Void> {
@@ -35,15 +38,7 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
         complete["photo"] = userModel.getPhoto()
         complete["username"] = userModel.getUsername()
         complete["phone"] = userModel.getPhone()
-        complete["gender"] = userModel.getGender()
         return userCollection.document(userModel.getId()).update(complete)
-    }
-
-    fun updateState(id: String, state: Boolean): Task<Void> {
-        val updateState: MutableMap<String, Any> = HashMap()
-        updateState["online"] = state
-        updateState["lastConnect"] = Date().time
-        return userCollection.document(id).update(updateState)
     }
 
     fun taskUser(userModel: UserModel): Task<Void> {
@@ -64,7 +59,7 @@ class UserProvider {  //TODO ALGUN ERROR BUSCAR ESTO EN LA CARPETA 3 VIDEO 1; 19
     }
 
     fun getUserByEmail(email: String) : Query {
-        return userCollection.orderBy("email").startAt(email).endAt(email+'\uf8ff')  //TODO CONTINUAR EN CARPETA 6 VIDEO 18; 3:21
+        return userCollection.orderBy("email").startAt(email).endAt(email+'\uf8ff')
     }
 
     //TODO USAR PARA OBTENER DOS RESULTADOS

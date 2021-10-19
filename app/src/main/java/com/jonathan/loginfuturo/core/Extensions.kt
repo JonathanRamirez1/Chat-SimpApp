@@ -44,6 +44,16 @@ fun Activity.isValidPhoneNumber(phone: String): Boolean {
     return pattern.matcher(phone).matches()
 }
 
+fun ViewModel.isValidUsername(username: String) : Boolean {
+    val usernamePattern = "^(?=.{8,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9._-]+(?<![_.-])$"
+    val pattern = Pattern.compile(usernamePattern)
+    return pattern.matcher(username).matches()
+}
+fun ViewModel.isValidPhoneNumber(phone: String): Boolean {
+    val phonePatterns = Patterns.PHONE
+    return phonePatterns.matcher(phone).matches()
+}
+
 /** Caracteres permitidos en el email**/
 fun ViewModel.isValidEmail(email: String) : Boolean {
     val patterns = Patterns.EMAIL_ADDRESS
@@ -73,4 +83,12 @@ fun Fragment.setUpProgress(): AlertDialog {
        .setTheme(R.style.Custom)
        .setCancelable(false)
        .build()
+}
+
+fun Activity.setUpProgress(): AlertDialog {
+    return SpotsDialog.Builder()
+        .setContext(this)
+        .setTheme(R.style.Custom)
+        .setCancelable(false)
+        .build()
 }

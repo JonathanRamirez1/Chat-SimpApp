@@ -3,25 +3,22 @@ package com.jonathan.loginfuturo.core
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.jonathan.loginfuturo.R
+import com.jonathan.loginfuturo.core.objects.RxBus
 import com.jonathan.loginfuturo.databinding.DialogRateBinding
 import com.jonathan.loginfuturo.data.model.NewRateEvent
 import com.jonathan.loginfuturo.data.model.Rate
 import java.util.*
 
-
 class RateDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val activity = activity
-        val binding: DialogRateBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.dialog_rate, null, false)
+        val binding: DialogRateBinding = DialogRateBinding.inflate(
+            layoutInflater, null, false)
 
         return  AlertDialog.Builder(activity)
             .setTitle(getString(R.string.alert_dialog_title))

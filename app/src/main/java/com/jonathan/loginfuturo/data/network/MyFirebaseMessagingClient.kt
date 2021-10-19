@@ -1,4 +1,4 @@
-package com.jonathan.loginfuturo.core.firebase
+package com.jonathan.loginfuturo.data.network
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -14,8 +14,10 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.core.CircleTransform
-import com.jonathan.loginfuturo.core.Constants
-import com.jonathan.loginfuturo.data.model.Message
+import com.jonathan.loginfuturo.core.objects.Constants
+import com.jonathan.loginfuturo.core.firebase.MessageReceiver
+import com.jonathan.loginfuturo.core.firebase.NotificationHelper
+import com.jonathan.loginfuturo.data.model.MessageModel
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Picasso.LoadedFrom
 import com.squareup.picasso.Target
@@ -133,7 +135,7 @@ class MyFirebaseMessagingClient: FirebaseMessagingService() {
             .build()
 
         val gson = Gson()
-        val messages = gson.fromJson(messagesJSON, Array<Message>::class.java)
+        val messages = gson.fromJson(messagesJSON, Array<MessageModel>::class.java)
         val notificationHelper = NotificationHelper(baseContext)
         val builder = notificationHelper.getNotificationMessage(
             messages,

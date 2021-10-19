@@ -91,7 +91,8 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
                     val photo: String = documentSnapshot.getString("photo").toString()
                     if (photo.isNotEmpty()) {
                         Picasso.get().load(photo).resize(50, 50)
-                            .centerCrop().transform(CircleTransform()).into(roomsHolder.binding.imageViewPhoto)
+                            .centerCrop().transform(CircleTransform())
+                            .into(roomsHolder.binding.imageViewPhoto)
                     }
                 }
             }
@@ -109,14 +110,6 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
                     }
                 }
             }
-    }
-
-    fun getListener(): ListenerRegistration? {
-        return roomsSubscription
-    }
-
-    fun getLastMessageListener(): ListenerRegistration? {
-        return roomsMessageSubscription
     }
 
     private fun getMessageNotRead(roomsId: String, idEmisor: String, roomsHolder: RoomsHolder) {
@@ -140,5 +133,12 @@ class RoomsAdapter(options: FirestoreRecyclerOptions<ChatModel>) : FirestoreRecy
             binding.textViewUsername.text = chatModel.getEmail()
         }
     }
-}
 
+    fun getListener(): ListenerRegistration? {
+        return roomsSubscription
+    }
+
+    fun getLastMessageListener(): ListenerRegistration? {
+        return roomsMessageSubscription
+    }
+}

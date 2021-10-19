@@ -12,6 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
 import com.jonathan.loginfuturo.*
 import com.jonathan.loginfuturo.core.*
 import com.jonathan.loginfuturo.core.ext.createFactory
@@ -40,6 +43,7 @@ class RegisterFragment : Fragment() {
         validFields()
         validateFields()
         launchLoginFragment(view)
+        loadAds()
     }
 
     private fun setObservers() {
@@ -113,6 +117,31 @@ class RegisterFragment : Fragment() {
             val password = binding.editTextPasswordSignUp.text.toString()
             val confirmPassword = binding.editTextConfirmPassword.text.toString()
             registerViewModel.onRegister(email, password, confirmPassword)
+        }
+    }
+
+    //TODO CAMBIAR LOS IDS DE ADS(ANUNCIOS) EN EL XML Y EL MANIFEST CUANDO SE TERMINE LA APP, LOS ACTUALES SON DE PRUEBA (Ver strings o video de ari)
+    private fun loadAds() {
+        val adRequest = AdRequest.Builder().build()
+        binding.bannerRegister.loadAd(adRequest)
+
+        binding.bannerRegister.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+                binding.bannerRegister.visibility = View.VISIBLE
+            }
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Toast.makeText(context, "An error occurred with the ad", Toast.LENGTH_SHORT).show()
+                Log.e("admob", "Ocurrio un Error$adError")
+            }
+            override fun onAdOpened() {
+                Toast.makeText(context, "The ad was successfully opened", Toast.LENGTH_SHORT).show()
+            }
+            override fun onAdClicked() {
+                Toast.makeText(context, "The ad was clicked", Toast.LENGTH_SHORT).show()
+            }
+            override fun onAdClosed() {
+                Toast.makeText(context, "Ad closed", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

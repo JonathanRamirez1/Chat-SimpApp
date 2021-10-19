@@ -1,4 +1,4 @@
-package com.jonathan.loginfuturo.core
+package com.jonathan.loginfuturo.data.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

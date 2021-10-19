@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.firestore.ListenerRegistration
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.core.CircleTransform
@@ -14,6 +16,8 @@ import com.jonathan.loginfuturo.data.model.providers.AuthProvider
 import com.jonathan.loginfuturo.data.model.providers.MessageProvider
 import com.jonathan.loginfuturo.data.model.providers.UserProvider
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProfileFragment : Fragment() {
 
@@ -25,17 +29,17 @@ class ProfileFragment : Fragment() {
     private var profileRegistration: ListenerRegistration? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-
-        authProvider = AuthProvider()
-        userProvider = UserProvider()
-        messageProvider = MessageProvider()
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        authProvider = AuthProvider()
+        userProvider = UserProvider()
+        messageProvider = MessageProvider()
         getUser()
+        setTemplateNativeAdvanced()
     }
 
     private fun getUser() {
@@ -55,9 +59,9 @@ class ProfileFragment : Fragment() {
                             val phone: String = documentSnapshot.getString("phone").toString()
                             binding.texViewPhone.text = phone
                         }
-                        if (documentSnapshot.contains("gender")) {
-                            val gender: String = documentSnapshot.getString("gender").toString()
-                            binding.textViewGender.text = gender
+                        if (documentSnapshot.contains("timeStamp")) {
+                            val timeStamp: Date? = documentSnapshot.getDate("timeStamp")
+                            binding.textViewGender.text = SimpleDateFormat("dd MMMM, yyyy").format(timeStamp)
                         }
                         if (documentSnapshot.contains("cover")) {
                             val cover: String = documentSnapshot.getString("cover").toString()
@@ -81,6 +85,19 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+    }
+
+    private fun setTemplateNativeAdvanced() {
+        val adRequest = AdRequest.Builder().build()
+        MobileAds.initialize(requireContext())
+        val adLoader: AdLoader = AdLoader.Builder(requireContext(), getString(R.string.test_native_advanced))
+            .forNativeAd { nativeAd ->
+                val template = binding.templateProfile
+                template.setNativeAd(nativeAd)
+            }
+            .build()
+
+        adLoader.loadAd(adRequest)
     }
 
     override fun onDestroy() {

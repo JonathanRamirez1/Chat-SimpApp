@@ -1,4 +1,4 @@
-package com.jonathan.loginfuturo.core
+package com.jonathan.loginfuturo.core.objects
 
 import android.app.Application
 import android.content.Context

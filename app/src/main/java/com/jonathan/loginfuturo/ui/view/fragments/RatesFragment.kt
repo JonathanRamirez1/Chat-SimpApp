@@ -1,19 +1,25 @@
 package com.jonathan.loginfuturo.ui.view.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.*
 import com.jonathan.loginfuturo.R
-import com.jonathan.loginfuturo.core.RxBus
+import com.jonathan.loginfuturo.core.objects.RxBus
 import com.jonathan.loginfuturo.data.model.Rate
 import com.jonathan.loginfuturo.core.RateDialog
 import com.jonathan.loginfuturo.databinding.FragmentRatesBinding
@@ -22,7 +28,6 @@ import com.jonathan.loginfuturo.ui.view.adapters.RatesAdapter
 import io.reactivex.disposables.Disposable
 import java.util.EventListener
 import kotlin.collections.ArrayList
-
 
 class RatesFragment : Fragment() {
 
@@ -34,12 +39,13 @@ class RatesFragment : Fragment() {
 
     private val ratesList: ArrayList<Rate> = ArrayList()
     private var ratesSubscription: ListenerRegistration? = null
+    private var interstitial: InterstitialAd? = null
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val fireBaseStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_rates, container, false)
+        binding = FragmentRatesBinding.inflate(inflater, container, false)
         return  binding.root
     }
 
@@ -52,6 +58,8 @@ class RatesFragment : Fragment() {
         sepUpFab()
         subscribeToRatings()
         subscribeToNewRatings()
+        initInterstitialAd()
+        initListeners()
     }
 
     /** CUANDO SE AGREGA ALGUN VALOR VERIFICA SI EXISTE, DE EXISTIR LA AÑADE Y SINO LA CREA**/
@@ -60,7 +68,7 @@ class RatesFragment : Fragment() {
         ratesDataBaseReference = fireBaseStore.collection("rates")
     }
 
-    /** SI EL USUAROI ESTA LOGGEADO LO DA Y SINO LO MANDA A LA PANTALLA DE LOGGIN O CUALQUIER OTRA ACCION**/
+    /** SI EL USUARIO ESTA LOGEADO LO DA Y SINO LO MANDA A LA PANTALLA DE LOGIN O CUALQUIER OTRA ACCION**/
 
     private fun setUPCurrentUser() {
             firebaseUser = firebaseAuth.currentUser!!
@@ -79,6 +87,8 @@ class RatesFragment : Fragment() {
     private fun sepUpFab() {
         binding.fabRating.setOnClickListener {
             fragmentManager?.let { it1 -> RateDialog().show(it1, "") }
+            showAds()
+            initInterstitialAd()
         }
     }
 
@@ -125,6 +135,27 @@ class RatesFragment : Fragment() {
         rateBusListener =  RxBus.listern(NewRateEvent::class.java).subscribe {
             saveRate(it.rate)
         }
+    }
+
+    private fun initListeners() {
+        interstitial?.fullScreenContentCallback = object : FullScreenContentCallback() {
+
+            override fun onAdDismissedFullScreenContent() {}
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {}
+            override fun onAdShowedFullScreenContent() { interstitial = null }
+        }
+    }
+
+    //TODO CAMBIAR LOS IDS DE ADS(ANUNCIOS) EN EL XML Y EL MANIFEST CUANDO SE TERMINE LA APP, LOS ACTUALES SON DE PRUEBA (Ver strings o video de ari)
+    private fun initInterstitialAd() {
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(requireContext(), getString(R.string.test_interstitial), adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdLoaded(interstitialAd: InterstitialAd) { interstitial = interstitialAd }
+            override fun onAdFailedToLoad(p0: LoadAdError) { interstitial = null } })
+    }
+
+    private fun showAds() {
+        interstitial?.show(context as Activity)
     }
 
     override fun onDestroyView() {

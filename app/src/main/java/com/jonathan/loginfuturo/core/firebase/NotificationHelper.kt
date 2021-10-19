@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
 import com.jonathan.loginfuturo.R
-import com.jonathan.loginfuturo.data.model.Message
+import com.jonathan.loginfuturo.data.model.MessageModel
 import java.util.*
 
 
@@ -58,7 +58,7 @@ class NotificationHelper(context: Context?) : ContextWrapper(context) {
             .setStyle(NotificationCompat.BigTextStyle().bigText(body).setBigContentTitle(title))
     }
 
-    fun getNotificationMessage(messages: Array<Message>,
+    fun getNotificationMessage(messageModels: Array<MessageModel>,
                                usernameEmisor: String,
                                usernameReceptor: String,
                                lastMessage: String,
@@ -99,10 +99,10 @@ class NotificationHelper(context: Context?) : ContextWrapper(context) {
             person1)
         messagingStyle.addMessage(message1)
 
-        for (message: Message in messages) {
+        for (messageModel: MessageModel in messageModels) {
             val message2: NotificationCompat.MessagingStyle.Message = NotificationCompat.MessagingStyle.Message(
-                message.getMessage(),
-                message.getTimeStamp(),
+                messageModel.getMessage(),
+                messageModel.getTimeStamp(),
                 person2)
             messagingStyle.addMessage(message2)
         }

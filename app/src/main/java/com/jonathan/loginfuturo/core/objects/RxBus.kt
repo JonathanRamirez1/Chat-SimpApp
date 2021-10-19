@@ -1,4 +1,4 @@
-package com.jonathan.loginfuturo.core
+package com.jonathan.loginfuturo.core.objects
 
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject

@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/colorPrimary"
+        android:orientation="horizontal"
         tools:context=".ui.view.fragments.FindUserFragment">
 
         <Button
@@ -20,8 +17,8 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginTop="7dp"
-            android:drawableStart="@drawable/ic_back_rooms"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary"
+            android:drawableStart="@drawable/ic_back_rooms" />
 
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/searchBar"
@@ -32,13 +29,13 @@
             app:mt_clearIconTint="@color/colortTextBlack"
             app:mt_hint="Search text"
             app:mt_hintColor="@color/colortTextBlack"
-            app:mt_textColor="@color/colortTextBlack"
             app:mt_leftTextSelectorTint="@color/colortTextBlack"
             app:mt_maxSuggestionsCount="10"
             app:mt_placeholder="Search by email..."
             app:mt_placeholderColor="@color/colortTextBlack"
             app:mt_searchBarColor="@color/colorPrimary"
-            app:mt_searchIconTint="@color/colortTextBlack">
+            app:mt_searchIconTint="@color/colortTextBlack"
+            app:mt_textColor="@color/colortTextBlack">
 
         </com.mancj.materialsearchbar.MaterialSearchBar>
     </LinearLayout>
@@ -46,16 +43,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="48dp"
-        android:background="@color/colorAccentDark">
+        android:background="@color/colorAccentDark"
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewFindUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical" />
 
     </LinearLayout>
-    </FrameLayout>
-</layout>
+</FrameLayout>

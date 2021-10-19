@@ -1,10 +1,9 @@
 package com.jonathan.loginfuturo.data.model.providers
 
-
 import com.jonathan.loginfuturo.data.model.FCMBody
 import com.jonathan.loginfuturo.data.model.FCMResponse
 import com.jonathan.loginfuturo.data.network.IFCMApi
-import com.jonathan.loginfuturo.core.RetrofitClient
+import com.jonathan.loginfuturo.data.network.RetrofitClient
 import retrofit2.Call
 
 class NotificationProvider {

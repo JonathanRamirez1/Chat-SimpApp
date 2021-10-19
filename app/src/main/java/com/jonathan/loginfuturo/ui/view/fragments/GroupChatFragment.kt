@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.*
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.databinding.FragmentGroupChatBinding
-import com.jonathan.loginfuturo.data.model.Message
+import com.jonathan.loginfuturo.data.model.MessageModel
 import com.jonathan.loginfuturo.ui.view.adapters.GroupChatAdapter
 
 
@@ -28,7 +28,7 @@ class GroupChatFragment : Fragment() {
 
     private val fireBaseStore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val messageList: ArrayList<Message> = ArrayList()
+    private val messageModelList: ArrayList<MessageModel> = ArrayList()
     private var chatSubscription: ListenerRegistration? = null
 
 
@@ -39,7 +39,7 @@ class GroupChatFragment : Fragment() {
 
     private fun setUpRecyclerView() {
       val layoutManager = LinearLayoutManager(context)
-      groupChatAdapter = GroupChatAdapter(messageList, firebaseUser.uid)
+      groupChatAdapter = GroupChatAdapter(messageModelList, firebaseUser.uid)
 
       binding.recyclerView.setHasFixedSize(true)
       binding.recyclerView.layoutManager = layoutManager
