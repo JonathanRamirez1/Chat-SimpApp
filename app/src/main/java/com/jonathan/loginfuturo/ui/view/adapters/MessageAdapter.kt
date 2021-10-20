@@ -83,6 +83,3 @@ class MessageAdapter(options: FirestoreRecyclerOptions<MessageModel>) : Firestor
         }
     }
 }
-
-
-

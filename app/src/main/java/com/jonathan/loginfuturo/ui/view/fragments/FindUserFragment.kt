@@ -7,11 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
-import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.databinding.FragmentFindUserBinding
 import com.jonathan.loginfuturo.data.model.UserModel
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider

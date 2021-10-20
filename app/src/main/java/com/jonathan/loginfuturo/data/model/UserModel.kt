@@ -4,7 +4,6 @@ import java.util.*
 
 class UserModel {
 
-    //TODO PARA USAR ESTA CLASE VER CARPETA 3 VIDEO 1; 12:15
     private var id: String = ""
     private var email: String = ""
     private var password: String = ""
@@ -12,23 +11,7 @@ class UserModel {
     private var photo: String = ""
     private var cover: String = ""
     private var phone: String = ""
-    private var gender: String = ""
     private var timeStamp: Date = Date()
-
-    fun User() {
-
-    }
-
-    fun User(id: String, email: String, username: String, photo: String, cover: String, phone: String, gender: String, timeStamp: Date) {
-        this.id = id
-        this.email = email
-        this.username = username
-        this.photo = photo
-        this.cover = cover
-        this.phone = phone
-        this.gender = gender
-        this.timeStamp = timeStamp
-    }
 
     fun getId(): String {
         return id

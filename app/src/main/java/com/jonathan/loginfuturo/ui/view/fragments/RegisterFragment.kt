@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.gms.ads.AdListener
@@ -20,7 +18,6 @@ import com.jonathan.loginfuturo.core.*
 import com.jonathan.loginfuturo.core.ext.createFactory
 import com.jonathan.loginfuturo.databinding.FragmentRegisterBinding
 import com.jonathan.loginfuturo.ui.viewmodels.RegisterViewModel
-
 
 class RegisterFragment : Fragment() {
 
@@ -145,5 +142,3 @@ class RegisterFragment : Fragment() {
         }
     }
 }
-
-

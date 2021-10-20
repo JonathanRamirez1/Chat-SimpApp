@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
     android:paddingLeft="30dp"
-    android:paddingRight="30dp">
+    android:paddingTop="10dp"
+    android:paddingRight="30dp"
+    android:paddingBottom="10dp">
 
     <LinearLayout
         android:id="@+id/linearLayoutMessage"
@@ -21,14 +18,14 @@
         android:paddingRight="15dp"
         android:paddingBottom="10dp">
 
-            <TextView
-                android:id="@+id/textViewMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Nuevo mensaje"
-                android:textColor="@color/colorPrimaryText"
-                android:layout_marginEnd="1dp"
-                android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/textViewMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="1dp"
+            android:text="Nuevo mensaje"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -43,7 +40,7 @@
                 android:layout_gravity="bottom"
                 android:text="Fecha"
                 android:textColor="@color/colorPrimaryText"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <ImageView
                 android:id="@+id/imageViewViewedMessage"
@@ -51,10 +48,9 @@
                 android:layout_height="20dp"
                 android:layout_gravity="bottom"
                 android:layout_marginStart="10dp"
-                android:src="@drawable/icon_check_grey"/>
+                android:src="@drawable/icon_check_grey" />
 
         </LinearLayout>
 
-        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
-</layout>

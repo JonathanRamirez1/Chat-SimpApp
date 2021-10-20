@@ -1,17 +1,13 @@
 package com.jonathan.loginfuturo.ui.view.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.data.model.Rate
 import com.jonathan.loginfuturo.core.CircleTransform
 import com.jonathan.loginfuturo.databinding.ItemRatesBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_rates.view.*
 import java.text.SimpleDateFormat
 
 class RatesAdapter(private  val items : List<Rate>) : RecyclerView.Adapter<RatesAdapter.RatesViewHolder>() {

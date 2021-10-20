@@ -15,7 +15,7 @@ class TokenProvider {
         if (idUser == null) {
             return
         }
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { instanceIdResult ->  //TODO 7 2; 4:45
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { instanceIdResult ->
             val token = Token(instanceIdResult.result)
             tokenCollectionReference.document(idUser).set(token)
         }
@@ -24,5 +24,4 @@ class TokenProvider {
     fun getToken(idUser: String): Task<DocumentSnapshot?> {
         return tokenCollectionReference.document(idUser).get()
     }
-
 }

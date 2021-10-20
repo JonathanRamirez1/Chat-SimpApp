@@ -52,7 +52,7 @@ class CompleteInfoActivity : AppCompatActivity() {
         changeCoverPhoto()
         changeProfilePhoto()
         setTemplateNativeAdvanced()
-        setTemplateNativeAdvanced2()
+        setTemplateNativeAdvancedVideo()
     }
 
     private fun setObservers() {
@@ -219,7 +219,7 @@ class CompleteInfoActivity : AppCompatActivity() {
     private fun setTemplateNativeAdvanced() {
         val adRequest = AdRequest.Builder().build()
         MobileAds.initialize(this)
-        val adLoader: AdLoader = AdLoader.Builder(this, "ca-app-pub-3940256099942544/2247696110")
+        val adLoader: AdLoader = AdLoader.Builder(this, getString(R.string.test_native_advanced))
             .forNativeAd { nativeAd ->
                 val template = binding.templateComplete
                 template.setNativeAd(nativeAd)
@@ -229,10 +229,10 @@ class CompleteInfoActivity : AppCompatActivity() {
         adLoader.loadAd(adRequest)
     }
 
-    private fun setTemplateNativeAdvanced2() {
+    private fun setTemplateNativeAdvancedVideo() {
         val adRequest = AdRequest.Builder().build()
         MobileAds.initialize(this)
-        val adLoader: AdLoader = AdLoader.Builder(this, "ca-app-pub-3940256099942544/1044960115")
+        val adLoader: AdLoader = AdLoader.Builder(this, getString(R.string.test_native_advanced_video))
             .forNativeAd { nativeAd ->
                 val template = binding.templateComplete2
                 template.setNativeAd(nativeAd)

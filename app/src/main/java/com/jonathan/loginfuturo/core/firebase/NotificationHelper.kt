@@ -16,7 +16,6 @@ import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.data.model.MessageModel
 import java.util.*
 
-
 class NotificationHelper(context: Context?) : ContextWrapper(context) {
 
     private var notificationManager: NotificationManager? = null

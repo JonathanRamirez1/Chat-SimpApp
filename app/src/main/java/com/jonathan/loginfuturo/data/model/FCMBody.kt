@@ -1,6 +1,5 @@
 package com.jonathan.loginfuturo.data.model
 
-
 class FCMBody(private var to: String,
               private var priority: String,
               private var ttl: String,

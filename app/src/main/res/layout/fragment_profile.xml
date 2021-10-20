@@ -75,7 +75,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textViewGender"
+                        android:id="@+id/textViewDate"
                         android:layout_width="125dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
