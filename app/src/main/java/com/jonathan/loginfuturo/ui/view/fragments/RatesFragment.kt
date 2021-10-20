@@ -37,12 +37,12 @@ class RatesFragment : Fragment() {
     private lateinit var rateBusListener: Disposable
     private lateinit var firebaseUser: FirebaseUser
 
-    private val ratesList: ArrayList<Rate> = ArrayList()
     private var ratesSubscription: ListenerRegistration? = null
     private var interstitial: InterstitialAd? = null
+
+    private val ratesList: ArrayList<Rate> = ArrayList()
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val fireBaseStore: FirebaseFirestore = FirebaseFirestore.getInstance()
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentRatesBinding.inflate(inflater, container, false)

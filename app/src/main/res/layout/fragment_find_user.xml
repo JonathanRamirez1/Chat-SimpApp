@@ -17,8 +17,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginTop="7dp"
-            android:background="@color/colorPrimary"
-            android:drawableStart="@drawable/ic_back_rooms" />
+            android:background="@drawable/ic_back_rooms" />
 
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/searchBar"

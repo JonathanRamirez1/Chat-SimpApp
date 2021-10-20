@@ -75,5 +75,3 @@ class RegisterViewModel: ViewModel() {
         }
     }
 }
-
-

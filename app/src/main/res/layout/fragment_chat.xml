@@ -27,8 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:background="@color/colorPrimaryDark"
-            android:drawableStart="@drawable/ic_back_rooms" />
+            android:background="@drawable/ic_back_rooms" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewChat"

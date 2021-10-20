@@ -195,4 +195,3 @@ class LoginViewModel : ViewModel() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 }
-

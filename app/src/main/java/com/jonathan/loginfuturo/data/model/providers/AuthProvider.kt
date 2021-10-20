@@ -4,14 +4,11 @@ import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
-import com.jonathan.loginfuturo.data.model.UserModel
 
 class AuthProvider {
 
     private val firebaseAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private var firebaseUser: FirebaseUser? = null
-    private val userModel = UserModel()
-    private val userProvider = UserProvider()
 
     fun login(email: String, password: String): Task<AuthResult> {
         return firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -51,10 +48,6 @@ class AuthProvider {
         }
     }
 
-    fun getPhoto(): String {
-        return firebaseUser?.photoUrl.toString()
-    }
-
     fun isEmailVerified(): Boolean {
        return firebaseAuth.currentUser?.isEmailVerified?:false
     }
@@ -65,13 +58,5 @@ class AuthProvider {
 
     fun setUPCurrentUser() {
         firebaseUser = firebaseAuth.currentUser?:throw Exception("horror!")
-    }
-
-     fun updatePhoto() {
-        val photo = firebaseUser?.photoUrl
-        val id: String = getUid()
-        userModel.setPhoto(photo.toString())
-        userModel.setId(id)
-        userProvider.updateCollection(userModel)
     }
 }

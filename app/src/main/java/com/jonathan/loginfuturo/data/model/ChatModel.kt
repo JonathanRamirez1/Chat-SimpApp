@@ -15,28 +15,6 @@ class ChatModel {
     private var email: String = ""
     private var ids = ArrayList<String>()
 
-    fun Chat(
-        id: String,
-        idEmisor: String,
-        idReceptor: String,
-        idNotification: Int,
-        isWritting: Boolean,
-        timeStamp: Date,
-        photo: String,
-        email: String,
-        ids: ArrayList<String>
-    ) {
-        this.id = id
-        this.idEmisor = idEmisor
-        this.idReceptor = idReceptor
-        this.idNotification = idNotification
-        this.isWritting = isWritting
-        this.timeStamp = timeStamp
-        this.photo = photo
-        this.email = email
-        this.ids = ids
-    }
-
     fun getId(): String {
         return id
     }

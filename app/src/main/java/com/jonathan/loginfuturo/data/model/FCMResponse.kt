@@ -2,7 +2,6 @@ package com.jonathan.loginfuturo.data.model
 
 import java.util.ArrayList
 
-
 class FCMResponse(private var multicast_id: Long,
                   private var success: Int,
                   private var failure: Int,

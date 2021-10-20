@@ -13,7 +13,6 @@ import com.jonathan.loginfuturo.R
 import com.jonathan.loginfuturo.core.CircleTransform
 import com.jonathan.loginfuturo.databinding.FragmentProfileBinding
 import com.jonathan.loginfuturo.data.model.providers.AuthProvider
-import com.jonathan.loginfuturo.data.model.providers.MessageProvider
 import com.jonathan.loginfuturo.data.model.providers.UserProvider
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
@@ -24,7 +23,6 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var authProvider: AuthProvider
     private lateinit var userProvider: UserProvider
-    private lateinit var messageProvider: MessageProvider
 
     private var profileRegistration: ListenerRegistration? = null
 
@@ -37,7 +35,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         authProvider = AuthProvider()
         userProvider = UserProvider()
-        messageProvider = MessageProvider()
         getUser()
         setTemplateNativeAdvanced()
     }
@@ -61,7 +58,7 @@ class ProfileFragment : Fragment() {
                         }
                         if (documentSnapshot.contains("timeStamp")) {
                             val timeStamp: Date? = documentSnapshot.getDate("timeStamp")
-                            binding.textViewGender.text = SimpleDateFormat("dd MMMM, yyyy").format(timeStamp)
+                            binding.textViewDate.text = SimpleDateFormat("dd MMMM, yyyy").format(timeStamp)
                         }
                         if (documentSnapshot.contains("cover")) {
                             val cover: String = documentSnapshot.getString("cover").toString()

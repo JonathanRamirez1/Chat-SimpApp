@@ -7,7 +7,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jonathan.loginfuturo.data.model.MessageModel
 
-
 class MessageProvider {
 
      private val messageDataBaseReference: CollectionReference = FirebaseFirestore.getInstance().collection("Messages")
@@ -24,10 +23,6 @@ class MessageProvider {
 
     fun getMessageByChatEmisor(idChat: String, idEmisor: String): Query {
         return messageDataBaseReference.whereEqualTo("idChat", idChat).whereEqualTo("idEmisor", idEmisor).whereEqualTo("viewed", false)
-    }
-
-     fun countMessage(idEmisor: String): Query {
-        return messageDataBaseReference.whereEqualTo("idEmisor", idEmisor)
     }
 
     fun getLastThreeMessageByChatEmisor(idChat: String, idEmisor: String): Query {
@@ -52,9 +47,5 @@ class MessageProvider {
         val viewed: MutableMap<String, Any> = HashMap()
         viewed["viewed"] = state
         return  messageDataBaseReference.document(idDocument).update(viewed)
-    }
-
-    fun getChat(id: String): DocumentReference {
-        return messageDataBaseReference.document(id)
     }
 }
