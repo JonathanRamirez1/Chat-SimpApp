@@ -9,9 +9,7 @@ class ChatModel {
     private var idEmisor: String = ""
     private var idReceptor: String = ""
     private var idNotification: Int = 0
-    private var isWritting: Boolean = false
     private var timeStamp: Date = Date()
-    private var photo: String = ""
     private var email: String = ""
     private var ids = ArrayList<String>()
 
@@ -47,28 +45,12 @@ class ChatModel {
         this.idNotification = idNotification
     }
 
-    fun isWritting(): Boolean {
-        return isWritting
-    }
-
-    fun setWritting(writting: Boolean) {
-        isWritting = writting
-    }
-
     fun getTimeStamp(): Date {
         return timeStamp
     }
 
     fun setTimeStamp(timeStamp: Date) {
         this.timeStamp = timeStamp
-    }
-
-    fun getPhoto(): String {
-        return photo
-    }
-
-    fun setPhoto(photo: String) {
-        this.photo = photo
     }
 
     fun getEmail(): String {
