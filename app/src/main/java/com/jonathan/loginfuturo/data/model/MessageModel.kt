@@ -8,7 +8,6 @@ class MessageModel {
     private var message: String = ""
     private var timeStamp: Long = 123
     private var viewed: Boolean = false
-    private var profileImageUrl: String = ""
 
     fun getId(): String {
         return id
@@ -64,13 +63,5 @@ class MessageModel {
 
     fun setViewed(viewed: Boolean) {
         this.viewed = viewed
-    }
-
-    fun getProfileImageUrl(): String {
-        return profileImageUrl
-    }
-
-    fun setProfileImageUrl(profileImageUrl: String) {
-        this.profileImageUrl = profileImageUrl
     }
 }

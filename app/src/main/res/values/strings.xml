@@ -76,6 +76,7 @@
     <string name="offline_title">Connect to a network</string>
     <string name="offline_message">To use LoginFuturo, activate cell phone data or connect to a wifi network.</string>
     <string name="offline_button">OK</string>
+    <string name="writing">Writing…</string>
 
     <!-- Notification -->
     <string name="new_message">NEW MESSAGE</string>

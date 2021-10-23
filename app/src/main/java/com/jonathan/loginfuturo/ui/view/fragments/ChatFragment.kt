@@ -21,6 +21,8 @@ import com.jonathan.loginfuturo.core.objects.RelativeTime
 import com.jonathan.loginfuturo.core.objects.UpdateStateHelper
 import com.jonathan.loginfuturo.core.WrapContentLinearLayoutManager
 import android.net.ConnectivityManager
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.viewModels
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
@@ -62,6 +64,9 @@ class ChatFragment : Fragment() {
         launchRoomsFragment()
         chatViewModel.getUserInfo()
         chatViewModel.getStateUser()
+        chatViewModel.createChatInRealTimeDB()
+        chatViewModel.checkIsWriting()
+        setWritingUser()
         initInterstitialAd()
         initListeners()
     }
@@ -98,6 +103,18 @@ class ChatFragment : Fragment() {
 
         chatViewModel.imageChat.observe(viewLifecycleOwner) { imageChat ->
             imageChat.into(binding.circleImageViewChat)
+        }
+
+        //TODO CAMBIAR COLOR
+        chatViewModel.isWriting.observe(viewLifecycleOwner) { writing ->
+            if (writing == true) {
+                binding.TextViewWritingChat.visibility = View.VISIBLE
+                binding.TextViewWritingChat.setTextColor(resources.getColor(R.color.colorGooglePlusDark))
+                binding.TextViewTimeChat.visibility = View.GONE
+            } else if (writing == false) {
+                binding.TextViewWritingChat.visibility = View.GONE
+                binding.TextViewTimeChat.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -158,6 +175,20 @@ class ChatFragment : Fragment() {
             showAds()
             initInterstitialAd()
         }
+    }
+
+    private fun setWritingUser() {
+        binding.editTextMessage.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence?, i: Int, i1: Int, i2: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                if (editable.trim().isNotEmpty()) {
+                    chatViewModel.updateWritingUser("true")
+                } else {
+                    chatViewModel.updateWritingUser("false")
+                }
+            }
+        })
     }
 
     private fun initListeners() {

@@ -59,7 +59,18 @@
             android:layout_below="@+id/textViewUsernameChat"
             android:layout_toEndOf="@+id/circleImageViewChat"
             android:maxLines="1"
-            android:text=""
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/TextViewWritingChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewUsernameChat"
+            android:layout_toEndOf="@+id/circleImageViewChat"
+            android:maxLines="1"
+            android:visibility="gone"
+            android:text="@string/writing"
             android:textColor="@color/white"
             android:textSize="12sp" />
 

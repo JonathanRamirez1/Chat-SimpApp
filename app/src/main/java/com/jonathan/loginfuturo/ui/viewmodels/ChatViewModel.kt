@@ -12,10 +12,7 @@ import com.google.gson.Gson
 import com.jonathan.loginfuturo.core.objects.OfflinePersistence
 import com.jonathan.loginfuturo.core.CircleTransform
 import com.jonathan.loginfuturo.core.SingleLiveEvent
-import com.jonathan.loginfuturo.data.model.ChatModel
-import com.jonathan.loginfuturo.data.model.FCMBody
-import com.jonathan.loginfuturo.data.model.FCMResponse
-import com.jonathan.loginfuturo.data.model.MessageModel
+import com.jonathan.loginfuturo.data.model.*
 import com.jonathan.loginfuturo.data.model.providers.*
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
@@ -37,10 +34,11 @@ class ChatViewModel : ViewModel() {
 
     //Models
     val chatModel = ChatModel()
-    val messageModel = MessageModel()
+    private val messageModel = MessageModel()
 
     var idUserEmisor: String = ""
     var idUserReceptor: String = ""
+    var idUserWriting: String = ""
     var idChat: String = ""
     var lastConnect: Long = 0
 
@@ -73,6 +71,9 @@ class ChatViewModel : ViewModel() {
 
     private val _imageChat = MutableLiveData<RequestCreator>()
     val imageChat: LiveData<RequestCreator> = _imageChat
+
+    private val _isWriting = MutableLiveData<Boolean>()
+    val isWriting: LiveData<Boolean> = _isWriting
 
     fun getUserInfo() {
         var idUserInfo = ""
@@ -124,7 +125,6 @@ class ChatViewModel : ViewModel() {
         val n: Int = random.nextInt(1000000)
         chatModel.setIdEmisor(idUserEmisor)
         chatModel.setIdReceptor(idUserReceptor)
-        chatModel.setWritting(false)
         chatModel.setTimeStamp(Date())
         chatModel.setIdNotification(n)
         idNotificationChat = n.toLong()
@@ -134,6 +134,24 @@ class ChatViewModel : ViewModel() {
         ids.add(idUserReceptor)
         chatModel.setIds(ids)
         chatProvider.createCollectionUsers(chatModel)
+    }
+
+    fun createChatInRealTimeDB() {
+        idUserWriting = if (authProvider.getUid() == idUserEmisor) {
+            idUserReceptor
+        } else {
+            idUserEmisor
+        }
+        chatProvider.createNodeUsers(chatModel, idUserWriting)
+    }
+
+    fun updateWritingUser(writing: String) {
+        idUserWriting = if (authProvider.getUid() == idUserEmisor) {
+            idUserReceptor
+        } else {
+            idUserEmisor
+        }
+        chatProvider.updateWriting(idChat, idUserWriting, writing)
     }
 
     fun updateViewed() {
@@ -332,6 +350,33 @@ class ChatViewModel : ViewModel() {
                     Log.e("Cancel", "Se cancelo la operacion{$error}")
                 }
 
+            })
+    }
+
+    fun checkIsWriting() {
+        idUserWriting = if (idUserWriting == idUserEmisor) {
+            idUserReceptor
+        } else {
+            idUserEmisor
+        }
+        chatProvider.getWritingRealTimeDB(idChat, authProvider.getUid())
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (dataSnapshot.hasChild("writing")) {
+                            val writing: String = dataSnapshot.child("writing").value.toString()
+                            if (writing == "true") {
+                                _isWriting.value = true
+                            } else if (writing == "false") {
+                                _isWriting.value = false
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("CancelWriting", "Se cancelo la operacion{$error}")
+                }
             })
     }
 

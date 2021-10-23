@@ -5,10 +5,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 import kotlin.collections.HashMap
-import java.text.SimpleDateFormat
 
 object OfflinePersistence {
 
+    //Crea un nodo en RealTime Database
     private val dbReference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("UsersRegister")
 
     fun updateUserStatus(id: String, online: String, offline: String): Task<Void> {
