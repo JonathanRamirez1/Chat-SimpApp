@@ -1,120 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    tools:context=".ui.view.activities.CompleteInfoActivity">
+    android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/toolbarView"
-        layout="@layout/toolbar" />
-
-    <ImageView
-        android:id="@+id/imageViewCompleteCover"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginTop="54dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/person"
-        android:transitionName="@string/search"
-        app:layout_anchor="@+id/imageViewCompleteCover"
-        app:layout_anchorGravity="center"
-        app:layout_collapseMode="parallax" />
-
-    <Button
-        android:id="@+id/buttonCompleteCover"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="360dp"
-        android:layout_marginTop="260dp"
-        android:background="@drawable/ic_photo" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleCompletePhoto"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_marginTop="225dp"
-        android:src="@drawable/person"
-        app:civ_border_color="@color/colorPrimary"
-        app:civ_border_width="5dp"
-        app:civ_circle_background_color="@color/colorPrimaryDark" />
-
-    <Button
-        android:id="@+id/buttonCompletePhoto"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="225dp"
-        android:layout_marginTop="310dp"
-        android:background="@drawable/ic_photo" />
-
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
-        android:orientation="vertical">
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".ui.view.activities.CompleteInfoActivity">
 
-        <LinearLayout
+        <include
+            android:id="@+id/toolbarView"
+            layout="@layout/toolbar" />
+
+        <ImageView
+            android:id="@+id/imageViewCompleteCover"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="190dp"
-            android:layout_marginRight="30dp"
-            android:orientation="horizontal">
+            android:layout_height="250dp"
+            android:layout_marginTop="54dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/person"
+            android:transitionName="@string/search"
+            app:layout_anchor="@+id/imageViewCompleteCover"
+            app:layout_anchorGravity="center"
+            app:layout_collapseMode="parallax" />
 
-            <com.google.android.material.textfield.TextInputLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="220dp">
+
+            <Button
+                android:id="@+id/buttonCompleteCover"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_photo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleCompletePhoto"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:src="@drawable/person"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="5dp"
+                app:civ_circle_background_color="@color/colorPrimaryDark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/buttonCompletePhoto"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_photo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/buttonCompleteCover"
+                app:layout_constraintHorizontal_bias="0.677"
+                app:layout_constraintStart_toStartOf="@+id/circleCompletePhoto"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.709" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="400dp">
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/editext_rounded">
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/materialEditTextCompleteUsername"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/username"
-                    android:inputType="text">
+                    android:background="@drawable/editext_rounded">
 
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/materialEditTextCompleteUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/username"
+                        android:inputType="text">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="30dp"
-            android:orientation="horizontal">
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/editext_rounded">
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/materialEditTextCompletePhone"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/phone_number"
-                    android:inputType="phone"
-                    android:maxLength="10">
+                    android:background="@drawable/editext_rounded">
 
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-    </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/materialEditTextCompletePhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/phone_number"
+                        android:inputType="phone"
+                        android:maxLength="10">
 
-    <Button
-        android:id="@+id/buttonCompleteOk"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="@string/complete"
-        android:textColor="@color/colorPrimaryText" />
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
+            <!--
     <com.google.android.ads.nativetemplates.TemplateView
         android:id="@+id/templateComplete2"
         android:layout_width="match_parent"
@@ -124,15 +145,32 @@
         android:layout_marginBottom="180dp"
         android:layout_gravity="bottom"
         app:gnt_template_type="@layout/gnt_small_template_view" />
+        -->
 
-    <com.google.android.ads.nativetemplates.TemplateView
-        android:id="@+id/templateComplete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="70dp"
-        android:layout_gravity="bottom"
-        app:gnt_template_type="@layout/gnt_small_template_view" />
+            <com.google.android.ads.nativetemplates.TemplateView
+                android:id="@+id/templateComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                app:gnt_template_type="@layout/gnt_small_template_view"
+                app:layout_constraintBottom_toTopOf="@+id/buttonCompleteOk"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <Button
+                android:id="@+id/buttonCompleteOk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/complete"
+                android:textColor="@color/colorPrimaryText"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
