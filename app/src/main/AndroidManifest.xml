@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jonathan.loginfuturo">
+    package="com.jonathan.chatsimpapp">
 
     <uses-feature
         android:name="android.hardware.camera2"
@@ -11,23 +11,33 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
+        android:name=".core.ChatSimpAppAddApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".core.LoginFuturoAddApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.jonathan.loginfuturo.ui.view.activities.CompleteInfoActivity"
+            android:name=".ui.view.activities.MainActivity"
+            android:exported="true"
+            android:theme="@style/NoPreview">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.view.activities.CompleteInfoActivity"
             android:exported="true" />
         <activity
-            android:name="com.jonathan.loginfuturo.ui.view.activities.FindUserActivity"
+            android:name=".ui.view.activities.FindUserActivity"
             android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.jonathan.loginfuturo"
+            android:authorities="com.jonathan.chatsimpapp"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -36,21 +46,11 @@
         </provider>
 
         <activity
-            android:name="com.jonathan.loginfuturo.ui.view.activities.HomeActivity"
+            android:name=".ui.view.activities.HomeActivity"
+            android:theme="@style/NoPreview"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-        <activity android:name="com.jonathan.loginfuturo.ui.view.activities.MainActivity" />
         <activity
-            android:name="com.jonathan.loginfuturo.ui.view.activities.MainEmptyActivity"
-            android:exported="true"
-            android:theme="@android:style/Theme.NoDisplay">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.jonathan.loginfuturo.ui.view.activities.LoginActivity"
+            android:name=".ui.view.activities.LoginActivity"
             android:theme="@style/NoPreview"
             android:windowSoftInputMode="adjustPan" />
 
@@ -67,7 +67,7 @@
             android:value="@string/default_notification_channel_id" />
 
         <receiver
-            android:name="com.jonathan.loginfuturo.core.firebase.MessageReceiver"
+            android:name=".core.firebase.MessageReceiver"
             android:enabled="true"
             android:exported="false" />
 
@@ -95,6 +95,9 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/test_application_id" />
-
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
+
 </manifest>

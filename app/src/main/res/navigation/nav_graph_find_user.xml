@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/findUserFragment"
-        android:name="com.jonathan.loginfuturo.ui.view.fragments.FindUserFragment"
+        android:name="com.jonathan.chatsimpapp.ui.view.fragments.FindUserFragment"
         android:label="SearchBarFragment"
         tools:layout="@layout/fragment_find_user">
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment2"
-        android:name="com.jonathan.loginfuturo.ui.view.fragments.ChatFragment"
+        android:name="com.jonathan.chatsimpapp.ui.view.fragments.ChatFragment"
         android:label="ChatFragment"
         tools:layout="@layout/fragment_chat"/>
 </navigation>

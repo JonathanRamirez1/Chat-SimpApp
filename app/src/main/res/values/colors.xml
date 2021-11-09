@@ -16,4 +16,13 @@
 
     <color name="colorGooglePlus">#DD4B39</color>
     <color name="colorGooglePlusDark">#B92D21</color>
+
+    <color name="primary">#00E5FF</color>
+    <color name="primary_light">#6EFFFF</color>
+    <color name="primary_dark">#00B2CC</color>
+    <color name="secondary">#00E575</color>
+    <color name="secondary_light">#66FFA5</color>
+    <color name="secondary_dark">#00B147</color>
+
+    <color name="text_color">#000000</color>
 </resources>

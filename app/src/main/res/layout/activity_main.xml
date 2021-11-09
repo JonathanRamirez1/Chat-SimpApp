@@ -1,11 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_ripple_primary"
+    android:fillViewport="true"
     tools:context=".ui.view.activities.MainActivity">
 
-</LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textViewChatSimpApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/splash_margin_top"
+            android:fontFamily="@font/akronim"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/splash_text_size_chatsimpapp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationViewSplash"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/splash_height"
+            android:layout_marginStart="@dimen/splash_lottie_margin_start_and_end"
+            android:layout_marginTop="@dimen/splash_lottie_margin_top_and_bottom"
+            android:layout_marginEnd="@dimen/splash_lottie_margin_start_and_end"
+            android:layout_marginBottom="@dimen/splash_lottie_margin_top_and_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/chat_simpapp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutSplash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/splash_linear_margin_bottom"
+            android:gravity="center|bottom"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/akronim"
+                android:text="@string/splash_by"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/splash_text_size_by" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/akronim"
+                android:text="@string/splash_name_creator"
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/splash_text_size_author" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

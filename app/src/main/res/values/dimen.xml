@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Splash View -->
+    <dimen name="splash_margin_top">200dp</dimen>
+    <dimen name="splash_lottie_margin_start_and_end">100dp</dimen>
+    <dimen name="splash_lottie_margin_top_and_bottom">80dp</dimen>
+    <dimen name="splash_linear_margin_bottom">80dp</dimen>
+    <dimen name="splash_height">300dp</dimen>
+
+    <dimen name="splash_text_size_chatsimpapp">40sp</dimen>
+    <dimen name="splash_text_size_by">35sp</dimen>
+    <dimen name="splash_text_size_author">25sp</dimen>
+
+    <!-- Login View -->
+    <dimen name="login_standard_size">10dp</dimen>
+    <dimen name="login_image_width_and_height">150dp</dimen>
+    <dimen name="login_card_view_margin">40dp</dimen>
+    <dimen name="login_textview_padding_top">20dp</dimen>
+    <dimen name="login_card_view_margin_left_and_right">30dp</dimen>
+    <dimen name="login_margin_top">20dp</dimen>
+    <dimen name="login_card_view_imageview_width_and_height">25dp</dimen>
+    <dimen name="login_card_view_margin_end_and_top">5dp</dimen>
+    <dimen name="login_standard_size_bottom">20dp</dimen>
+    <dimen name="login_view_width">125dp</dimen>
+    <dimen name="login_view_height">0.5dp</dimen>
+    <dimen name="login_logo_width_and_height">70dp</dimen>
+
+    <dimen name="login_text_size_chatsimpapp">20sp</dimen>
+    <dimen name="login_text_size_card_view">18sp</dimen>
+    <dimen name="login_text_size_standard">15sp</dimen>
+
     <dimen name="login_space">25sp</dimen>
     <dimen name="login_edit_text_space">10sp</dimen>
     <dimen name="login_edit_text_height">50sp</dimen>
@@ -7,4 +37,21 @@
     <dimen name="login__button_xl_height">60sp</dimen>
     <dimen name="login_text_xl_size">18sp</dimen>
     <dimen name="login_text_size">15sp</dimen>
+
+    <!-- Register View -->
+    <dimen name="register_florent_height">220dp</dimen>
+    <dimen name="register_florent_elevation">4dp</dimen>
+    <dimen name="register_florent_shape_height">20dp</dimen>
+    <dimen name="register_margin_top">20dp</dimen>
+    <dimen name="register_imageview_height">150dp</dimen>
+    <dimen name="register_imageview_margin_top">35dp</dimen>
+    <dimen name="register_margin_start_and_end">32dp</dimen>
+
+    <dimen name="register_text_size">22sp</dimen>
+
+    <!-- Forgot Password View -->
+    <dimen name="forgot_margin_top">60dp</dimen>
+    <dimen name="forgot_margin_bottom">150dp</dimen>
+    <dimen name="forgot_vertical_bias">0.13</dimen>
+
 </resources>

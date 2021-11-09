@@ -1,137 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimaryDark">
+    android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/editTextEmailSignUp"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/login_edit_text_height"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/editext_rounded"
-        android:hint="@string/login_email"
-        android:inputType="textEmailAddress"
-        android:paddingLeft="@dimen/login_edit_text_space"
-        android:paddingRight="@dimen/login_edit_text_space"
-        android:textSize="@dimen/login_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/editTextPasswordSignUp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextPasswordSignUp"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/login_edit_text_height"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/editext_rounded"
-        android:hint="@string/login_password"
-        android:inputType="textPassword"
-        android:paddingLeft="@dimen/login_edit_text_space"
-        android:paddingRight="@dimen/login_edit_text_space"
-        android:textSize="@dimen/login_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/editTextConfirmPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/login_edit_text_height"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/editext_rounded"
-        android:hint="@string/login_confirm_password"
-        android:inputType="textPassword"
-        android:paddingLeft="@dimen/login_edit_text_space"
-        android:paddingRight="@dimen/login_edit_text_space"
-        android:textSize="@dimen/login_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSignUp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/buttonSignUp"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/login__button_xl_height"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="64dp"
-        android:background="@drawable/button_ripple_bg"
-        android:text="@string/login_signUp"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="@dimen/login_text_xl_size"
-        app:layout_constraintBottom_toTopOf="@+id/buttonRegisterGoLogIn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/buttonRegisterGoLogIn"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/login__button_xl_height"
-        android:background="@drawable/button_ripple_create_account"
-        android:text="@string/login_go_to_login"
-        android:textColor="@color/colorSecondaryText"
-        android:textSize="@dimen/login_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayoutRegister"
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:background="@color/colorPrimaryDark"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:progressDrawable="@drawable/customprogressbar"
-            android:text="@string/alert_dialog_title_wait" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="@string/alert_dialog_title_wait"
-            android:textColor="@color/colorPrimaryText" />
-
-    </LinearLayout>
-
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/bannerRegister"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/test_banner"
-        android:visibility="gone"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSignUp" />
+        android:background="@color/primary">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.github.florent37.shapeofview.shapes.ArcView
+            android:id="@+id/arcView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/register_florent_height"
+            android:elevation="@dimen/register_florent_elevation"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toTopOf="parent"
+            app:shape_arc_cropDirection="outside"
+            app:shape_arc_height="@dimen/register_florent_shape_height"
+            app:shape_arc_position="bottom">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ripple_app" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/register_margin_top"
+                android:text="@string/register_app"
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/register_text_size"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageViewLogoRegister"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/register_imageview_height"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/register_imageview_margin_top" />
+
+        </com.github.florent37.shapeofview.shapes.ArcView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_marginLeft="@dimen/login_card_view_margin"
+            android:layout_marginTop="@dimen/login_card_view_margin"
+            android:layout_marginRight="@dimen/login_card_view_margin"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toBottomOf="@+id/arcView"
+            app:cardBackgroundColor="@color/primary_light">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/login_textview_padding_top"
+                    android:text="@string/register_form"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/login_text_size_card_view" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/login_card_view_margin_left_and_right"
+                    android:layout_marginTop="@dimen/login_margin_top"
+                    android:layout_marginRight="@dimen/login_card_view_margin_left_and_right"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/login_card_view_imageview_width_and_height"
+                        android:layout_height="@dimen/login_card_view_imageview_width_and_height"
+                        android:layout_marginTop="@dimen/login_margin_top"
+                        android:layout_marginEnd="@dimen/login_card_view_margin_end_and_top"
+                        android:src="@drawable/ic_email" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_rounded">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/materialTextInputEditTextEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_rounded"
+                            android:hint="@string/login_email"
+                            android:inputType="textEmailAddress"
+                            android:padding="@dimen/login_standard_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/login_card_view_margin_left_and_right"
+                    android:layout_marginTop="@dimen/login_card_view_margin_end_and_top"
+                    android:layout_marginRight="@dimen/login_card_view_margin_left_and_right"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/login_card_view_imageview_width_and_height"
+                        android:layout_height="@dimen/login_card_view_imageview_width_and_height"
+                        android:layout_marginTop="@dimen/login_margin_top"
+                        android:layout_marginEnd="@dimen/login_card_view_margin_end_and_top"
+                        android:src="@drawable/ic_password" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/materialTextInputLayoutPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_rounded"
+                        app:passwordToggleEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/materialTextInputEditTextPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_rounded"
+                            android:hint="@string/login_password"
+                            android:inputType="textPassword"
+                            android:maxLength="15"
+                            android:padding="@dimen/login_standard_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/login_card_view_margin_left_and_right"
+                    android:layout_marginTop="@dimen/login_card_view_margin_end_and_top"
+                    android:layout_marginRight="@dimen/login_card_view_margin_left_and_right"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/login_card_view_imageview_width_and_height"
+                        android:layout_height="@dimen/login_card_view_imageview_width_and_height"
+                        android:layout_marginTop="@dimen/login_margin_top"
+                        android:layout_marginEnd="@dimen/login_card_view_margin_end_and_top"
+                        android:src="@drawable/ic_repeat_password" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/materialTextInputLayoutConfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_rounded"
+                        app:passwordToggleEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/materialTextInputEditTextConfirmPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_rounded"
+                            android:hint="@string/login_confirm_password"
+                            android:inputType="textPassword"
+                            android:maxLength="15"
+                            android:padding="@dimen/login_standard_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/login_card_view_margin_left_and_right"
+                    android:layout_marginTop="@dimen/login_card_view_margin_left_and_right"
+                    android:layout_marginRight="@dimen/login_card_view_margin_left_and_right"
+                    android:layout_marginBottom="@dimen/login_standard_size_bottom"
+                    android:background="@drawable/rounded_button"
+                    android:text="@string/login_signUp"
+                    android:textColor="@color/text_color" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/buttonRegisterGoLogIn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login__button_xl_height"
+            android:layout_gravity="bottom"
+            android:background="@drawable/button_ripple_create_account"
+            android:text="@string/login_go_to_login"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/login_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/bannerRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginStart="@dimen/register_margin_start_and_end"
+            android:layout_marginTop="@dimen/login_standard_size"
+            android:layout_marginEnd="@dimen/register_margin_start_and_end"
+            android:layout_marginBottom="@dimen/login_standard_size"
+            android:visibility="gone"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/test_banner"
+            ads:layout_constraintBottom_toTopOf="@+id/buttonRegisterGoLogIn"
+            ads:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

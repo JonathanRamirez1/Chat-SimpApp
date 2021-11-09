@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.jonathan.loginfuturo.ui.view.fragments.RegisterFragment"
+        android:name="com.jonathan.chatsimpapp.ui.view.fragments.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.jonathan.loginfuturo.ui.view.fragments.LoginFragment"
+        android:name="com.jonathan.chatsimpapp.ui.view.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.jonathan.loginfuturo.ui.view.fragments.ForgotPasswordFragment"
+        android:name="com.jonathan.chatsimpapp.ui.view.fragments.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password" />
 </navigation>

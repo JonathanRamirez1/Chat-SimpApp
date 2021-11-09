@@ -93,7 +93,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editext_rounded">
+                    android:background="@drawable/edittext_rounded">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/materialEditTextCompleteUsername"
@@ -121,7 +121,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editext_rounded">
+                    android:background="@drawable/edittext_rounded">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/materialEditTextCompletePhone"

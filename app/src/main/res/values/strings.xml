@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">WhatsApp</string>
+    <string name="app_name">Chat SimpApp</string>
+
+    <!-- Splash View -->
+    <string name="splash_by">by</string>
+    <string name="splash_name_creator">Jonathan Javier Ramirez</string>
 
     <!-- Login View -->
     <string name="login_username">Username</string>
@@ -11,14 +15,20 @@
     <string name="login_reset_password">Reset Password</string>
     <string name="login_signIn_google">Sign In with Google</string>
     <string name="login_forgot_password">I have fotgotten my password</string>
-    <string name="login_create_account">Create a new account</string>
+    <string name="login_create_account">Sign up here</string>
     <string name="login_go_to_login">Go back to Login</string>
+    <string name="login_option">ó</string>
+
+    <string name="login_enter_app">ENTER THE APP</string>
+    <string name="login_no_account">You do not have an account?</string>
 
     <!-- Register -->
     <string name="register_send_email">An email has been sent to you. Confirm before logging in</string>
     <string name="register_error_create">Unexpected error occurred. Please try again</string>
     <string name="register_user_saved">User successfully saved</string>
     <string name="register_user_saved_error">Unexpected Error</string>
+    <string name="register_form">To start fill out the form</string>
+    <string name="register_app">REGISTER IN THE APP</string>
 
     <!-- Sign In and Sign Up -->
     <string name="username_is_no_valid">Username is not valid</string>
@@ -57,7 +67,8 @@
 
     <!-- Facebook Sign In -->
     <string name="facebook_app_id">4389468264471839
-    </string> <string name="fb_login_protocol_scheme">fb4389468264471839</string>
+    </string>
+    <string name="fb_login_protocol_scheme">fb4389468264471839</string>
 
     <!-- CompleteInfoFragment -->
     <string name="search">Search…</string>
@@ -82,8 +93,7 @@
     <string name="new_message">NEW MESSAGE</string>
     <string name="your_message">Your Message…</string>
     <string name="reply_message">Reply</string>
-    <string name="default_notification_channel_id"
-        translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
     <!-- Google Admob -->
     <string name="test_application_id">ca-app-pub-3940256099942544~3347511713</string>
