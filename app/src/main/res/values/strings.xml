@@ -17,7 +17,7 @@
     <string name="login_forgot_password">I have fotgotten my password</string>
     <string name="login_create_account">Sign up here</string>
     <string name="login_go_to_login">Go back to Login</string>
-    <string name="login_option">ó</string>
+    <string name="login_option">or</string>
 
     <string name="login_enter_app">ENTER THE APP</string>
     <string name="login_no_account">You do not have an account?</string>
@@ -62,8 +62,6 @@
     <string name="alert_dialog_edit_text_hint">Leave your feedback</string>
     <string name="alert_dialog_ok">Rate</string>
     <string name="alert_dialog_cancel">Cancel</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Facebook Sign In -->
     <string name="facebook_app_id">4389468264471839
@@ -78,7 +76,6 @@
     <string name="choose">Choose an option</string>
     <string name="gallery_image">Gallery image</string>
     <string name="camera_photo">Take photo</string>
-    <string name="gender">Gender</string>
 
     <!-- Chat -->
     <string name="online">Online</string>

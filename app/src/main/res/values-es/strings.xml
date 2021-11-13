@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">Chat SimpApp</string>
+
+    <!-- Splash View -->
+    <string name="splash_by">por</string>
+    <string name="splash_name_creator">Jonathan Javier Ramirez</string>
+
+    <!-- Login View -->
+    <string name="login_username">Nombre de usuario</string>
+    <string name="login_email">Correo electrónico</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_confirm_password">Confirmar contraseña</string>
+    <string name="login_sign_in">Iniciar sesión</string>
+    <string name="login_signUp">Registrarse</string>
+    <string name="login_reset_password">Restablecer la contraseña</string>
+    <string name="login_signIn_google">Iniciar sesión con Google</string>
+    <string name="login_forgot_password">He olvidado mi contraseña</string>
+    <string name="login_create_account">Registrate aquí</string>
+    <string name="login_go_to_login">Volver a iniciar sesión</string>
+    <string name="login_option">ó</string>
+
+    <string name="login_enter_app">ENTRAR A LA APLICACIÓN</string>
+    <string name="login_no_account">¿No tienes una cuenta?</string>
+
+    <!-- Register -->
+    <string name="register_send_email">Se le ha enviado un correo electrónico. Confirmar antes de iniciar sesión</string>
+    <string name="register_error_create">Ocurrió un error inesperado. Inténtalo de nuevo</string>
+    <string name="register_user_saved">Usuario guardada con éxito</string>
+    <string name="register_user_saved_error">Error inesperado</string>
+    <string name="register_form">Para empezar llene el formulario</string>
+    <string name="register_app">REGÍSTRESE EN LA APLICACIÓN</string>
+
+    <!-- Sign In and Sign Up -->
+    <string name="username_is_no_valid">El nombre de usuario no es válido</string>
+    <string name="email_is_no_valid">El correo no es válido</string>
+    <string name="password_is_no_valid">La contraseña debe contener 1 minúscula, 1 mayúscula, 1 carácter especial y al menos 8 caracteres de longitud.</string>
+    <string name="confirm_password_is_no_valid">Confirmar contraseña no coincide con contraseña</string>
+
+    <string name="chat_edittext_message_hint">Escriba aquí un mensaje…</string>
+
+    <string name="phone_number_is_no_valid">Ingrese el prefijo seguido de un número</string>
+
+    <!-- Bottom Navigation Menu -->
+    <string name="navigation_bottom_info">Info</string>
+    <string name="navigation_bottom_rates">Valorar</string>
+    <string name="navigation_bottom_chat">Chat</string>
+
+    <!-- ProfileFragment -->
+    <string name="phone_number_profile">Número de teléfono</string>
+    <string name="registration_date">Fecha de Registro</string>
+    <string name="username_profile">Nombre de usuario</string>
+    <string name="email_profile">Correo electrónico</string>
+    <string name="info_no_name">El nombre no está disponible</string>
+    <string name="options_menu_log_out">Cerrar sesión</string>
+
+    <string name="user_message">Mensaje de usuario</string>
+    <string name="username_rooms">Nombre de usuario</string>
+
+    <!-- AlertDialog-->
+    <string name="alert_dialog_title">¡Califica la aplicación!</string>
+    <string name="alert_dialog_title_wait">Espera un momento por favor…</string>
+    <string name="alert_dialog_edit_text_hint">Deje sus comentarios</string>
+    <string name="alert_dialog_ok">Valorar</string>
+    <string name="alert_dialog_cancel">Cancelar</string>
+
+    <!-- Facebook Sign In -->
+    <string name="facebook_app_id">4389468264471839
+    </string>
+    <string name="fb_login_protocol_scheme">fb4389468264471839</string>
+
+    <!-- CompleteInfoFragment -->
+    <string name="search">Buscar…</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="phone_number">Número de teléfono</string>
+    <string name="complete">Completo</string>
+    <string name="choose">Elija una opción</string>
+    <string name="gallery_image">Imagen de la galería</string>
+    <string name="camera_photo">Tomar foto de la cámara</string>
+
+    <!-- Chat -->
+    <string name="online">En línea</string>
+    <string name="time_ago">Hace un momento</string>
+    <string name="offline">Desconectado</string>
+    <string name="offline_title">Conectar a una red</string>
+    <string name="offline_message">Para usar Chat SimpApp, active los datos del teléfono celular o conéctese a una red wifi.</string>
+    <string name="offline_button">OK</string>
+    <string name="writing">Escribiendo…</string>
+
+    <!-- Notification -->
+    <string name="new_message">NUEVO MENSAJE</string>
+    <string name="your_message">Tu mensaje…</string>
+    <string name="reply_message">Respuesta</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
+    <!-- Google Admob -->
+    <string name="test_application_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="test_banner">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="test_interstitial">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="test_interstitial_video">ca-app-pub-3940256099942544/8691691433</string>
+    <string name="test_native_advanced">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="test_native_advanced_video">ca-app-pub-3940256099942544/1044960115</string>
+
+    <string name="application_id">ca-app-pub-2631068461383213~1013661868</string>
+    <string name="banner_register">ca-app-pub-2631068461383213/6230329527</string>
+    <string name="interstitial_rooms">ca-app-pub-2631068461383213/5267729509</string>
+    <string name="interstitial_rates">ca-app-pub-2631068461383213/4135267778</string>
+    <string name="native_advanced">ca-app-pub-2631068461383213/7627967834</string>
+
+</resources>
