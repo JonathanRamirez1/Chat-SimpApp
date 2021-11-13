@@ -19,6 +19,7 @@
 * View Binding
 * Notificaciones Push
 * Google AdMob (Test)
+* Soporte a idioma español e ingles
 
 **Firebase:**
 * Authentication
