@@ -52,7 +52,6 @@ class CompleteInfoActivity : AppCompatActivity() {
         changeCoverPhoto()
         changeProfilePhoto()
         setTemplateNativeAdvanced()
-       // setTemplateNativeAdvancedVideo()
     }
 
     private fun setObservers() {
@@ -187,7 +186,7 @@ class CompleteInfoActivity : AppCompatActivity() {
 
             }
             if (cameraFile != null) {
-                val photoUri = FileProvider.getUriForFile(this,"com.jonathan.loginfuturo", cameraFile)
+                val photoUri = FileProvider.getUriForFile(this,"com.jonathan.chatsimpapp", cameraFile)
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 startActivityForResult(intent, requestCode)
             }
@@ -228,17 +227,4 @@ class CompleteInfoActivity : AppCompatActivity() {
 
         adLoader.loadAd(adRequest)
     }
-
-   /* private fun setTemplateNativeAdvancedVideo() {
-        val adRequest = AdRequest.Builder().build()
-        MobileAds.initialize(this)
-        val adLoader: AdLoader = AdLoader.Builder(this, getString(R.string.test_native_advanced_video))
-            .forNativeAd { nativeAd ->
-                val template = binding.templateComplete2
-                template.setNativeAd(nativeAd)
-            }
-            .build()
-
-        adLoader.loadAd(adRequest)
-    }*/
 }

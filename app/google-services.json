@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "1086975179141",
-    "project_id": "loginfuturo-ec75e",
-    "storage_bucket": "loginfuturo-ec75e.appspot.com"
+    "project_number": "337577816817",
+    "project_id": "chat-simpapp",
+    "storage_bucket": "chat-simpapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1086975179141:android:6b0955661d7dc6797b6cec",
+        "mobilesdk_app_id": "1:337577816817:android:9270e1511cc42e14896f50",
         "android_client_info": {
-          "package_name": "com.jonathan.loginfuturo"
+          "package_name": "com.jonathan.chatsimpapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1086975179141-meuh70fr23cb15fco3q4ac9f7jr2inra.apps.googleusercontent.com",
+          "client_id": "337577816817-f7adm358hicd66r0ovjrhi0a5l33chkg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.jonathan.loginfuturo",
+            "package_name": "com.jonathan.chatsimpapp",
             "certificate_hash": "61afcb3cc6813e3ed20b33a8f372b00d8c8dda22"
           }
         },
         {
-          "client_id": "1086975179141-4a5vefrb38fb0j8t8bi9lrtjigvajf0b.apps.googleusercontent.com",
+          "client_id": "337577816817-kobt18chq8seja5jsp69d2ipv9qbpv4l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCseePZtoSYjHk1D33J_-JIeIODaQXZG6A"
+          "current_key": "AIzaSyCnb2b8E26lRYCbow9Ijr7WTFvTJFn9d-Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1086975179141-4a5vefrb38fb0j8t8bi9lrtjigvajf0b.apps.googleusercontent.com",
+              "client_id": "337577816817-kobt18chq8seja5jsp69d2ipv9qbpv4l.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

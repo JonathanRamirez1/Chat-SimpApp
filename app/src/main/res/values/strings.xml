@@ -38,8 +38,6 @@
 
     <string name="chat_edittext_message_hint">Type here a message…</string>
 
-    <string name="phone_number_is_no_valid">Enter prefix followed by number</string>
-
     <!-- Bottom Navigation Menu -->
     <string name="navigation_bottom_info">Info</string>
     <string name="navigation_bottom_rates">Rates</string>
@@ -64,9 +62,8 @@
     <string name="alert_dialog_cancel">Cancel</string>
 
     <!-- Facebook Sign In -->
-    <string name="facebook_app_id">4389468264471839
-    </string>
-    <string name="fb_login_protocol_scheme">fb4389468264471839</string>
+    <string name="facebook_app_id">1313125555774064</string>
+    <string name="fb_login_protocol_scheme">fb1313125555774064</string>
 
     <!-- CompleteInfoFragment -->
     <string name="search">Search…</string>
@@ -76,6 +73,8 @@
     <string name="choose">Choose an option</string>
     <string name="gallery_image">Gallery image</string>
     <string name="camera_photo">Take photo</string>
+    <string name="complete_info">COMPLETE YOUR INFORMATION</string>
+    <string name="phone_number_is_no_valid">Enter 10 digits without special character</string>
 
     <!-- Chat -->
     <string name="online">Online</string>

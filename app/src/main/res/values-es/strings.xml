@@ -38,8 +38,6 @@
 
     <string name="chat_edittext_message_hint">Escriba aquí un mensaje…</string>
 
-    <string name="phone_number_is_no_valid">Ingrese el prefijo seguido de un número</string>
-
     <!-- Bottom Navigation Menu -->
     <string name="navigation_bottom_info">Info</string>
     <string name="navigation_bottom_rates">Valorar</string>
@@ -64,8 +62,7 @@
     <string name="alert_dialog_cancel">Cancelar</string>
 
     <!-- Facebook Sign In -->
-    <string name="facebook_app_id">4389468264471839
-    </string>
+    <string name="facebook_app_id">4389468264471839</string>
     <string name="fb_login_protocol_scheme">fb4389468264471839</string>
 
     <!-- CompleteInfoFragment -->
@@ -76,6 +73,8 @@
     <string name="choose">Elija una opción</string>
     <string name="gallery_image">Imagen de la galería</string>
     <string name="camera_photo">Tomar foto de la cámara</string>
+    <string name="complete_info">COMPLETA TU INFORMACIÓN</string>
+    <string name="phone_number_is_no_valid">Ingrese 10 digitos sin carácter especial</string>
 
     <!-- Chat -->
     <string name="online">En línea</string>

@@ -1,3 +1,3 @@
 include ':app'
 include 'nativetemplates'
-rootProject.name = "LoginFuturo"
+rootProject.name = "Chat SimpApp"
