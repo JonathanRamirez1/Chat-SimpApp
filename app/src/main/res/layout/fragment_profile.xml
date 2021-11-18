@@ -1,140 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.view.fragments.ProfileFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/profile_appbar_height"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ripple_app">
+
+                    <ImageView
+                        android:id="@+id/imageViewCover"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/profile_imageview_height"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/person"
+                        app:layout_collapseMode="parallax" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageViewPhotoProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/profile_circle_imageview_height"
+                        android:layout_marginTop="@dimen/profile_circle_imageview_margin_top"
+                        android:src="@drawable/person"
+                        app:civ_border_color="@color/primary"
+                        app:civ_border_width="@dimen/profile_civ_border_width"
+                        app:civ_circle_background_color="@color/colorPrimary" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:layout_marginTop="@dimen/profile_linear_margin_top"
+                        android:layout_marginEnd="@dimen/profile_linear_margin_start_and_end"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/texViewPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/profile_text_size_up"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/phone_number_profile"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/profile_text_size_down"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|start"
+                        android:layout_marginStart="@dimen/profile_linear_margin_start_and_end"
+                        android:layout_marginTop="@dimen/profile_linear_margin_top"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textViewDate"
+                            android:layout_width="@dimen/profile_textview_width"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/profile_text_size_up"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/registration_date"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/profile_text_size_down"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="@dimen/profile_linear_margin_bottom"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textViewUsernameProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/username_profile"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/profile_text_size_username"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewEmailProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/profile_textview_margin_top"
+                            android:text="@string/email_profile"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/profile_text_size_up"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </FrameLayout>
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimaryDark">
-
-                <ImageView
-                    android:id="@+id/imageViewCover"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/person"
-                    app:layout_collapseMode="parallax" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/circleImageViewPhotoProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    android:layout_marginTop="130dp"
-                    android:src="@drawable/person"
-                    app:civ_border_color="@color/colorPrimary"
-                    app:civ_border_width="5dp"
-                    app:civ_circle_background_color="@color/colorPrimary" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|right"
-                    android:layout_marginTop="70dp"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/texViewPhone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/phone_number_profile"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|left"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="70dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textViewDate"
-                        android:layout_width="125dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/registration_date"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textViewUsernameProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/username_profile"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textViewEmailProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:text="@string/email_profile"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </FrameLayout>
-        </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/colorPrimaryDark">
-
-        <com.google.android.ads.nativetemplates.TemplateView
-            android:id="@+id/templateProfile"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:gnt_template_type="@layout/gnt_medium_template_view" />
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimaryDark">
 
-    </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <com.google.android.ads.nativetemplates.TemplateView
+                android:id="@+id/templateProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:gnt_template_type="@layout/gnt_medium_template_view" />
+
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</ScrollView>

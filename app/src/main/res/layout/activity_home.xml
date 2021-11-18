@@ -15,13 +15,13 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/primary"
+        android:layout_alignParentEnd="true"
         android:background="@color/primary_light"
         app:itemIconTint="@drawable/bottom_navigation_color"
         app:itemTextColor="@drawable/bottom_navigation_color"
-        app:menu="@menu/bottom_navigation_menu"
-        app:elevation="16dp"/>
+        app:menu="@menu/bottom_navigation_menu" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

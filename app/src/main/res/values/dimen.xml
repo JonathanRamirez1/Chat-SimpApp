@@ -67,4 +67,20 @@
     <dimen name="complete_civ_border_width">5dp</dimen>
     <dimen name="complete_circle_imageview_height">140dp</dimen>
 
+    <!-- Profile View -->
+    <dimen name="profile_appbar_height">350dp</dimen>
+    <dimen name="profile_imageview_height">200dp</dimen>
+    <dimen name="profile_circle_imageview_height">140dp</dimen>
+    <dimen name="profile_circle_imageview_margin_top">130dp</dimen>
+    <dimen name="profile_civ_border_width">5dp</dimen>
+    <dimen name="profile_linear_margin_top">70dp</dimen>
+    <dimen name="profile_textview_width">125dp</dimen>
+    <dimen name="profile_linear_margin_start_and_end">10dp</dimen>
+    <dimen name="profile_linear_margin_bottom">20dp</dimen>
+    <dimen name="profile_textview_margin_top">7dp</dimen>
+
+    <dimen name="profile_text_size_up">15sp</dimen>
+    <dimen name="profile_text_size_down">13sp</dimen>
+    <dimen name="profile_text_size_username">20sp</dimen>
+
 </resources>

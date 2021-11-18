@@ -349,7 +349,6 @@ class ChatViewModel : ViewModel() {
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("Cancel", "Se cancelo la operacion{$error}")
                 }
-
             })
     }
 
