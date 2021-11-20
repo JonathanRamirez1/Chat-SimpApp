@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/primary_light"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground">
@@ -38,7 +39,7 @@
                     android:id="@+id/viewSeparator"
                     android:layout_width="0dp"
                     android:layout_height="0.3dp"
-                    android:background="@color/colorDivider"
+                    android:background="@color/secondary"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent" />
@@ -58,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:textColor="@color/colorSecondaryText"
+                    android:textColor="@color/text_color"
                     android:textSize="11sp"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintStart_toEndOf="@+id/imageViewCalendar"
@@ -72,14 +73,14 @@
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:srcCompat="@drawable/ic_star_red" />
+                    card_view:srcCompat="@drawable/ic_start" />
 
                 <TextView
                     android:id="@+id/textViewStar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:textColor="@color/colorSecondaryText"
+                    android:textColor="@color/text_color"
                     android:textSize="11sp"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintEnd_toStartOf="@+id/imageViewStar"

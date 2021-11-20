@@ -18,7 +18,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:background="@color/primary_light"
+        android:background="@color/primary"
         app:itemIconTint="@drawable/bottom_navigation_color"
         app:itemTextColor="@drawable/bottom_navigation_color"
         app:menu="@menu/bottom_navigation_menu" />

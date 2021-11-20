@@ -31,7 +31,6 @@ class MessageAdapter(options: FirestoreRecyclerOptions<MessageModel>) : Firestor
         authProvider = AuthProvider()
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageAdapter.MessageHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = CardViewMessageBinding.inflate(layoutInflater, parent, false)
