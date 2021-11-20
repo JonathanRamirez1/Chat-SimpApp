@@ -5,26 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.google.firebase.firestore.ListenerRegistration
 import com.jonathan.chatsimpapp.R
-import com.jonathan.chatsimpapp.core.CircleTransform
+import com.jonathan.chatsimpapp.core.ext.createFactory
 import com.jonathan.chatsimpapp.databinding.FragmentProfileBinding
-import com.jonathan.chatsimpapp.data.model.providers.AuthProvider
-import com.jonathan.chatsimpapp.data.model.providers.UserProvider
-import com.squareup.picasso.Picasso
-import java.text.SimpleDateFormat
-import java.util.*
+import com.jonathan.chatsimpapp.ui.viewmodels.ProfileViewModel
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var authProvider: AuthProvider
-    private lateinit var userProvider: UserProvider
 
-    private var profileRegistration: ListenerRegistration? = null
+    private val profileViewModel by viewModels<ProfileViewModel> {
+        ProfileViewModel().createFactory()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
@@ -33,55 +29,37 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        authProvider = AuthProvider()
-        userProvider = UserProvider()
-        getUser()
+
+        setObservers()
+        profileViewModel.getUser()
         setTemplateNativeAdvanced()
     }
 
-    private fun getUser() {
-        profileRegistration = userProvider.getUserRealTime(authProvider.getUid())
-            .addSnapshotListener { documentSnapshot, _ ->
-                if (documentSnapshot != null) {
-                    if (documentSnapshot.exists()) {
-                        if (documentSnapshot.contains("email")) {
-                            val email: String = documentSnapshot.getString("email").toString()
-                            binding.textViewEmailProfile.text = email
-                        }
-                        if (documentSnapshot.contains("username")) {
-                            val username: String = documentSnapshot.getString("username").toString()
-                            binding.textViewUsernameProfile.text = username
-                        }
-                        if (documentSnapshot.contains("phone")) {
-                            val phone: String = documentSnapshot.getString("phone").toString()
-                            binding.texViewPhone.text = phone
-                        }
-                        if (documentSnapshot.contains("timeStamp")) {
-                            val timeStamp: Date? = documentSnapshot.getDate("timeStamp")
-                            binding.textViewDate.text = SimpleDateFormat("dd MMMM, yyyy").format(timeStamp)
-                        }
-                        if (documentSnapshot.contains("cover")) {
-                            val cover: String = documentSnapshot.getString("cover").toString()
-                            if (cover.isEmpty()) {
-                                Picasso.get().load(R.drawable.person).into(binding.imageViewCover)
-                            } else {
-                                Picasso.get().load(cover).into(binding.imageViewCover)
-                            }
-                        }
-                        if (documentSnapshot.contains("photo")) {
-                            val photo: String = documentSnapshot.getString("photo").toString()
-                            if (photo.isEmpty()) {
-                                Picasso.get().load(R.drawable.person)
-                                    .into(binding.circleImageViewPhotoProfile)
-                            } else {
-                                Picasso.get().load(photo).resize(100, 100)
-                                    .centerCrop().transform(CircleTransform())
-                                    .into(binding.circleImageViewPhotoProfile)
-                            }
-                        }
-                    }
-                }
-            }
+    private fun setObservers() {
+
+        profileViewModel.emailProfile.observe(viewLifecycleOwner) { emailProfile ->
+            binding.textViewEmailProfile.text = emailProfile
+        }
+
+        profileViewModel.usernameProfile.observe(viewLifecycleOwner) { usernameProfile ->
+            binding.textViewUsernameProfile.text = usernameProfile
+        }
+
+        profileViewModel.phoneProfile.observe(viewLifecycleOwner) { phoneProfile ->
+            binding.texViewPhone.text = phoneProfile
+        }
+
+        profileViewModel.dateProfile.observe(viewLifecycleOwner) { dateProfile ->
+            binding.textViewDate.text = dateProfile
+        }
+
+        profileViewModel.coverProfile.observe(viewLifecycleOwner) { coverProfile ->
+            coverProfile.into(binding.imageViewCover)
+        }
+
+        profileViewModel.photoProfile.observe(viewLifecycleOwner) { photoProfile ->
+            photoProfile.into(binding.circleImageViewPhotoProfile)
+        }
     }
 
     private fun setTemplateNativeAdvanced() {
@@ -99,8 +77,6 @@ class ProfileFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (profileRegistration != null) {
-            profileRegistration?.remove()
-        }
+        profileViewModel.getProfileListener()?.remove()
     }
 }

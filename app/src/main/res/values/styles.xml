@@ -6,8 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:editTextColor">@color/colorPrimaryText</item>
-        <item name="android:textColorHint">@color/colorSecondaryText</item>
+        <item name="android:editTextColor">@color/text_color_white</item>
 
         <item name="android:windowNoTitle">true</item>
     </style>
@@ -32,7 +31,7 @@
 
     <style name="CustomText">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textColor">@color/text_color_black</item>
     </style>
 
 

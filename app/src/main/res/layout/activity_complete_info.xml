@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_app"
         tools:context=".ui.view.activities.CompleteInfoActivity">
 
         <include
@@ -23,8 +20,8 @@
         <ImageView
             android:id="@+id/imageViewCompleteCover"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="54dp"
+            android:layout_height="@dimen/complete_imageview_height"
+            android:layout_marginTop="@dimen/complete_imageview_margin_top"
             android:scaleType="centerCrop"
             android:src="@drawable/person"
             android:transitionName="@string/search"
@@ -35,14 +32,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="220dp">
+            android:layout_marginTop="@dimen/complete_constraint_profile_margin_top">
 
             <Button
                 android:id="@+id/buttonCompleteCover"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/ic_photo"
+                android:layout_width="@dimen/complete_cover_width_and_height"
+                android:layout_height="@dimen/complete_cover_width_and_height"
+                android:layout_marginBottom="@dimen/complete_margin"
+                android:background="@drawable/ic_camera"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -50,10 +47,10 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleCompletePhoto"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_height="@dimen/complete_circle_imageview_height"
                 android:src="@drawable/person"
-                app:civ_border_color="@color/colorPrimary"
-                app:civ_border_width="5dp"
+                app:civ_border_color="@color/primary"
+                app:civ_border_width="@dimen/complete_civ_border_width"
                 app:civ_circle_background_color="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,116 +58,155 @@
 
             <Button
                 android:id="@+id/buttonCompletePhoto"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_photo"
+                android:layout_width="@dimen/complete_profile_width_and_height"
+                android:layout_height="@dimen/complete_profile_width_and_height"
+                android:background="@drawable/ic_camera"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/buttonCompleteCover"
-                app:layout_constraintHorizontal_bias="0.677"
+                app:layout_constraintHorizontal_bias="0.585"
                 app:layout_constraintStart_toStartOf="@+id/circleCompletePhoto"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.709" />
-
+                app:layout_constraintVertical_bias="0.7" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="400dp">
+            android:layout_marginTop="@dimen/complete_constraint_card_view_margin_top">
 
-            <LinearLayout
-                android:id="@+id/linearLayout2"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/login_card_view_margin"
+                android:layout_marginTop="@dimen/login_standard_size"
+                android:layout_marginRight="@dimen/login_card_view_margin"
+                android:background="@color/primary_light"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_rounded">
+                    android:background="@color/primary_light"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/materialEditTextCompleteUsername"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/username"
-                        android:inputType="text">
+                        android:layout_marginBottom="@dimen/complete_margin_standard"
+                        android:paddingTop="@dimen/login_textview_padding_top"
+                        android:text="@string/complete_info"
+                        android:textAlignment="center"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="@dimen/login_text_size_card_view" />
 
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_rounded">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/materialEditTextCompletePhone"
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/phone_number"
-                        android:inputType="phone"
-                        android:maxLength="10">
+                        android:layout_marginLeft="@dimen/complete_margin_left_and_right"
+                        android:layout_marginRight="@dimen/complete_margin_left_and_right"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+                        <ImageView
+                            android:layout_width="@dimen/login_card_view_imageview_width_and_height"
+                            android:layout_height="@dimen/login_card_view_imageview_width_and_height"
+                            android:layout_marginTop="@dimen/login_margin_top"
+                            android:layout_marginEnd="@dimen/login_card_view_margin_end_and_top"
+                            android:src="@drawable/ic_username" />
 
-            <!--
-    <com.google.android.ads.nativetemplates.TemplateView
-        android:id="@+id/templateComplete2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="180dp"
-        android:layout_gravity="bottom"
-        app:gnt_template_type="@layout/gnt_small_template_view" />
-        -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_rounded">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/materialEditTextCompleteUsername"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/edittext_rounded"
+                                android:hint="@string/username"
+                                android:inputType="text"
+                                android:padding="@dimen/login_standard_size">
+
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/complete_margin_left_and_right"
+                        android:layout_marginTop="@dimen/complete_margin_standard"
+                        android:layout_marginRight="@dimen/complete_margin_left_and_right"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+                        <ImageView
+                            android:layout_width="@dimen/login_card_view_imageview_width_and_height"
+                            android:layout_height="@dimen/login_card_view_imageview_width_and_height"
+                            android:layout_marginTop="@dimen/login_margin_top"
+                            android:layout_marginEnd="@dimen/login_card_view_margin_end_and_top"
+                            android:src="@drawable/ic_phone" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_rounded">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/materialEditTextCompletePhone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/edittext_rounded"
+                                android:hint="@string/phone_number"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:padding="@dimen/login_standard_size">
+
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/buttonCompleteOk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/complete_margin"
+                        android:background="@drawable/rounded_button"
+                        android:text="@string/complete"
+                        android:textColor="@color/text_color_white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <com.google.android.ads.nativetemplates.TemplateView
                 android:id="@+id/templateComplete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginLeft="@dimen/login_card_view_margin"
+                android:layout_marginTop="@dimen/complete_margin_standard"
+                android:layout_marginRight="@dimen/login_card_view_margin"
+                android:layout_marginBottom="@dimen/complete_margin_standard"
                 app:gnt_template_type="@layout/gnt_small_template_view"
-                app:layout_constraintBottom_toTopOf="@+id/buttonCompleteOk"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-            <Button
-                android:id="@+id/buttonCompleteOk"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/complete"
-                android:textColor="@color/colorPrimaryText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
