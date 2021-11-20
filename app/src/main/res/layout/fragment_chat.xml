@@ -19,14 +19,14 @@
         android:id="@+id/relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/primary">
 
         <Button
             android:id="@+id/buttonBackRooms"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/ic_back_rooms" />
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -34,7 +34,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:layout_toEndOf="@+id/buttonBackRooms"
@@ -45,11 +45,11 @@
             android:id="@+id/textViewUsernameChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="4dp"
             android:layout_toEndOf="@+id/circleImageViewChat"
             android:maxLines="1"
             android:text="@string/username"
-            android:textColor="@color/colorPrimaryText"
+            android:textColor="@color/text_color_black"
             android:textSize="18sp" />
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_below="@+id/textViewUsernameChat"
             android:layout_toEndOf="@+id/circleImageViewChat"
             android:maxLines="1"
-            android:textColor="@color/white"
+            android:textColor="@color/text_color_black"
             android:textSize="12sp" />
 
         <TextView
@@ -111,8 +111,8 @@
             android:inputType="textMultiLine"
             android:maxLines="6"
             android:padding="8dp"
-            android:textColor="@color/colortTextBlack"
-            android:textColorHint="@color/colorPrimaryText" />
+            android:textColor="@color/text_color_black"
+            android:textColorHint="@color/text_color_black" />
 
     </LinearLayout>
 
@@ -129,7 +129,7 @@
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:background="@drawable/button_chat_send"
-            android:tint="@color/colorPrimaryText"
+            android:tint="@color/text_color_white"
             app:srcCompat="@drawable/ic_send" />
 
     </LinearLayout>

@@ -100,7 +100,7 @@
                         android:paddingTop="@dimen/login_textview_padding_top"
                         android:text="@string/complete_info"
                         android:textAlignment="center"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/text_color_black"
                         android:textSize="@dimen/login_text_size_card_view" />
 
                     <LinearLayout
@@ -184,7 +184,7 @@
                         android:layout_margin="@dimen/complete_margin"
                         android:background="@drawable/rounded_button"
                         android:text="@string/complete"
-                        android:textColor="@color/colorPrimaryText"
+                        android:textColor="@color/text_color_white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />

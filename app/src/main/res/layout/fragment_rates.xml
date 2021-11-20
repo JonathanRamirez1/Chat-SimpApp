@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true">
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/ripple_app"
     tools:context=".ui.view.fragments.RatesFragment">
 
@@ -21,6 +27,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:src="@drawable/ic_fab_rate"
-        app:backgroundTint="@color/secondary"/>
+        app:backgroundTint="@color/secondary" />
 
 </FrameLayout>
+</ScrollView>

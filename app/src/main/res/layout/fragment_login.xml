@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/app_name"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_black"
                 android:textSize="@dimen/login_text_size_chatsimpapp"
                 android:textStyle="italic" />
 
@@ -66,7 +66,7 @@
                     android:paddingTop="@dimen/login_textview_padding_top"
                     android:text="@string/login_enter_app"
                     android:textAlignment="center"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/text_color_black"
                     android:textSize="@dimen/login_text_size_card_view" />
 
                 <LinearLayout
@@ -145,7 +145,7 @@
                     android:layout_marginRight="@dimen/login_card_view_margin_left_and_right"
                     android:background="@drawable/rounded_button"
                     android:text="@string/login_sign_in"
-                    android:textColor="@color/text_color" />
+                    android:textColor="@color/text_color_black" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -168,7 +168,7 @@
                         android:layout_marginRight="@dimen/login_standard_size"
                         android:text="@string/login_option"
                         android:layout_gravity="center"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/text_color_black"
                         android:textSize="@dimen/login_text_size_standard"
                         android:textStyle="bold" />
 
@@ -211,7 +211,7 @@
                     android:layout_marginTop="@dimen/login_margin_top"
                     android:text="@string/login_forgot_password"
                     android:paddingBottom="@dimen/login_standard_size_bottom"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/text_color_black"
                     android:textSize="@dimen/login_text_size_standard" />
 
             </LinearLayout>
@@ -241,7 +241,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="@string/login_create_account"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_black"
                 android:textSize="@dimen/login_text_size_standard"
                 android:textStyle="bold" />
 

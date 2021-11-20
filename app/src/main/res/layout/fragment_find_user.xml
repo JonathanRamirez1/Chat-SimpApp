@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/primary"
         android:orientation="horizontal"
         tools:context=".ui.view.fragments.FindUserFragment">
 
@@ -24,17 +24,17 @@
             style="@style/MaterialSearchBarLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:mt_backIconTint="@color/colortTextBlack"
-            app:mt_clearIconTint="@color/colortTextBlack"
+            app:mt_backIconTint="@color/text_color_black"
+            app:mt_clearIconTint="@color/text_color_black"
             app:mt_hint="Search text"
-            app:mt_hintColor="@color/colortTextBlack"
-            app:mt_leftTextSelectorTint="@color/colortTextBlack"
+            app:mt_hintColor="@color/text_color_black"
+            app:mt_leftTextSelectorTint="@color/text_color_black"
             app:mt_maxSuggestionsCount="10"
             app:mt_placeholder="Search by email..."
-            app:mt_placeholderColor="@color/colortTextBlack"
-            app:mt_searchBarColor="@color/colorPrimary"
-            app:mt_searchIconTint="@color/colortTextBlack"
-            app:mt_textColor="@color/colortTextBlack">
+            app:mt_placeholderColor="@color/text_color_black"
+            app:mt_searchBarColor="@color/primary"
+            app:mt_searchIconTint="@color/text_color_black"
+            app:mt_textColor="@color/text_color_black">
 
         </com.mancj.materialsearchbar.MaterialSearchBar>
     </LinearLayout>
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="48dp"
-        android:background="@color/colorAccentDark"
+        android:background="@color/primary_light"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView

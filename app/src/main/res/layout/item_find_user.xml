@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="15dp"
     android:layout_marginEnd="15dp"
+    android:background="@color/primary_light"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -27,14 +28,16 @@
             android:id="@+id/textViewUsernameFind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/username" />
+            android:text="@string/username"
+            android:textColor="@color/text_color_black" />
 
         <TextView
             android:id="@+id/textViewEmailFind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/email_profile" />
+            android:text="@string/email_profile"
+            android:textColor="@color/text_color_black" />
 
         <View
             android:id="@+id/viewSeparatorFindUser"
@@ -42,7 +45,7 @@
             android:layout_height="0.3dp"
             android:layout_marginStart="1dp"
             android:layout_marginTop="15dp"
-            android:background="@color/colorDivider" />
+            android:background="@color/text_color_black" />
 
     </LinearLayout>
 </LinearLayout>

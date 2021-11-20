@@ -52,7 +52,7 @@ class MessageAdapter(options: FirestoreRecyclerOptions<MessageModel>) : Firestor
             params.setMargins(150, 0, 0, 0)
             holder.itemView.linearLayoutMessage.layoutParams = params
             holder.itemView.linearLayoutMessage.setPadding(40, 20, 40, 20)
-            holder.itemView.linearLayoutMessage.background = context!!.resources.getDrawable(R.drawable.rounded_linear_layout)
+            holder.itemView.linearLayoutMessage.background = context!!.resources.getDrawable(R.drawable.rounded_linear_layout_right)
             holder.itemView.imageViewViewedMessage.visibility = View.VISIBLE
         } else {
             val params = RelativeLayout.LayoutParams(
@@ -63,7 +63,7 @@ class MessageAdapter(options: FirestoreRecyclerOptions<MessageModel>) : Firestor
             params.setMargins(0, 0, 150, 0)
             holder.itemView.linearLayoutMessage.layoutParams = params
             holder.itemView.linearLayoutMessage.setPadding(40, 20, 40, 20)
-            holder.itemView.linearLayoutMessage.background = context!!.resources.getDrawable(R.drawable.rounded_linear_layout_grey)
+            holder.itemView.linearLayoutMessage.background = context!!.resources.getDrawable(R.drawable.rounded_linear_layout_left)
             holder.itemView.imageViewViewedMessage.visibility = View.GONE
         }
         if (messageModel.getViewed()) {

@@ -7,7 +7,7 @@
     android:layout_marginStart="15dp"
     android:layout_marginTop="5dp"
     android:layout_marginEnd="25dp"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/primary_light">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username_rooms"
-                android:textColor="@color/colorPrimaryText"
+                android:textColor="@color/text_color_black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/imageViewPhoto"
@@ -50,14 +50,14 @@
                 android:layout_marginTop="10dp"
                 android:maxLength="29"
                 android:text="@string/user_message"
-                android:textColor="@color/colorPrimaryText"
+                android:textColor="@color/text_color_black"
                 android:textSize="15sp" />
 
             <View
                 android:layout_width="220dp"
                 android:layout_height="0.3dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorDivider" />
+                android:background="@color/text_color_black" />
 
         </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:textColor="@color/colorChat" />
+                android:textColor="@color/text_color_black" />
 
         </FrameLayout>
     </LinearLayout>

@@ -34,7 +34,7 @@
                 android:layout_marginTop="@dimen/register_margin_top"
                 android:text="@string/register_app"
                 android:textAlignment="center"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_black"
                 android:textSize="@dimen/register_text_size"
                 android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
                     android:paddingTop="@dimen/login_textview_padding_top"
                     android:text="@string/register_form"
                     android:textAlignment="center"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/text_color_black"
                     android:textSize="@dimen/login_text_size_card_view" />
 
                 <LinearLayout
@@ -186,7 +186,7 @@
                     android:layout_marginBottom="@dimen/login_standard_size_bottom"
                     android:background="@drawable/rounded_button"
                     android:text="@string/login_signUp"
-                    android:textColor="@color/text_color" />
+                    android:textColor="@color/text_color_black" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -196,9 +196,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/login__button_xl_height"
             android:layout_gravity="bottom"
-            android:background="@drawable/button_ripple_create_account"
+            android:background="@color/primary"
             android:text="@string/login_go_to_login"
-            android:textColor="@color/text_color"
+            android:textColor="@color/text_color_black"
             android:textSize="@dimen/login_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
