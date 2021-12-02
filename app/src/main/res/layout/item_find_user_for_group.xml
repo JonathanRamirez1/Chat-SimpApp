@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayoutFindUser"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayoutFindUserForGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/find_user_margin_start_and_end"
@@ -9,35 +10,39 @@
     android:gravity="center_vertical"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageViewPhoto"
+            android:id="@+id/imageViewPhotoForGroup"
             android:layout_width="@dimen/find_user_circle_imageview_width_and_height"
             android:layout_height="@dimen/find_user_circle_imageview_width_and_height"
             android:layout_margin="@dimen/find_user_circle_imageview_margin_top"
-            android:src="@drawable/person" />
+            android:src="@drawable/person"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
+            android:id="@+id/LinearLayoutForGroup"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/find_user_linear_margin_top_and_bottom"
-            android:layout_marginBottom="@dimen/find_user_linear_margin_top_and_bottom"
-            android:orientation="vertical">
+            android:layout_marginStart="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewPhotoForGroup"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textViewUsernameFind"
+                android:id="@+id/textViewUsernameFindForGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
                 android:textColor="@color/text_color_black" />
 
             <TextView
-                android:id="@+id/textViewEmailFind"
+                android:id="@+id/textViewEmailFindForGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/find_user_textview_margin_top"
@@ -45,10 +50,18 @@
                 android:textColor="@color/text_color_black" />
 
         </LinearLayout>
-    </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/checkboxFindUserForGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
-        android:id="@+id/viewSeparatorFindUser"
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
         android:background="@color/text_color_black" />

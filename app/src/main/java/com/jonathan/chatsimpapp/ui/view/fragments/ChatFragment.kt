@@ -125,7 +125,7 @@ class ChatFragment : Fragment() {
         chatViewModel.idChat = arguments?.getString("idChat").toString()
     }
 
-    private fun getAllMessagesUser() {
+     fun getAllMessagesUser() {
         chatViewModel.chatModel.setId(chatViewModel.idUserEmisor + chatViewModel.idUserReceptor)
         chatViewModel.idChat = chatViewModel.chatModel.getId()
         val query: Query = chatViewModel.messageProvider.getMessageByChat(chatViewModel.idChat)
@@ -274,5 +274,17 @@ class ChatFragment : Fragment() {
         chatViewModel.getUserInfoListener()?.remove()
         chatViewModel.getLastMessageListener()?.remove()
         messageReceiver?.getListenerLastMessageEmisor()?.remove()
+    }
+
+    companion object {
+        const val TAG = "ChatFragment"
+
+        fun newInstance(bundle: Bundle? = null): ChatFragment {
+            val fragment = ChatFragment()
+            if (bundle != null) {
+                fragment.arguments = bundle
+            }
+            return fragment
+        }
     }
 }

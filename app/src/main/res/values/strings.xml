@@ -104,5 +104,7 @@
     <string name="interstitial_rooms">ca-app-pub-2631068461383213/5267729509</string>
     <string name="interstitial_rates">ca-app-pub-2631068461383213/4135267778</string>
     <string name="native_advanced">ca-app-pub-2631068461383213/7627967834</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
