@@ -1,6 +1,5 @@
 package com.jonathan.chatsimpapp.ui.view.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,56 +12,44 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
 import com.jonathan.chatsimpapp.R
-import com.jonathan.chatsimpapp.databinding.FragmentFindUserBinding
 import com.jonathan.chatsimpapp.data.model.UserModel
 import com.jonathan.chatsimpapp.data.model.providers.AuthProvider
 import com.jonathan.chatsimpapp.data.model.providers.UserProvider
-import com.jonathan.chatsimpapp.ui.view.activities.HomeActivity
+import com.jonathan.chatsimpapp.databinding.FragmentFindUserForGroupBinding
+import com.jonathan.chatsimpapp.ui.view.adapters.FindUserForGroupAdapter
 import com.mancj.materialsearchbar.MaterialSearchBar
-import com.jonathan.chatsimpapp.ui.view.adapters.FindUserAdapter
 import java.util.*
 
-class FindUserFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
+class FindUserForGroupFragment : Fragment(),  MaterialSearchBar.OnSearchActionListener {
 
-    private lateinit var binding: FragmentFindUserBinding
+    private lateinit var binding: FragmentFindUserForGroupBinding
     private lateinit var userProvider: UserProvider
     private lateinit var authProvider: AuthProvider
     private lateinit var navController: NavController
 
-    private var findUserAdapter: FindUserAdapter? = null
-    private var mFindUserAdapter: FindUserAdapter? = null
+    private var findUserForGroupAdapter: FindUserForGroupAdapter? = null
+    private var mFindUserForGroupAdapter: FindUserForGroupAdapter? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, avedInstanceState: Bundle?): View {
-        binding = FragmentFindUserBinding.inflate(inflater, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentFindUserForGroupBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.searchBar.setOnSearchActionListener(this)
+        binding.searchBarForGroup.setOnSearchActionListener(this)
         userProvider = UserProvider()
         authProvider = AuthProvider()
         authProvider.setUPCurrentUser()
-        launchGoBackRooms()
-        launchFindUserForGroupFragment(view)
+        launchFindUserFragment(view)
     }
 
-    private fun launchGoBackRooms() {
-        val backRooms = binding.buttonBackRooms
-
-        backRooms.setOnClickListener {
-            val intent = Intent(context, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-    }
-
-    private fun launchFindUserForGroupFragment(view: View) {
-        val groupChat = binding.linearLayoutFindUser
+    private fun launchFindUserFragment(view: View) {
+        val goFindUser = binding.buttonBackFindUser
 
         navController = Navigation.findNavController(view)
-        groupChat.setOnClickListener {
-            navController.navigate(R.id.findUserForGroupFragment)
+        goFindUser.setOnClickListener {
+            navController.navigate(R.id.findUserFragment)
         }
     }
 
@@ -71,9 +58,9 @@ class FindUserFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
             getAllEmail()
         }
         if (enabled) {
-            binding.buttonBackRooms.visibility = View.GONE
+            binding.buttonBackFindUser.visibility = View.GONE
         } else {
-            binding.buttonBackRooms.visibility = View.VISIBLE
+            binding.buttonBackFindUser.visibility = View.VISIBLE
         }
     }
 
@@ -89,11 +76,11 @@ class FindUserFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
         val options = FirestoreRecyclerOptions.Builder<UserModel>()
             .setQuery(query, UserModel::class.java)
             .build()
-        mFindUserAdapter = FindUserAdapter(options, context)
-        binding.recyclerViewFindUser.layoutManager = layoutManager
-        mFindUserAdapter?.notifyDataSetChanged()
-        binding.recyclerViewFindUser.adapter = mFindUserAdapter
-        mFindUserAdapter?.startListening()
+        mFindUserForGroupAdapter = FindUserForGroupAdapter(options, context)
+        binding.recyclerViewFindUserForGroup.layoutManager = layoutManager
+        mFindUserForGroupAdapter?.notifyDataSetChanged()
+        binding.recyclerViewFindUserForGroup.adapter = mFindUserForGroupAdapter
+        mFindUserForGroupAdapter?.startListening()
     }
 
     private fun getAllEmail() {
@@ -102,11 +89,11 @@ class FindUserFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
         val options = FirestoreRecyclerOptions.Builder<UserModel>()
             .setQuery(query, UserModel::class.java)
             .build()
-        findUserAdapter = FindUserAdapter(options, context)
-        binding.recyclerViewFindUser.layoutManager = layoutManager
-        findUserAdapter?.notifyDataSetChanged()
-        binding.recyclerViewFindUser.adapter = findUserAdapter
-        findUserAdapter?.startListening()
+        findUserForGroupAdapter = FindUserForGroupAdapter(options, context)
+        binding.recyclerViewFindUserForGroup.layoutManager = layoutManager
+        findUserForGroupAdapter?.notifyDataSetChanged()
+        binding.recyclerViewFindUserForGroup.adapter = findUserForGroupAdapter
+        findUserForGroupAdapter?.startListening()
     }
 
     override fun onStart() {
@@ -122,9 +109,9 @@ class FindUserFragment : Fragment(), MaterialSearchBar.OnSearchActionListener {
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity?)?.supportActionBar?.show()
-        findUserAdapter?.stopListening()
-        if (mFindUserAdapter != null) {
-            mFindUserAdapter?.stopListening()
+        findUserForGroupAdapter?.stopListening()
+        if (mFindUserForGroupAdapter != null) {
+            mFindUserForGroupAdapter?.stopListening()
         }
     }
 }

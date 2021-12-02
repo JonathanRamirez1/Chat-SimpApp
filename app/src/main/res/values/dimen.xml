@@ -83,4 +83,33 @@
     <dimen name="profile_text_size_down">13sp</dimen>
     <dimen name="profile_text_size_username">20sp</dimen>
 
+    <!-- Rooms View -->
+    <dimen name="rooms_frame_margin">10dp</dimen>
+    <dimen name="rooms_action_button_margin">16dp</dimen>
+    <dimen name="rooms_imageview_width">75dp</dimen>
+    <dimen name="rooms_imageview_height">68dp</dimen>
+    <dimen name="rooms_imageview_margin_top">2dp</dimen>
+    <dimen name="rooms_imageview_margin_bottom">4dp</dimen>
+    <dimen name="rooms_linear_margin_start">10dp</dimen>
+    <dimen name="rooms_linear_margin_end">15dp</dimen>
+    <dimen name="rooms_textview_margin_top">10dp</dimen>
+    <dimen name="rooms_view_count_message_width_and_height">30dp</dimen>
+    <dimen name="rooms_view_height">0.3dp</dimen>
+
+    <dimen name="rooms_textview_username_text_size">18sp</dimen>
+    <dimen name="rooms_textview_last_message_text_size">15sp</dimen>
+
+    <!-- Find User View -->
+    <dimen name="find_user_width_and_height">35dp</dimen>
+    <dimen name="find_user_margin_top_button">7dp</dimen>
+    <dimen name="find_user_margin_top_linear">48dp</dimen>
+
+    <dimen name="find_user_margin_start_and_end">15dp</dimen>
+    <dimen name="find_user_circle_imageview_width_and_height">60dp</dimen>
+    <dimen name="find_user_circle_imageview_margin_top">10dp</dimen>
+    <dimen name="find_user_linear_margin_top_and_bottom">7dp</dimen>
+    <dimen name="find_user_textview_margin_top">10dp</dimen>
+    <dimen name="find_user_view_height">0.3dp</dimen>
+    <dimen name="find_user_iew_margin_top">15dp</dimen>
+
 </resources>

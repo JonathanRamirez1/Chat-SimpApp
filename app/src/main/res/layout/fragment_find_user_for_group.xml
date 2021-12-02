@@ -18,14 +18,14 @@
             tools:context=".ui.view.fragments.FindUserFragment">
 
             <Button
-                android:id="@+id/buttonBackRooms"
+                android:id="@+id/buttonBackFindUser"
                 android:layout_width="@dimen/find_user_width_and_height"
                 android:layout_height="@dimen/find_user_width_and_height"
                 android:layout_marginTop="@dimen/find_user_margin_top_button"
                 android:background="@drawable/ic_back_rooms" />
 
             <com.mancj.materialsearchbar.MaterialSearchBar
-                android:id="@+id/searchBar"
+                android:id="@+id/searchBarForGroup"
                 style="@style/MaterialSearchBarLight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,32 +52,8 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/linearLayoutFindUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginStart="15dp"
-                    android:src="@drawable/ic_find_user" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
-                    android:text="Nuevo grupo"
-                    android:textColor="@color/text_color_black"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewFindUser"
+                android:id="@+id/recyclerViewFindUserForGroup"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="vertical" />

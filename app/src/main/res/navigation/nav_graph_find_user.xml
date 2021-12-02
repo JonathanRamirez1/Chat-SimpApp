@@ -17,10 +17,22 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+            android:id="@+id/action_findUserFragment_to_findUserForGroupFragment"
+            app:destination="@id/findUserForGroupFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment2"
         android:name="com.jonathan.chatsimpapp.ui.view.fragments.ChatFragment"
         android:label="ChatFragment"
         tools:layout="@layout/fragment_chat"/>
+    <fragment
+        android:id="@+id/findUserForGroupFragment"
+        android:name="com.jonathan.chatsimpapp.ui.view.fragments.FindUserForGroupFragment"
+        android:label="fragment_find_user_for_group"
+        tools:layout="@layout/fragment_find_user_for_group" >
+        <action
+            android:id="@+id/action_findUserForGroupFragment_to_findUserFragment"
+            app:destination="@id/findUserFragment" />
+    </fragment>
 </navigation>
