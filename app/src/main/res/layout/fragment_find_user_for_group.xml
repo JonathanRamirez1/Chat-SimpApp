@@ -59,5 +59,15 @@
                 android:scrollbars="vertical" />
 
         </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingButtonFindUserForGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/rooms_action_button_margin"
+            android:backgroundTint="@color/secondary"
+            android:src="@drawable/ic_check" />
+
     </FrameLayout>
 </ScrollView>

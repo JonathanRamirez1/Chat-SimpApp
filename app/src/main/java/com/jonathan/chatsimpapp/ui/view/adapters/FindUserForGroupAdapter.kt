@@ -2,9 +2,12 @@ package com.jonathan.chatsimpapp.ui.view.adapters
 
 import android.content.Context
 import android.os.Bundle
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.util.remove
+import androidx.core.util.set
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -24,6 +27,9 @@ class FindUserForGroupAdapter(options: FirestoreRecyclerOptions<UserModel>): Fir
 
     private var context: Context? = null
     private var bundle = Bundle()
+
+    var isUserSelect = SparseBooleanArray()
+    var positionItem: Int = 0
 
     constructor(options: FirestoreRecyclerOptions<UserModel>, context: Context?) : this(options) {
         super.updateOptions(options)
@@ -47,13 +53,19 @@ class FindUserForGroupAdapter(options: FirestoreRecyclerOptions<UserModel>): Fir
             holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
         }
 
+        addUsersForGroup(holder)
         getUserInfo(mExtraIdUser, holder)
         holder.render(userModel)
-        holder.bindingAdapterPosition
+        positionItem = holder.bindingAdapterPosition
     }
 
-    private fun checkBox() {
-
+    private fun addUsersForGroup(searchBarHolder: SearchBarHolder) {
+        val selectedUser = searchBarHolder.binding.checkboxFindUserForGroup
+        for (i in 1..searchBarHolder.bindingAdapterPosition) {
+           selectedUser.setOnCheckedChangeListener { _, isChecked ->
+               isUserSelect[i] = isChecked
+            }
+        }
     }
 
     private fun getUserInfo(idUser: String, searchBarHolder: SearchBarHolder) {

@@ -34,5 +34,15 @@
         <action
             android:id="@+id/action_findUserForGroupFragment_to_findUserFragment"
             app:destination="@id/findUserFragment" />
+        <action
+            android:id="@+id/action_findUserForGroupFragment_to_chatFragment2"
+            app:destination="@id/chatFragment2" />
+        <action
+            android:id="@+id/action_findUserForGroupFragment_to_chatGroupDialog"
+            app:destination="@id/chatGroupDialog" />
     </fragment>
+    <dialog
+        android:id="@+id/chatGroupDialog"
+        android:name="com.jonathan.chatsimpapp.core.ChatGroupDialog"
+        android:label="ChatGroupDialog" />
 </navigation>

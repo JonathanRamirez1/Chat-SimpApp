@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
+import com.jonathan.chatsimpapp.core.ChatGroupDialog
 import com.jonathan.chatsimpapp.R
 import com.jonathan.chatsimpapp.data.model.UserModel
 import com.jonathan.chatsimpapp.data.model.providers.AuthProvider
@@ -42,6 +43,7 @@ class FindUserForGroupFragment : Fragment(),  MaterialSearchBar.OnSearchActionLi
         authProvider = AuthProvider()
         authProvider.setUPCurrentUser()
         launchFindUserFragment(view)
+        launchChatFragmentForGroup(view)
     }
 
     private fun launchFindUserFragment(view: View) {
@@ -50,6 +52,20 @@ class FindUserForGroupFragment : Fragment(),  MaterialSearchBar.OnSearchActionLi
         navController = Navigation.findNavController(view)
         goFindUser.setOnClickListener {
             navController.navigate(R.id.findUserFragment)
+        }
+    }
+
+    private fun launchChatFragmentForGroup(view: View) {
+        val goChatGroup = binding.floatingButtonFindUserForGroup
+
+        navController = Navigation.findNavController(view)
+        goChatGroup.setOnClickListener {
+            for (i in 1..findUserForGroupAdapter!!.positionItem) {
+                if (findUserForGroupAdapter!!.isUserSelect[i]) {
+                    navController.navigate(R.id.chatGroupDialog)
+                    fragmentManager?.let { it1 -> ChatGroupDialog().show(it1, "") }
+                }
+            }
         }
     }
 
