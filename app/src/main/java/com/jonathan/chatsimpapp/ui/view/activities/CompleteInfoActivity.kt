@@ -147,9 +147,9 @@ class CompleteInfoActivity : AppCompatActivity() {
     }
 
     private fun changeCoverPhoto() {
-        val gallery = binding.buttonCompleteCover
+        val camera = binding.buttonCompleteCover
 
-        gallery.setOnClickListener {
+        camera.setOnClickListener {
             selectOptionsImage(2)
         }
     }

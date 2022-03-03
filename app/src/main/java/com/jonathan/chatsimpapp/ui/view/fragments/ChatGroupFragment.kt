@@ -19,10 +19,10 @@ class ChatGroupFragment : Fragment() {
     private var messageAdapter: MessageAdapter? = null
 
     private val chatGroupViewModel by viewModels<ChatGroupViewModel> {
-        ChatGroupViewModel().createFactory()
+        activity?.let { ChatGroupViewModel(it.application).createFactory() }!!
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentChatGroupBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -57,5 +57,4 @@ class ChatGroupFragment : Fragment() {
         val messageGroup = binding.editTextMessage.text.toString()
         chatGroupViewModel.message(messageGroup)
     }
-
 }
