@@ -54,9 +54,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.jonathan.chatsimpapp.R
-import com.jonathan.chatsimpapp.ads.Ads
+import com.jonathan.chatsimpapp.ads.AdsController
 import com.jonathan.chatsimpapp.ads.BannerAd
-import com.jonathan.chatsimpapp.config.AppConfig
 import com.jonathan.chatsimpapp.data.model.User
 import com.jonathan.chatsimpapp.data.repository.CommunityContext
 import com.jonathan.chatsimpapp.data.repository.CommunitySession
@@ -97,12 +96,12 @@ data class HomeUiState(val context: CommunityContext? = null, val me: User? = nu
 class HomeViewModel @Inject constructor(
     session: CommunitySession,
     users: UserRepository,
-    config: AppConfig,
+    ads: AdsController,
 ) : ViewModel() {
     val state: StateFlow<HomeUiState> = session.current.flatMapLatest { ctx ->
         if (ctx == null) return@flatMapLatest flowOf(HomeUiState())
-        combine(users.observeUser(ctx.uid).catch { emit(null) }, Ads.ready) { me, adsReady ->
-            HomeUiState(ctx, me, showAds = !ctx.isPro && adsReady && config.adsEnabled)
+        combine(users.observeUser(ctx.uid).catch { emit(null) }, ads.enabled) { me, showAds ->
+            HomeUiState(ctx, me, showAds = showAds)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState())
 }

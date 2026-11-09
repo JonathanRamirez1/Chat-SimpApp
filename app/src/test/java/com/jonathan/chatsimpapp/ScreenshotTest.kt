@@ -200,7 +200,7 @@ class ScreenshotTest {
 
     @Test fun upgrade() = capture("08_pro") {
         UpgradeContent(
-            UpgradeUiState(ctx(admin = true), listOf(ProOffer("t", "US\$ 9,99", "P1M")), offersLoaded = true),
+            UpgradeUiState(ctx(admin = true), listOf(ProOffer("u80-mensual", "t", "US\$ 9,99", "P1M"), ProOffer("u80-anual", "t2", "US\$ 99,90", "P1Y")), offersLoaded = true),
             {}, {},
         )
     }

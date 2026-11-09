@@ -189,6 +189,13 @@ const publisher = google.androidpublisher({
   auth: new google.auth.GoogleAuth({ scopes: ["https://www.googleapis.com/auth/androidpublisher"] }),
 });
 
+/** Rango de unidades que cubre cada plan base (`u80-mensual` cubre hasta 80 unidades). */
+const TIERS = { u30: 30, u80: 80, u200: 200, u500: 500, u5000: 5000 };
+function maxUnitsFor(basePlanId) {
+  const prefix = (basePlanId || "").split("-")[0];
+  return TIERS[prefix] || 0;
+}
+
 const ACTIVE_STATES = new Set(["SUBSCRIPTION_STATE_ACTIVE", "SUBSCRIPTION_STATE_IN_GRACE_PERIOD"]);
 
 /** Consulta la suscripción en Google Play y actualiza el plan de la comunidad que la pagó. */
@@ -208,11 +215,20 @@ async function syncSubscription(purchaseToken, expectedCommunityId, expectedUid)
     throw new HttpsError("permission-denied", "La compra la hizo otra persona.");
   }
 
+  const maxUnits = maxUnitsFor(item.offerDetails && item.offerDetails.basePlanId);
+  if (expectedCommunityId) {
+    const community = (await db.doc(`communities/${communityId}`).get()).data() || {};
+    if (maxUnits && (community.unitsCount || 0) > maxUnits) {
+      throw new HttpsError("failed-precondition", `El plan cubre hasta ${maxUnits} unidades y el edificio tiene ${community.unitsCount}.`);
+    }
+  }
+
   const active = ACTIVE_STATES.has(sub.subscriptionState);
   const expiry = item.expiryTime ? Timestamp.fromDate(new Date(item.expiryTime)) : null;
   await db.doc(`communities/${communityId}`).update({
     plan: active ? "pro" : "free",
     planExpiresAt: expiry,
+    planMaxUnits: maxUnits,
     planPurchaseToken: purchaseToken,
     planUpdatedAt: FieldValue.serverTimestamp(),
   });

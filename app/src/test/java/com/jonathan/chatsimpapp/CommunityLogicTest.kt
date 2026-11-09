@@ -1,6 +1,7 @@
 package com.jonathan.chatsimpapp
 
 import com.jonathan.chatsimpapp.ai.SummaryGenerator
+import com.jonathan.chatsimpapp.billing.ProTiers
 import com.jonathan.chatsimpapp.data.model.Announcement
 import com.jonathan.chatsimpapp.data.model.Community
 import com.jonathan.chatsimpapp.data.model.Message
@@ -72,6 +73,27 @@ class CommunityLogicTest {
         assertTrue(future.isPro)
         assertFalse(past.isPro)
         assertFalse(Community().isPro)
+    }
+
+    @Test
+    fun buildingsOfSimilarSizePayTheSameTier() {
+        assertEquals("u80", ProTiers.forUnits(50).id)
+        assertEquals("u80", ProTiers.forUnits(60).id)
+        assertEquals("u30", ProTiers.forUnits(30).id)
+        assertEquals("u200", ProTiers.forUnits(81).id)
+        assertEquals("u5000", ProTiers.forUnits(9000).id)
+        assertEquals(80, ProTiers.ofBasePlan("u80-anual")?.maxUnits)
+        assertNull(ProTiers.ofBasePlan("mensual"))
+    }
+
+    @Test
+    fun proStopsIfBuildingGrowsPastPaidTier() {
+        val pro = Community(
+            plan = Community.PLAN_PRO, unitsCount = 60, planMaxUnits = 80,
+            planExpiresAt = Timestamp(Date(System.currentTimeMillis() + 60_000)),
+        )
+        assertTrue(pro.isPro)
+        assertFalse(pro.copy(unitsCount = 120).isPro)
     }
 
     @Test

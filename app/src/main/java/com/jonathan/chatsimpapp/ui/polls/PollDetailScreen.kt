@@ -56,7 +56,6 @@ import com.jonathan.chatsimpapp.data.model.Vote
 import com.jonathan.chatsimpapp.data.repository.CommunityContentRepository
 import com.jonathan.chatsimpapp.data.repository.CommunityContext
 import com.jonathan.chatsimpapp.data.repository.CommunitySession
-import com.jonathan.chatsimpapp.ui.community.ProBadge
 import com.jonathan.chatsimpapp.ui.components.CenteredLoading
 import com.jonathan.chatsimpapp.ui.components.PrimaryButton
 import com.jonathan.chatsimpapp.ui.navigation.PollRoute
@@ -132,10 +131,15 @@ class PollDetailViewModel @Inject constructor(
 }
 
 @Composable
-fun PollDetailScreen(onBack: () -> Unit, onUpgrade: () -> Unit, viewModel: PollDetailViewModel = hiltViewModel()) {
+fun PollDetailScreen(
+    onBack: () -> Unit,
+    onUpgrade: () -> Unit,
+    showRewarded: (onReward: () -> Unit) -> Boolean = { false },
+    viewModel: PollDetailViewModel = hiltViewModel(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
-    PollDetailContent(state, error, viewModel::vote, viewModel::close, onBack, onUpgrade, viewModel::onErrorShown)
+    PollDetailContent(state, error, viewModel::vote, viewModel::close, onBack, onUpgrade, viewModel::onErrorShown, showRewarded)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -148,6 +152,7 @@ fun PollDetailContent(
     onBack: () -> Unit,
     onUpgrade: () -> Unit,
     onErrorShown: () -> Unit,
+    showRewarded: (onReward: () -> Unit) -> Boolean = { false },
 ) {
     val context = LocalContext.current
     val snackbar = remember { SnackbarHostState() }
@@ -258,18 +263,15 @@ fun PollDetailContent(
             }
             OutlinedButton(
                 onClick = {
-                    if (ctx.isPro) ActaPdf.share(context, buildActa(context, ctx.community.name, poll, state.votes, result), poll.id)
-                    else onUpgrade()
+                    val share = { ActaPdf.share(context, buildActa(context, ctx.community.name, poll, state.votes, result), poll.id) }
+                    // Plan gratuito: el PDF se desbloquea viendo un anuncio con recompensa (o pasando a Pro).
+                    if (ctx.isPro) share() else if (!showRewarded(share)) onUpgrade()
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Icon(Icons.Rounded.PictureAsPdf, null, Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
-                Text(stringResource(R.string.share_acta_pdf))
-                if (!ctx.isPro) {
-                    Spacer(Modifier.width(8.dp))
-                    ProBadge()
-                }
+                Text(stringResource(if (ctx.isPro) R.string.share_acta_pdf else R.string.share_acta_pdf_ad))
             }
             if (ctx.isAdmin && open) {
                 Spacer(Modifier.height(8.dp))

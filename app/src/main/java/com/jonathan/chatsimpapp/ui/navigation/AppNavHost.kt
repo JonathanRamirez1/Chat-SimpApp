@@ -46,6 +46,8 @@ private fun rootFor(state: CommunityState): Any = when (state) {
 fun AppNavHost(
     session: StateFlow<CommunityState>,
     openChatRequests: Flow<String>,
+    onNaturalBreak: () -> Unit = {},
+    showRewarded: (onReward: () -> Unit) -> Boolean = { false },
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
@@ -133,12 +135,16 @@ fun AppNavHost(
         }
         composable<UpgradeRoute> { UpgradeScreen(onClose = navController::popBackStack) }
         composable<PollRoute> {
-            PollDetailScreen(onBack = navController::popBackStack, onUpgrade = { navController.navigate(UpgradeRoute) })
+            PollDetailScreen(
+                onBack = { navController.popBackStack(); onNaturalBreak() },
+                onUpgrade = { navController.navigate(UpgradeRoute) },
+                showRewarded = showRewarded,
+            )
         }
-        composable<ReportRoute> { ReportDetailScreen(onBack = navController::popBackStack) }
+        composable<ReportRoute> { ReportDetailScreen(onBack = { navController.popBackStack(); onNaturalBreak() }) }
         composable<FormRoute> { entry ->
             val kind = FormKind.valueOf(entry.toRoute<FormRoute>().kind)
-            FormScreen(kind, onDone = navController::popBackStack)
+            FormScreen(kind, onDone = { navController.popBackStack() }, onPublished = onNaturalBreak)
         }
     }
 }

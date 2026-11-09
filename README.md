@@ -29,32 +29,65 @@ Avisos, emergencias, votaciones y cambios en tus reportes sí notifican.
 
 ## Cómo gana dinero
 
-**Plan gratuito (con anuncios)**: todo lo esencial. Banner de AdMob abajo en Inicio, Votaciones, Reportes y Tablón
-(nunca dentro de una conversación). Máximo 2 votaciones abiertas a la vez.
+### Plan gratuito: anuncios (4 formatos)
 
-**Comunidad Pro (suscripción por edificio, la paga la administración)**:
-sin anuncios para *ningún* vecino, resumen semanal con IA, actas en PDF, votaciones ilimitadas y confirmación de
-lectura de avisos. Un solo pago cubre a todo el edificio: el cliente es la administración, que ya maneja presupuesto
-y gana mucho con actas y quórum ordenados.
+| Formato | Dónde | Límite | Pago aprox. en LATAM (Android, por 1000 vistas) |
+|---|---|---|---|
+| **Apertura** (App Open) | Al volver a la app tras 2+ min fuera | 1 cada 4 h | sin dato público; suele pagar menos que el intersticial |
+| **Intersticial** | Después de publicar algo o al salir de una votación/reporte | 1 cada 3 min, máx. 6 al día | ~US$1,30–1,90 |
+| **Recompensa** | El vecino lo elige para descargar un acta en PDF | cuando quiera | ~US$1,80–2,00 |
+| **Banner** | Abajo en Inicio, Votaciones, Reportes y Tablón | siempre visible | ~US$0,12–0,15 |
 
-### Números aproximados (verifícalos con tus datos reales)
+Nunca hay anuncios dentro de un chat, al lanzar una emergencia ni en la primera apertura de la app.
+Los límites están en [`AdsController`](app/src/main/java/com/jonathan/chatsimpapp/ads/AdsController.kt);
+un vecino molesto desinstala, y sin vecinos no hay negocio. Si los ingresos lo justifican, se pueden ajustar.
 
-- **Costo de Firebase por edificio de ~50 vecinos activos**: ~300 lecturas por persona al día → ~450 mil lecturas
-  al mes. A ~US$0,03 por 100 mil lecturas (región us-central1) son **centavos al mes**. El nivel gratuito
-  (50 mil lecturas/día) cubre unos 3 edificios sin pagar nada.
-- **Anuncios**: los banners en Latinoamérica pagan poco (estudios públicos hablan de ~US$0,12–0,50 por cada mil
-  vistas). 50 vecinos × 10 vistas al día ≈ 15 mil vistas al mes ≈ **US$2–7 por edificio al mes**. Alcanza de sobra
-  para pagar Firebase, no para vivir de eso.
-- **Pro**: sugerencia de **US$9,99/mes o US$99/año por edificio** (ajústalo por país en Play Console). Google
-  se queda con el 15 % de las suscripciones. Con 20 edificios Pro: ~US$170 netos al mes.
-- **IA**: un resumen por semana y por edificio Pro con `gemini-3.5-flash-lite` cuesta fracciones de centavo.
+### Comunidad Pro: suscripción por tamaño de edificio
 
-**La conclusión: los anuncios pagan la infraestructura y Pro es la ganancia.** El código ya limita costos:
-listas con tope, paginación de mensajes, imágenes comprimidas, el resumen IA se genera una vez por semana y lo leen
-todos, y App Check impide que alguien use tu Firebase desde fuera de la app.
+La paga la administración y quita **todos** los anuncios para todos los vecinos, además de dar resumen IA, actas PDF
+sin anuncios, votaciones ilimitadas y confirmación de lectura. El precio va por rangos de unidades (planes base de
+la misma suscripción en Google Play):
 
-Otras ideas para después: precio para administradoras que manejan varios edificios, reserva de zonas comunes
-(salón, BBQ) como función Pro, y un panel web para la administración.
+| Rango | Plan base | Precio sugerido | Anual |
+|---|---|---|---|
+| hasta 30 unidades | `u30-mensual` / `u30-anual` | US$5,99/mes | US$59,90 |
+| 31–80 | `u80-…` | US$12,99/mes | US$129,90 |
+| 81–200 | `u200-…` | US$34,99/mes | US$349,90 |
+| 201–500 | `u500-…` | US$79,99/mes | US$799,90 |
+| más de 500 | `u5000-…` | US$149,99/mes | US$1.499,90 |
+
+Un edificio de 50 y otro de 60 unidades caen en el mismo rango y pagan igual. La app muestra automáticamente el
+rango correcto. Si el edificio crece por encima del rango pagado, Pro se desactiva hasta subir de plan (lo validan
+la app, las reglas y el servidor). Bajar el número de unidades para pagar menos no conviene: el quórum de las
+votaciones se calcula con ese número.
+
+### ¿Las cuentas dan? (por vecino activo al mes)
+
+| | Supuesto | Valor |
+|---|---|---|
+| Apertura | ~1,5 al día × 30 × ~US$1,0/1000 | US$0,045 |
+| Intersticial | ~2 al día × 30 × ~US$1,5/1000 | US$0,09 |
+| Banner | ~10 al día × 30 × ~US$0,13/1000 | US$0,04 |
+| Recompensa | ~2 al mes × ~US$1,9/1000 | US$0,004 |
+| **Ingreso por anuncios** | con ~70 % de anuncios servidos | **≈ US$0,13** |
+| **Costo de Firebase** | ~300 lecturas/día, fotos comprimidas | **≈ US$0,005** |
+
+- **Edificio de 50 vecinos en plan gratuito**: ≈ US$6,50 de anuncios contra ≈ US$0,25 de Firebase.
+- **Edificio de 60**: ≈ US$7,80 contra ≈ US$0,30. Los dos dejan ganancia.
+- **El mismo edificio en Pro (rango hasta 80)**: US$12,99 − 15 % de Google = US$11,04 netos, más que los anuncios
+  de un edificio lleno de ese rango (80 × 0,13 = US$10,40). Por eso los precios de arriba: pasar a Pro nunca te hace
+  perder frente a los anuncios.
+- **Riesgos**: no todos los apartamentos instalan la app (cuenta con 40–70 % al principio), el pago real de los
+  anuncios depende del país y de la época del año (sube en noviembre y diciembre), y estos promedios vienen de
+  informes de empresas de publicidad. Usa el panel de AdMob para ajustar con tus datos reales.
+
+**En resumen: cada vecino deja unas 25 veces lo que cuesta.** Lo que más hay que vigilar no es el costo, sino que
+la gente instale la app y la use. El código además protege el costo: listas con tope, paginación de mensajes,
+imágenes comprimidas, el resumen IA se genera una vez por semana y lo leen todos, y App Check impide que alguien
+use tu Firebase desde fuera de la app.
+
+Otras ideas para después: precio especial para administradoras que manejan varios edificios, reserva de zonas
+comunes (salón, BBQ) como función Pro, y un panel web para la administración.
 
 ## Puesta en marcha
 
@@ -77,7 +110,9 @@ Otras ideas para después: precio para administradoras que manejan varios edific
    ```
 
 ### 2. Google Play (para cobrar)
-1. Crea la app en Play Console y una **suscripción** con id `comunidad_pro` (planes mensual y anual).
+1. Crea la app en Play Console y una **suscripción** con id `comunidad_pro` y un plan base por rango y periodo:
+   `u30-mensual`, `u30-anual`, `u80-mensual`, `u80-anual`… (ver la tabla de precios). Play Console permite fijar el
+   precio de cada plan por país.
 2. En *Usuarios y permisos*, invita a la cuenta de servicio de las Cloud Functions
    (`chat-simpapp@appspot.gserviceaccount.com` o la que aparezca en Cloud Functions) con permiso para ver datos
    financieros y gestionar pedidos y suscripciones.
@@ -86,10 +121,14 @@ Otras ideas para después: precio para administradoras que manejan varios edific
    renovaciones, cancelaciones y reembolsos).
 
 ### 3. AdMob
-Crea la app y un bloque de anuncios *banner*. Pon los ids en `~/.gradle/gradle.properties` (no en el repositorio):
+Crea la app y cuatro bloques de anuncios: *banner*, *apertura de app*, *intersticial* y *recompensado*.
+Pon los ids en `~/.gradle/gradle.properties` (no en el repositorio):
 ```properties
 admobAppId=ca-app-pub-XXXXXXXX~YYYYYYYY
-admobBannerId=ca-app-pub-XXXXXXXX/ZZZZZZZZ
+admobBannerId=ca-app-pub-XXXXXXXX/1111111111
+admobAppOpenId=ca-app-pub-XXXXXXXX/2222222222
+admobInterstitialId=ca-app-pub-XXXXXXXX/3333333333
+admobRewardedId=ca-app-pub-XXXXXXXX/4444444444
 ```
 Sin esto se usan los ids de prueba de Google. El consentimiento de anuncios (UMP) ya está integrado; configura
 el mensaje en AdMob → Privacidad y mensajes.
@@ -101,7 +140,7 @@ que no es miembro, se una sin el código vigente, vote dos veces o por otra unid
 avisos oficiales sin ser administración, cambie el estado de un reporte, o **se active el plan Pro sin pagar** (solo
 la Cloud Function, tras validar la compra con Google Play, puede escribir el plan).
 
-Están probadas contra el emulador: `cd rules-tests && npm install && npm test` (15 pruebas).
+Están probadas contra el emulador: `cd rules-tests && npm install && npm test` (16 pruebas).
 
 > ⚠️ La antigua *server key* de FCM de la versión 1 quedó en el historial de git. Ya no sirve con la API nueva,
 > pero revócala en Configuración del proyecto → Cloud Messaging.

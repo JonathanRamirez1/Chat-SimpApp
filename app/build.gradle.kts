@@ -22,12 +22,15 @@ android {
         versionName = "2.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // AdMob: por defecto los ids de PRUEBA de Google. Para producción, define en
-        // ~/.gradle/gradle.properties: admobAppId, admobBannerId.
+        // AdMob: por defecto los ids de PRUEBA de Google. Para producción, define en ~/.gradle/gradle.properties:
+        // admobAppId, admobBannerId, admobAppOpenId, admobInterstitialId, admobRewardedId.
         val admobAppId = providers.gradleProperty("admobAppId").getOrElse("ca-app-pub-3940256099942544~3347511713")
-        val admobBannerId = providers.gradleProperty("admobBannerId").getOrElse("ca-app-pub-3940256099942544/9214589741")
+        fun adId(name: String, testId: String) = providers.gradleProperty(name).getOrElse(testId)
         manifestPlaceholders["admobAppId"] = admobAppId
-        buildConfigField("String", "ADMOB_BANNER_ID", "\"$admobBannerId\"")
+        buildConfigField("String", "ADMOB_BANNER_ID", "\"${adId("admobBannerId", "ca-app-pub-3940256099942544/9214589741")}\"")
+        buildConfigField("String", "ADMOB_APP_OPEN_ID", "\"${adId("admobAppOpenId", "ca-app-pub-3940256099942544/9257395921")}\"")
+        buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"${adId("admobInterstitialId", "ca-app-pub-3940256099942544/1033173712")}\"")
+        buildConfigField("String", "ADMOB_REWARDED_ID", "\"${adId("admobRewardedId", "ca-app-pub-3940256099942544/5224354917")}\"")
         // Id del producto de suscripción en Google Play Console.
         buildConfigField("String", "PRO_PRODUCT_ID", "\"comunidad_pro\"")
     }

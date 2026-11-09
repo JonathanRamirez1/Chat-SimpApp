@@ -149,9 +149,14 @@ class PlanLimitException : Exception()
 enum class FormKind { ANNOUNCEMENT, POLL, REPORT, POST }
 
 @Composable
-fun FormScreen(kind: FormKind, onDone: () -> Unit, viewModel: FormViewModel = hiltViewModel()) {
+fun FormScreen(kind: FormKind, onDone: () -> Unit, onPublished: () -> Unit = {}, viewModel: FormViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    LaunchedEffect(state.done) { if (state.done) onDone() }
+    LaunchedEffect(state.done) {
+        if (state.done) {
+            onDone()
+            onPublished()
+        }
+    }
     FormContent(kind, state, viewModel::update, { viewModel.submit(kind) }, onDone, viewModel::onMessageShown)
 }
 

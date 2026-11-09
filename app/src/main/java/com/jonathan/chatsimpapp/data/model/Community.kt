@@ -20,11 +20,15 @@ data class Community(
     var admins: List<String> = emptyList(),
     var plan: String = PLAN_FREE,
     var planExpiresAt: Timestamp? = null,
+    /** Unidades que cubre la suscripción pagada (según el rango comprado). */
+    var planMaxUnits: Long = 0,
     var createdAt: Timestamp? = null,
 ) {
     @get:Exclude
     val isPro: Boolean
-        get() = plan == PLAN_PRO && (planExpiresAt?.toDate()?.time ?: 0L) > System.currentTimeMillis()
+        get() = plan == PLAN_PRO &&
+            (planExpiresAt?.toDate()?.time ?: 0L) > System.currentTimeMillis() &&
+            (planMaxUnits == 0L || unitsCount <= planMaxUnits)
 
     fun isAdmin(uid: String?): Boolean = uid != null && uid in admins
 

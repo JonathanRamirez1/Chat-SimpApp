@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jonathan.chatsimpapp.ads.Ads
+import com.jonathan.chatsimpapp.ads.AdsController
 import com.jonathan.chatsimpapp.billing.BillingManager
 import com.jonathan.chatsimpapp.data.repository.CommunitySession
 import com.jonathan.chatsimpapp.data.repository.CommunityState
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
 
     @Inject lateinit var session: CommunitySession
     @Inject lateinit var billing: BillingManager
+    @Inject lateinit var ads: AdsController
 
     private val openChatRequests = Channel<String>(Channel.CONFLATED)
 
@@ -38,7 +40,12 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ChatSimpAppTheme {
-                AppNavHost(session = session.state, openChatRequests = openChatRequests.receiveAsFlow())
+                AppNavHost(
+                    session = session.state,
+                    openChatRequests = openChatRequests.receiveAsFlow(),
+                    onNaturalBreak = { ads.onNaturalBreak(this) },
+                    showRewarded = { onReward -> ads.showRewarded(this, onReward) },
+                )
             }
         }
     }

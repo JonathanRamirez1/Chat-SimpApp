@@ -30,6 +30,7 @@ import javax.inject.Singleton
 
 /** Un plan de la suscripción tal como lo muestra Google Play (precio ya localizado). */
 data class ProOffer(
+    val basePlanId: String,
     val offerToken: String,
     val formattedPrice: String,
     val billingPeriod: String,
@@ -97,8 +98,10 @@ class BillingManager @Inject constructor(
         val product = client.queryProductDetails(params).productDetailsList?.firstOrNull() ?: return emptyList()
         details = product
         return product.subscriptionOfferDetails.orEmpty().mapNotNull { offer ->
+            // Solo los planes base (sin ofertas promocionales) y en orden: mensual antes que anual.
+            if (offer.offerId != null) return@mapNotNull null
             val phase = offer.pricingPhases.pricingPhaseList.lastOrNull() ?: return@mapNotNull null
-            ProOffer(offer.offerToken, phase.formattedPrice, phase.billingPeriod)
+            ProOffer(offer.basePlanId, offer.offerToken, phase.formattedPrice, phase.billingPeriod)
         }
     }
 

@@ -186,6 +186,7 @@
     <string name="acta">Acta</string>
     <string name="share_acta_text">Compartir acta como texto</string>
     <string name="share_acta_pdf">Descargar acta en PDF</string>
+    <string name="share_acta_pdf_ad">Ver un anuncio y descargar el PDF</string>
     <string name="close_poll">Cerrar votación ahora</string>
     <string name="acta_title">ACTA DE VOTACIÓN · %1$s</string>
     <string name="acta_question">Pregunta: %1$s</string>
@@ -290,17 +291,18 @@
 
     <!-- Pro -->
     <string name="pro_title">Comunidad Pro</string>
-    <string name="pro_subtitle">Un solo pago para todo %1$s: todos los vecinos lo disfrutan.</string>
+    <string name="pro_subtitle">Un solo pago para todo %1$s: todos los vecinos lo disfrutan. El precio depende del tamaño del edificio.</string>
     <string name="pro_no_ads">Sin anuncios para nadie</string>
-    <string name="pro_no_ads_body">Ningún vecino de la comunidad verá publicidad.</string>
+    <string name="pro_no_ads_body">Ningún vecino verá banners, anuncios al abrir la app ni anuncios a pantalla completa.</string>
     <string name="pro_ai">Resumen semanal con IA</string>
     <string name="pro_ai_body">Acuerdos, compromisos y fechas del chat, sin leer cientos de mensajes.</string>
     <string name="pro_pdf">Actas en PDF</string>
-    <string name="pro_pdf_body">Con participación, quórum y voto por unidad, listas para la asamblea.</string>
+    <string name="pro_pdf_body">Al instante y sin anuncios, con participación, quórum y voto por unidad.</string>
     <string name="pro_polls">Votaciones ilimitadas</string>
     <string name="pro_polls_body">El plan gratuito permite 2 abiertas a la vez.</string>
     <string name="pro_seen">Confirmación de lectura de avisos</string>
     <string name="pro_seen_body">Sabes cuántos vecinos vieron cada aviso oficial.</string>
+    <string name="pro_tier">Tu edificio: %1$d unidades · plan hasta %2$d</string>
     <string name="pro_buy">Activar por %1$s %2$s</string>
     <string name="per_month">al mes</string>
     <string name="per_year">al año</string>

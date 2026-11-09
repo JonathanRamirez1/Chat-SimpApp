@@ -46,6 +46,7 @@ import androidx.lifecycle.viewModelScope
 import com.jonathan.chatsimpapp.R
 import com.jonathan.chatsimpapp.billing.BillingManager
 import com.jonathan.chatsimpapp.billing.ProOffer
+import com.jonathan.chatsimpapp.billing.ProTiers
 import com.jonathan.chatsimpapp.billing.PurchaseState
 import com.jonathan.chatsimpapp.data.repository.CommunityContext
 import com.jonathan.chatsimpapp.data.repository.CommunitySession
@@ -74,7 +75,10 @@ class UpgradeViewModel @Inject constructor(
     private val offers = MutableStateFlow<List<ProOffer>?>(null)
 
     val state: StateFlow<UpgradeUiState> = combine(session.current, offers, billing.purchase) { ctx, offers, purchase ->
-        UpgradeUiState(ctx, offers.orEmpty(), offers != null, purchase)
+        // Solo se ofrecen los planes del rango que corresponde al tamaño del edificio.
+        val tier = ProTiers.forUnits(ctx?.community?.unitsCount?.toInt() ?: 0)
+        val forTier = offers.orEmpty().filter { ProTiers.ofBasePlan(it.basePlanId) == tier }.sortedBy { it.billingPeriod != "P1M" }
+        UpgradeUiState(ctx, forTier, offers != null, purchase)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UpgradeUiState())
 
     init {
@@ -122,6 +126,17 @@ fun UpgradeContent(state: UpgradeUiState, onBuy: (ProOffer) -> Unit, onClose: ()
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
             )
+            ctx?.let {
+                Spacer(Modifier.height(12.dp))
+                val units = it.community.unitsCount.toInt()
+                Surface(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.surfaceContainerHigh) {
+                    Text(
+                        stringResource(R.string.pro_tier, units, ProTiers.forUnits(units).maxUnits),
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    )
+                }
+            }
             Spacer(Modifier.height(24.dp))
             Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
                 Benefit(Icons.Rounded.DoNotDisturbOn, R.string.pro_no_ads, R.string.pro_no_ads_body)

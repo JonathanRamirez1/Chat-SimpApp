@@ -16,7 +16,8 @@ service cloud.firestore {
     function isAdmin(cid) { return signedIn() && uid() in community(cid).admins; }
     function isPro(cid) {
       let c = community(cid);
-      return c.plan == 'pro' && c.planExpiresAt != null && c.planExpiresAt > request.time;
+      return c.plan == 'pro' && c.planExpiresAt != null && c.planExpiresAt > request.time
+        && (!('planMaxUnits' in c) || c.planMaxUnits == 0 || c.unitsCount <= c.planMaxUnits);
     }
 
     // ---------- Usuarios ----------
@@ -63,7 +64,7 @@ service cloud.firestore {
         && request.resource.data.unitsCount is int
         && request.resource.data.unitsCount >= 2 && request.resource.data.unitsCount <= 5000;
       allow update: if isAdmin(cid)
-        && !changed().hasAny(['plan', 'planExpiresAt', 'planPurchaseToken', 'planUpdatedAt', 'createdBy'])
+        && !changed().hasAny(['plan', 'planExpiresAt', 'planMaxUnits', 'planPurchaseToken', 'planUpdatedAt', 'createdBy'])
         && request.resource.data.admins.size() > 0;
       allow delete: if false;
 

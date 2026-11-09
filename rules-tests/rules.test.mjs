@@ -172,6 +172,16 @@ describe("funciones Pro", () => {
     await assertSucceeds(write());
   });
 
+  test("si el edificio crece más allá del rango pagado, deja de ser Pro", async () => {
+    await setup();
+    await env.withSecurityRulesDisabled((ctx) => updateDoc(doc(ctx.firestore(), `communities/${CID}`), {
+      plan: "pro", planExpiresAt: Timestamp.fromMillis(Date.now() + 1e9), planMaxUnits: 30,
+    }));
+    // unitsCount es 40 y el plan cubre 30.
+    await assertFails(setDoc(doc(db("ana"), `communities/${CID}/summaries/2026-W46`), { overview: "x" }));
+    await assertFails(updateDoc(doc(db("admin"), `communities/${CID}`), { planMaxUnits: 5000 }));
+  });
+
   test("un Pro vencido deja de contar como Pro", async () => {
     await setup();
     await env.withSecurityRulesDisabled((ctx) => updateDoc(doc(ctx.firestore(), `communities/${CID}`), {
