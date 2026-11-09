@@ -21,6 +21,15 @@ android {
         versionCode = 2
         versionName = "2.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // AdMob: por defecto los ids de PRUEBA de Google. Para producción, define en
+        // ~/.gradle/gradle.properties: admobAppId, admobBannerId.
+        val admobAppId = providers.gradleProperty("admobAppId").getOrElse("ca-app-pub-3940256099942544~3347511713")
+        val admobBannerId = providers.gradleProperty("admobBannerId").getOrElse("ca-app-pub-3940256099942544/9214589741")
+        manifestPlaceholders["admobAppId"] = admobAppId
+        buildConfigField("String", "ADMOB_BANNER_ID", "\"$admobBannerId\"")
+        // Id del producto de suscripción en Google Play Console.
+        buildConfigField("String", "PRO_PRODUCT_ID", "\"comunidad_pro\"")
     }
 
     buildTypes {
@@ -86,6 +95,15 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.ai)
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.functions)
+    implementation(libs.firebase.appcheck.playintegrity)
+    debugImplementation(libs.firebase.appcheck.debug)
+
+    implementation(libs.play.services.ads)
+    implementation(libs.ump)
+    implementation(libs.billing.ktx)
 
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services)

@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -84,13 +86,15 @@ fun ChatsContent(
     onOpenChat: (String) -> Unit,
     onNewChat: () -> Unit,
     onProfile: () -> Unit,
+    embedded: Boolean = false,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val profileLabel = stringResource(R.string.profile)
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        contentWindowInsets = if (embedded) WindowInsets(0) else ScaffoldDefaults.contentWindowInsets,
         topBar = {
-            TopAppBar(
+            if (!embedded) TopAppBar(
                 title = { Text(stringResource(R.string.chats), style = MaterialTheme.typography.headlineMedium) },
                 actions = {
                     IconButton(onClick = onProfile) {
@@ -108,7 +112,7 @@ fun ChatsContent(
             )
         },
         floatingActionButton = {
-            if (state.rows.isNotEmpty()) {
+            if (state.rows.isNotEmpty() && !embedded) {
                 ExtendedFloatingActionButton(
                     onClick = onNewChat,
                     icon = { Icon(Icons.Rounded.Edit, contentDescription = null) },

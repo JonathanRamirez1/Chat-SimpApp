@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.media.AudioAttributes
+import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.Person
@@ -18,15 +20,67 @@ import com.jonathan.chatsimpapp.R
 
 object NotificationHelper {
     const val CHANNEL_MESSAGES = "messages"
+    const val CHANNEL_NOTICES = "notices"
+    const val CHANNEL_EMERGENCY = "emergency"
     const val EXTRA_CHAT_ID = "chatId"
 
     fun createChannels(context: Context) {
-        val channel = NotificationChannel(
-            CHANNEL_MESSAGES,
-            context.getString(R.string.notification_channel_messages),
-            NotificationManager.IMPORTANCE_HIGH,
-        ).apply { description = context.getString(R.string.notification_channel_messages_desc) }
-        context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+        val manager = context.getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannels(
+            listOf(
+                NotificationChannel(
+                    CHANNEL_MESSAGES,
+                    context.getString(R.string.notification_channel_messages),
+                    NotificationManager.IMPORTANCE_HIGH,
+                ).apply { description = context.getString(R.string.notification_channel_messages_desc) },
+                NotificationChannel(
+                    CHANNEL_NOTICES,
+                    context.getString(R.string.notification_channel_notices),
+                    NotificationManager.IMPORTANCE_DEFAULT,
+                ),
+                // Las emergencias usan sonido de alarma y vibración fuerte.
+                NotificationChannel(
+                    CHANNEL_EMERGENCY,
+                    context.getString(R.string.notification_channel_emergency),
+                    NotificationManager.IMPORTANCE_HIGH,
+                ).apply {
+                    description = context.getString(R.string.notification_channel_emergency_desc)
+                    enableVibration(true)
+                    vibrationPattern = longArrayOf(0, 600, 250, 600, 250, 600)
+                    setSound(
+                        RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM),
+                        AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).build(),
+                    )
+                },
+            ),
+        )
+    }
+
+    /** Aviso oficial, emergencia, votación nueva o cambio de estado de un reporte. */
+    fun showCommunity(context: Context, channel: String, key: String, title: String, body: String) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        ) return
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            context, key.hashCode(), intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+        val emergency = channel == CHANNEL_EMERGENCY
+        val notification = NotificationCompat.Builder(context, channel)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setColor(if (emergency) 0xFFDC2626.toInt() else ContextCompat.getColor(context, R.color.brand))
+            .setContentTitle(title)
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setCategory(if (emergency) NotificationCompat.CATEGORY_ALARM else NotificationCompat.CATEGORY_EVENT)
+            .setPriority(if (emergency) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+        NotificationManagerCompat.from(context).notify(key.hashCode(), notification)
     }
 
     fun showMessage(

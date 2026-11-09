@@ -1,49 +1,232 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() { return request.auth != null; }
-    function isMe(uid) { return signedIn() && request.auth.uid == uid; }
 
-    // Perfiles públicos para usuarios con sesión; cada quien edita solo el suyo.
-    match /users/{uid} {
+    // ---------- Utilidades ----------
+    function signedIn() { return request.auth != null; }
+    function uid() { return request.auth.uid; }
+    function isMe(id) { return signedIn() && uid() == id; }
+    function changed() { return request.resource.data.diff(resource.data).affectedKeys(); }
+
+    function communityPath(cid) { return /databases/$(database)/documents/communities/$(cid); }
+    function memberPath(cid, id) { return /databases/$(database)/documents/communities/$(cid)/members/$(id); }
+    function community(cid) { return get(communityPath(cid)).data; }
+    function isMember(cid) { return signedIn() && exists(memberPath(cid, uid())); }
+    function myUnit(cid) { return get(memberPath(cid, uid())).data.unit; }
+    function isAdmin(cid) { return signedIn() && uid() in community(cid).admins; }
+    function isPro(cid) {
+      let c = community(cid);
+      return c.plan == 'pro' && c.planExpiresAt != null && c.planExpiresAt > request.time;
+    }
+
+    // ---------- Usuarios ----------
+    match /users/{userId} {
       allow read: if signedIn();
-      allow create, update: if isMe(uid);
+      allow create, update: if isMe(userId);
       allow delete: if false;
 
       // Tokens de notificación: privados.
       match /private/{doc} {
-        allow read, write: if isMe(uid);
+        allow read, write: if isMe(userId);
       }
     }
 
-    // Colección de la versión anterior: solo lectura propia, para migrar nombre y foto.
-    match /UsersRegister/{uid} {
-      allow read: if isMe(uid);
+    // Colección de la versión 1: solo lectura propia, para migrar nombre y foto.
+    match /UsersRegister/{userId} {
+      allow read: if isMe(userId);
     }
 
-    match /chats/{chatId} {
-      function isMember() { return request.auth.uid in resource.data.members; }
-
-      allow get: if signedIn() && (resource == null || isMember());
-      allow list: if signedIn() && request.auth.uid in resource.data.members;
+    // ---------- Códigos de invitación ----------
+    // Se pueden leer de a uno (sabiendo el código), nunca listar.
+    match /invites/{code} {
+      allow get: if signedIn();
+      allow list: if false;
       allow create: if signedIn()
-        && request.auth.uid in request.resource.data.members
-        && request.resource.data.members.size() >= 2
-        && request.resource.data.type in ['direct', 'group'];
-      // Los miembros pueden actualizar el resumen, pero no cambiar quién pertenece al chat.
-      allow update: if signedIn() && isMember()
-        && request.resource.data.members == resource.data.members
-        && request.resource.data.type == resource.data.type;
+        && getAfter(communityPath(request.resource.data.communityId)).data.inviteCode == code
+        && uid() in getAfter(communityPath(request.resource.data.communityId)).data.admins;
+      allow delete: if isAdmin(resource.data.communityId);
+      allow update: if false;
+    }
+
+    // ---------- Comunidades ----------
+    match /communities/{cid} {
+      allow get: if isMember(cid);
+      allow list: if false;
+      // El plan Pro solo lo escribe el servidor (Cloud Function que valida el pago).
+      allow create: if signedIn()
+        && request.resource.data.createdBy == uid()
+        && request.resource.data.admins == [uid()]
+        && request.resource.data.plan == 'free'
+        && !('planExpiresAt' in request.resource.data)
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 60
+        && request.resource.data.unitsCount is int
+        && request.resource.data.unitsCount >= 2 && request.resource.data.unitsCount <= 5000;
+      allow update: if isAdmin(cid)
+        && !changed().hasAny(['plan', 'planExpiresAt', 'planPurchaseToken', 'planUpdatedAt', 'createdBy'])
+        && request.resource.data.admins.size() > 0;
+      allow delete: if false;
+
+      match /members/{memberId} {
+        allow read: if isMember(cid);
+        allow create: if isMe(memberId)
+          && request.resource.data.uid == memberId
+          && request.resource.data.unit is string
+          && request.resource.data.unit.size() > 0 && request.resource.data.unit.size() <= 20
+          && (
+            // Unirse con el código vigente.
+            (request.resource.data.role == 'resident'
+              && request.resource.data.code == community(cid).inviteCode)
+            ||
+            // Quien crea la comunidad queda como administración (en el mismo lote de escritura).
+            (request.resource.data.role == 'admin'
+              && !exists(communityPath(cid))
+              && getAfter(communityPath(cid)).data.createdBy == memberId)
+          );
+        allow update: if isAdmin(cid) && changed().hasOnly(['role', 'unit']);
+        allow delete: if isMe(memberId) || isAdmin(cid);
+      }
+
+      // Avisos oficiales (solo administración) y emergencias (cualquier vecino).
+      match /announcements/{aid} {
+        allow read: if isMember(cid);
+        allow create: if isMember(cid)
+          && request.resource.data.authorId == uid()
+          && request.resource.data.authorUnit == myUnit(cid)
+          && request.resource.data.title is string && request.resource.data.title.size() <= 120
+          && request.resource.data.body is string && request.resource.data.body.size() <= 2000
+          && (
+            (request.resource.data.type == 'notice' && isAdmin(cid))
+            || (request.resource.data.type == 'emergency' && request.resource.data.pinned == false)
+          );
+        allow update: if false;
+        allow delete: if isAdmin(cid) || resource.data.authorId == uid();
+
+        // "Visto por": cada vecino escribe solo su propia marca. El conteo es función Pro.
+        match /reads/{readerId} {
+          allow create, update: if isMe(readerId) && isMember(cid);
+          allow read: if isAdmin(cid) && isPro(cid);
+          allow delete: if false;
+        }
+      }
+
+      // Votaciones: solo administración las crea; un voto por unidad.
+      match /polls/{pid} {
+        allow read: if isMember(cid);
+        allow create: if isAdmin(cid)
+          && request.resource.data.createdBy == uid()
+          && request.resource.data.closed == false
+          && request.resource.data.options is list
+          && request.resource.data.options.size() >= 2 && request.resource.data.options.size() <= 6
+          && request.resource.data.quorumPercent is int
+          && request.resource.data.quorumPercent >= 0 && request.resource.data.quorumPercent <= 100
+          && request.resource.data.closesAt is timestamp
+          && request.resource.data.closesAt > request.time;
+        allow update: if isAdmin(cid) && changed().hasOnly(['closed']) && request.resource.data.closed == true;
+        allow delete: if false;
+
+        match /votes/{unit} {
+          allow read: if isMember(cid);
+          // El id del voto ES la unidad: una segunda escritura sería una actualización, y no se permite.
+          allow create: if isMember(cid)
+            && unit == myUnit(cid)
+            && request.resource.data.uid == uid()
+            && request.resource.data.option is int
+            && request.resource.data.option >= 0
+            && request.resource.data.option < get(/databases/$(database)/documents/communities/$(cid)/polls/$(pid)).data.options.size()
+            && get(/databases/$(database)/documents/communities/$(cid)/polls/$(pid)).data.closed == false
+            && request.time < get(/databases/$(database)/documents/communities/$(cid)/polls/$(pid)).data.closesAt;
+          allow update, delete: if false;
+        }
+      }
+
+      // Reportes de daños.
+      match /reports/{rid} {
+        allow read: if isMember(cid);
+        allow create: if isMember(cid)
+          && request.resource.data.createdBy == uid()
+          && request.resource.data.unit == myUnit(cid)
+          && request.resource.data.status == 'open'
+          && request.resource.data.affectedUnits == [myUnit(cid)]
+          && request.resource.data.title is string && request.resource.data.title.size() > 0
+          && request.resource.data.title.size() <= 120;
+        // Administración cambia el estado; cada vecino solo suma o quita su propia unidad.
+        allow update: if (isAdmin(cid) && !changed().hasAny(['createdBy', 'unit', 'createdAt']))
+          || (isMember(cid)
+            && changed().hasOnly(['affectedUnits'])
+            && request.resource.data.affectedUnits.toSet().difference(resource.data.affectedUnits.toSet()).hasOnly([myUnit(cid)])
+            && resource.data.affectedUnits.toSet().difference(request.resource.data.affectedUnits.toSet()).hasOnly([myUnit(cid)]));
+        allow delete: if isAdmin(cid);
+      }
+
+      // Tablón entre vecinos.
+      match /posts/{postId} {
+        allow read: if isMember(cid);
+        allow create: if isMember(cid)
+          && request.resource.data.authorId == uid()
+          && request.resource.data.unit == myUnit(cid)
+          && request.resource.data.resolved == false
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 1000;
+        allow update: if resource.data.authorId == uid() && changed().hasOnly(['resolved']);
+        allow delete: if resource.data.authorId == uid() || isAdmin(cid);
+      }
+
+      // Resumen semanal con IA (función Pro).
+      match /summaries/{week} {
+        allow read: if isMember(cid);
+        allow create, update: if isMember(cid) && isPro(cid);
+        allow delete: if false;
+      }
+    }
+
+    // ---------- Chats ----------
+    match /chats/{chatId} {
+      function isChatMember() { return uid() in resource.data.members; }
+      function onlyMembersChanged() { return changed().hasOnly(['members']); }
+
+      allow get: if signedIn() && (resource == null || isChatMember());
+      allow list: if signedIn() && uid() in resource.data.members;
+
+      allow create: if signedIn() && (
+        // Chat privado o grupo.
+        (request.resource.data.type in ['direct', 'group']
+          && uid() in request.resource.data.members
+          && request.resource.data.members.size() >= 2)
+        ||
+        // Chat general de una comunidad nueva (mismo id que la comunidad).
+        (request.resource.data.type == 'community'
+          && request.resource.data.members == [uid()]
+          && !exists(communityPath(chatId))
+          && getAfter(communityPath(chatId)).data.createdBy == uid())
+      );
+
+      allow update: if signedIn() && (
+        // Actividad normal: último mensaje, no leídos... sin cambiar quién participa.
+        (isChatMember()
+          && request.resource.data.members == resource.data.members
+          && request.resource.data.type == resource.data.type)
+        ||
+        // Chat del edificio: entrar (con membresía válida), salir, o que administración saque a alguien.
+        (resource.data.type == 'community' && onlyMembersChanged() && (
+          (request.resource.data.members.toSet() == resource.data.members.toSet().union([uid()].toSet())
+            && existsAfter(memberPath(chatId, uid())))
+          || request.resource.data.members.toSet() == resource.data.members.toSet().difference([uid()].toSet())
+          || isAdmin(chatId)
+        ))
+        ||
+        (resource.data.type == 'community' && changed().hasOnly(['name']) && isAdmin(chatId))
+      );
       allow delete: if false;
 
       match /messages/{messageId} {
         function chatMembers() {
           return get(/databases/$(database)/documents/chats/$(chatId)).data.members;
         }
-        allow read: if signedIn() && request.auth.uid in chatMembers();
+        allow read: if signedIn() && uid() in chatMembers();
         allow create: if signedIn()
-          && request.auth.uid in chatMembers()
-          && request.resource.data.senderId == request.auth.uid
+          && uid() in chatMembers()
+          && request.resource.data.senderId == uid()
           && request.resource.data.text is string
           && request.resource.data.text.size() <= 4000;
         allow update, delete: if false;

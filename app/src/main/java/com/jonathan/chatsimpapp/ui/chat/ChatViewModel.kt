@@ -12,6 +12,7 @@ import com.jonathan.chatsimpapp.data.model.Presence
 import com.jonathan.chatsimpapp.data.model.User
 import com.jonathan.chatsimpapp.data.repository.AuthRepository
 import com.jonathan.chatsimpapp.data.repository.ChatRepository
+import com.jonathan.chatsimpapp.data.repository.CommunityRepository
 import com.jonathan.chatsimpapp.data.repository.PresenceRepository
 import com.jonathan.chatsimpapp.data.repository.UserRepository
 import com.jonathan.chatsimpapp.ui.navigation.ChatRoute
@@ -91,6 +92,7 @@ class ChatViewModel @Inject constructor(
     private val chats: ChatRepository,
     private val users: UserRepository,
     private val presence: PresenceRepository,
+    private val communities: CommunityRepository,
 ) : ViewModel() {
 
     val chatId: String = savedStateHandle.toRoute<ChatRoute>().chatId
@@ -128,8 +130,23 @@ class ChatViewModel @Inject constructor(
 
     private val typing = presence.observeTyping(chatId).map { it - myUid }
 
+    /** En el chat del edificio cada persona se identifica también por su unidad. */
+    private val units = chat.filterNotNull()
+        .map { it.type == Chat.TYPE_COMMUNITY }
+        .distinctUntilChanged()
+        .flatMapLatest { isCommunity ->
+            if (!isCommunity) flowOf(emptyMap())
+            else communities.observeMembers(chatId).map { list -> list.associate { it.uid to it.unit } }.catch { emit(emptyMap()) }
+        }
+
+    private val peopleWithUnits = combine(people, units) { people, units ->
+        people.mapValues { (uid, user) ->
+            units[uid]?.let { unit -> user.copy(displayName = "${user.displayName} · $unit") } ?: user
+        }
+    }
+
     val state: StateFlow<ChatUiState> =
-        combine(chat, messages, people, otherPresence, typing) { chat, messages, people, presence, typing ->
+        combine(chat, messages, peopleWithUnits, otherPresence, typing) { chat, messages, people, presence, typing ->
             if (chat == null || messages == null) return@combine ChatUiState()
             buildState(chat, messages, people, presence, typing)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ChatUiState())

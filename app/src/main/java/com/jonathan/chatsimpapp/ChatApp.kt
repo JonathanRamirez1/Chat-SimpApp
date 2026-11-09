@@ -24,6 +24,8 @@ class ChatApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        // App Check impide que alguien use tu Firebase desde fuera de la app (y te genere costos).
+        AppCheckInstaller.install()
         NotificationHelper.createChannels(this)
 
         // En línea mientras la app está visible; desconectado cuando pasa a segundo plano.

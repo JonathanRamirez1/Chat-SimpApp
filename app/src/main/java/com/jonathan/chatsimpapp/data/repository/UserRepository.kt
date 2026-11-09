@@ -112,6 +112,7 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun registerCurrentFcmToken(uid: String) {
+        @Suppress("DEPRECATION") // Sigue siendo la API documentada para obtener el token FCM.
         val token = messaging.token.await()
         addFcmToken(uid, token)
     }
@@ -121,6 +122,7 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun removeCurrentFcmToken(uid: String) {
+        @Suppress("DEPRECATION") // Sigue siendo la API documentada para obtener el token FCM.
         val token = messaging.token.await()
         tokensDoc(uid).update("tokens", FieldValue.arrayRemove(token)).await()
     }

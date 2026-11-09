@@ -9,50 +9,68 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.jonathan.chatsimpapp.data.repository.CommunityState
 import com.jonathan.chatsimpapp.ui.auth.ForgotPasswordScreen
 import com.jonathan.chatsimpapp.ui.auth.LoginScreen
 import com.jonathan.chatsimpapp.ui.auth.RegisterScreen
 import com.jonathan.chatsimpapp.ui.chat.ChatScreen
-import com.jonathan.chatsimpapp.ui.chats.ChatsScreen
+import com.jonathan.chatsimpapp.ui.community.CommunityInfoScreen
+import com.jonathan.chatsimpapp.ui.community.FormKind
+import com.jonathan.chatsimpapp.ui.community.FormScreen
 import com.jonathan.chatsimpapp.ui.group.NewGroupScreen
+import com.jonathan.chatsimpapp.ui.home.HomeActions
+import com.jonathan.chatsimpapp.ui.home.HomeScreen
 import com.jonathan.chatsimpapp.ui.newchat.NewChatScreen
+import com.jonathan.chatsimpapp.ui.onboarding.OnboardingScreen
+import com.jonathan.chatsimpapp.ui.polls.PollDetailScreen
 import com.jonathan.chatsimpapp.ui.profile.ProfileScreen
+import com.jonathan.chatsimpapp.ui.reports.ReportDetailScreen
+import com.jonathan.chatsimpapp.ui.upgrade.UpgradeScreen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
+/** Raíz de la navegación: según la sesión muestra login, la bienvenida a una comunidad o el inicio. */
+private fun rootFor(state: CommunityState): Any = when (state) {
+    CommunityState.SignedOut -> LoginRoute
+    CommunityState.None -> OnboardingRoute
+    else -> HomeRoute
+}
+
 @Composable
 fun AppNavHost(
-    signedIn: StateFlow<Boolean>,
+    session: StateFlow<CommunityState>,
     openChatRequests: Flow<String>,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
-    val isSignedIn by signedIn.collectAsStateWithLifecycle()
+    val state by session.collectAsStateWithLifecycle()
 
-    // Al iniciar o cerrar sesión se reemplaza toda la pila de pantallas.
-    LaunchedEffect(isSignedIn) {
-        val target: Any = if (isSignedIn) ChatsRoute else LoginRoute
-        val current = navController.currentBackStackEntry?.destination ?: return@LaunchedEffect
-        val onAuthSide = current.route?.contains("Login") == true ||
-            current.route?.contains("Register") == true ||
-            current.route?.contains("ForgotPassword") == true
-        if (isSignedIn == onAuthSide) {
-            navController.navigate(target) { popUpTo(0) { inclusive = true } }
+    // Cambios de sesión (iniciar/cerrar sesión, unirse o salir de una comunidad) reemplazan la pila.
+    LaunchedEffect(state) {
+        if (state is CommunityState.Loading) return@LaunchedEffect
+        val target = rootFor(state)
+        val dest = navController.currentBackStackEntry?.destination ?: return@LaunchedEffect
+        val onAuth = dest.hasRoute<LoginRoute>() || dest.hasRoute<RegisterRoute>() || dest.hasRoute<ForgotPasswordRoute>()
+        val onOnboarding = dest.hasRoute<OnboardingRoute>()
+        val wrongPlace = when (target) {
+            LoginRoute -> !onAuth
+            OnboardingRoute -> !onOnboarding
+            else -> onAuth || (onOnboarding && navController.previousBackStackEntry == null)
         }
+        if (wrongPlace) navController.navigate(target) { popUpTo(0) { inclusive = true } }
+        else if (target == HomeRoute && onOnboarding) navController.popBackStack()
     }
 
-    // Abrir un chat desde una notificación.
     LaunchedEffect(Unit) {
         openChatRequests.collect { chatId ->
-            if (signedIn.value) {
-                navController.navigate(ChatRoute(chatId)) {
-                    popUpTo<ChatsRoute>()
-                    launchSingleTop = true
-                }
+            if (session.value is CommunityState.Ready) {
+                navController.navigate(ChatRoute(chatId)) { launchSingleTop = true }
             }
         }
     }
@@ -60,7 +78,7 @@ fun AppNavHost(
     val duration = 280
     NavHost(
         navController = navController,
-        startDestination = if (signedIn.value) ChatsRoute else LoginRoute,
+        startDestination = rootFor(state),
         modifier = modifier,
         enterTransition = { slideIntoContainer(SlideDirection.Start, tween(duration)) + fadeIn(tween(duration)) },
         exitTransition = { slideOutOfContainer(SlideDirection.Start, tween(duration), targetOffset = { it / 4 }) + fadeOut(tween(duration)) },
@@ -75,12 +93,20 @@ fun AppNavHost(
         }
         composable<RegisterRoute> { RegisterScreen(onBack = navController::popBackStack) }
         composable<ForgotPasswordRoute> { ForgotPasswordScreen(onBack = navController::popBackStack) }
+        composable<OnboardingRoute> { OnboardingScreen() }
 
-        composable<ChatsRoute> {
-            ChatsScreen(
-                onOpenChat = { navController.navigate(ChatRoute(it)) },
-                onNewChat = { navController.navigate(NewChatRoute) },
-                onProfile = { navController.navigate(ProfileRoute) },
+        composable<HomeRoute> {
+            HomeScreen(
+                HomeActions(
+                    openChat = { navController.navigate(ChatRoute(it)) },
+                    newChat = { navController.navigate(NewChatRoute) },
+                    profile = { navController.navigate(ProfileRoute) },
+                    communityInfo = { navController.navigate(CommunityInfoRoute) },
+                    upgrade = { navController.navigate(UpgradeRoute) },
+                    openPoll = { navController.navigate(PollRoute(it)) },
+                    openReport = { navController.navigate(ReportRoute(it)) },
+                    form = { navController.navigate(FormRoute(it.name)) },
+                ),
             )
         }
         composable<ChatRoute> { ChatScreen(onBack = navController::popBackStack) }
@@ -88,17 +114,31 @@ fun AppNavHost(
             NewChatScreen(
                 onBack = navController::popBackStack,
                 onNewGroup = { navController.navigate(NewGroupRoute) },
-                onOpenChat = { chatId ->
-                    navController.navigate(ChatRoute(chatId)) { popUpTo<ChatsRoute>() }
-                },
+                onOpenChat = { chatId -> navController.navigate(ChatRoute(chatId)) { popUpTo<HomeRoute>() } },
             )
         }
         composable<NewGroupRoute> {
             NewGroupScreen(
                 onBack = navController::popBackStack,
-                onCreated = { chatId -> navController.navigate(ChatRoute(chatId)) { popUpTo<ChatsRoute>() } },
+                onCreated = { chatId -> navController.navigate(ChatRoute(chatId)) { popUpTo<HomeRoute>() } },
             )
         }
         composable<ProfileRoute> { ProfileScreen(onBack = navController::popBackStack) }
+        composable<CommunityInfoRoute> {
+            CommunityInfoScreen(
+                onBack = navController::popBackStack,
+                onUpgrade = { navController.navigate(UpgradeRoute) },
+                onAddCommunity = { navController.navigate(OnboardingRoute) },
+            )
+        }
+        composable<UpgradeRoute> { UpgradeScreen(onClose = navController::popBackStack) }
+        composable<PollRoute> {
+            PollDetailScreen(onBack = navController::popBackStack, onUpgrade = { navController.navigate(UpgradeRoute) })
+        }
+        composable<ReportRoute> { ReportDetailScreen(onBack = navController::popBackStack) }
+        composable<FormRoute> { entry ->
+            val kind = FormKind.valueOf(entry.toRoute<FormRoute>().kind)
+            FormScreen(kind, onDone = navController::popBackStack)
+        }
     }
 }

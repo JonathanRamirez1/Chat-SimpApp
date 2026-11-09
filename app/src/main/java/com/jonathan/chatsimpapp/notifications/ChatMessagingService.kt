@@ -30,6 +30,7 @@ class ChatMessagingService : FirebaseMessagingService() {
     @Inject lateinit var users: UserRepository
     @Inject @ApplicationScope lateinit var scope: CoroutineScope
 
+    @Deprecated("Firebase marca este callback como obsoleto, pero sigue siendo el que recibe tokens nuevos.")
     override fun onNewToken(token: String) {
         val uid = auth.currentUserId ?: return
         scope.launch { runCatching { users.addFcmToken(uid, token) } }
@@ -37,6 +38,18 @@ class ChatMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         val data = message.data
+        if (auth.currentUserId == null) return
+        // Avisos de la comunidad (los arma la Cloud Function con título y texto ya listos).
+        when (data["kind"]) {
+            "emergency", "notice", "poll", "report" -> {
+                val channel = when (data["kind"]) {
+                    "emergency" -> NotificationHelper.CHANNEL_EMERGENCY
+                    else -> NotificationHelper.CHANNEL_NOTICES
+                }
+                NotificationHelper.showCommunity(this, channel, data["key"].orEmpty(), data["title"].orEmpty(), data["body"].orEmpty())
+                return
+            }
+        }
         val chatId = data["chatId"] ?: return
         if (auth.currentUserId == null || ActiveChat.chatId == chatId) return
 

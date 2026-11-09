@@ -1,107 +1,316 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Chat SimpApp</string>
-    <string name="app_tagline">Simple conversations, in real time.</string>
 
-    <!-- Auth -->
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="name">Name</string>
-    <string name="show_password">Show password</string>
-    <string name="hide_password">Hide password</string>
-    <string name="sign_in">Sign in</string>
-    <string name="sign_in_title">Welcome back</string>
-    <string name="sign_in_with_google">Continue with Google</string>
-    <string name="or">or</string>
-    <string name="forgot_password">Forgot your password?</string>
-    <string name="no_account">Don\'t have an account?</string>
-    <string name="sign_up">Sign up</string>
-    <string name="create_account">Create account</string>
-    <string name="create_account_subtitle">It only takes a minute.</string>
-    <string name="have_account">Already have an account?</string>
-    <string name="password_hint">At least 6 characters</string>
-    <string name="reset_password_title">Reset your password</string>
-    <string name="reset_password_subtitle">Enter the email you used to sign up and we\'ll send you a link to create a new password.</string>
-    <string name="send_link">Send link</string>
-    <string name="reset_password_sent">Check your inbox. We sent a link to %1$s.</string>
-    <string name="back_to_sign_in">Back to sign in</string>
-    <string name="back">Back</string>
+    <string name="app_tagline">Tu edificio, organizado.</string>
 
-    <!-- Validation / errors -->
-    <string name="error_email_invalid">Enter a valid email</string>
-    <string name="error_password_short">Password must have at least 6 characters</string>
-    <string name="error_name_empty">Enter your name</string>
-    <string name="error_invalid_credentials">Wrong email or password</string>
-    <string name="error_email_in_use">There is already an account with this email</string>
-    <string name="error_weak_password">That password is too weak</string>
-    <string name="error_network">No connection. Check your internet and try again.</string>
-    <string name="error_too_many_requests">Too many attempts. Wait a moment and try again.</string>
-    <string name="error_google">Couldn\'t sign in with Google</string>
-    <string name="error_generic">Something went wrong. Try again.</string>
-    <string name="error_send_message">The message couldn\'t be sent</string>
-    <string name="error_upload">The image couldn\'t be uploaded</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="name">Nombre</string>
+    <string name="show_password">Mostrar contraseña</string>
+    <string name="hide_password">Ocultar contraseña</string>
+    <string name="sign_in">Iniciar sesión</string>
+    <string name="sign_in_title">Hola de nuevo</string>
+    <string name="sign_in_with_google">Continuar con Google</string>
+    <string name="or">o</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="no_account">¿No tienes cuenta?</string>
+    <string name="sign_up">Regístrate</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="create_account_subtitle">Solo te tomará un minuto.</string>
+    <string name="have_account">¿Ya tienes cuenta?</string>
+    <string name="password_hint">Mínimo 6 caracteres</string>
+    <string name="reset_password_title">Recupera tu contraseña</string>
+    <string name="reset_password_subtitle">Escribe el correo con el que te registraste y te enviaremos un enlace para crear una nueva contraseña.</string>
+    <string name="send_link">Enviar enlace</string>
+    <string name="reset_password_sent">Revisa tu bandeja de entrada. Enviamos un enlace a %1$s.</string>
+    <string name="back_to_sign_in">Volver a iniciar sesión</string>
+    <string name="back">Atrás</string>
 
-    <!-- Chats -->
+    <string name="error_email_invalid">Escribe un correo válido</string>
+    <string name="error_password_short">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="error_name_empty">Escribe tu nombre</string>
+    <string name="error_invalid_credentials">Correo o contraseña incorrectos</string>
+    <string name="error_email_in_use">Ya existe una cuenta con este correo</string>
+    <string name="error_weak_password">Esa contraseña es demasiado débil</string>
+    <string name="error_network">Sin conexión. Revisa tu internet e inténtalo de nuevo.</string>
+    <string name="error_too_many_requests">Demasiados intentos. Espera un momento e inténtalo de nuevo.</string>
+    <string name="error_google">No se pudo iniciar sesión con Google</string>
+    <string name="error_generic">Algo salió mal. Inténtalo de nuevo.</string>
+    <string name="error_send_message">No se pudo enviar el mensaje</string>
+    <string name="error_upload">No se pudo subir la imagen</string>
+
     <string name="chats">Chats</string>
-    <string name="search_chats">Search chats</string>
-    <string name="new_chat">New chat</string>
-    <string name="no_chats_title">No conversations yet</string>
-    <string name="no_chats_body">Find someone by name or email and say hi.</string>
-    <string name="start_chat">Start a chat</string>
-    <string name="no_results">No results</string>
-    <string name="you_prefix">You: %1$s</string>
-    <string name="photo">Photo</string>
-    <string name="yesterday">Yesterday</string>
-    <string name="today">Today</string>
-    <string name="unknown_user">Unknown user</string>
-    <string name="profile">Profile</string>
-    <string name="unread_count">%1$d unread messages</string>
+    <string name="search_chats">Buscar chats</string>
+    <string name="new_chat">Nuevo chat</string>
+    <string name="no_chats_title">Aún no tienes conversaciones</string>
+    <string name="no_chats_body">Busca a alguien por nombre o correo y salúdalo.</string>
+    <string name="start_chat">Iniciar un chat</string>
+    <string name="no_results">Sin resultados</string>
+    <string name="you_prefix">Tú: %1$s</string>
+    <string name="photo">Foto</string>
+    <string name="yesterday">Ayer</string>
+    <string name="today">Hoy</string>
+    <string name="unknown_user">Usuario desconocido</string>
+    <string name="profile">Perfil</string>
+    <string name="unread_count">%1$d mensajes sin leer</string>
 
-    <!-- New chat / group -->
-    <string name="search_people">Search by name or email</string>
-    <string name="new_group">New group</string>
-    <string name="search_hint_title">Find people</string>
-    <string name="search_hint_body">Type at least 2 letters of a name, or a full email.</string>
-    <string name="add_members">Add members</string>
-    <string name="selected_count">%1$d selected</string>
-    <string name="next">Next</string>
-    <string name="group_name">Group name</string>
-    <string name="group_details">Group details</string>
-    <string name="create_group">Create group</string>
-    <string name="members_count">%1$d members</string>
-    <string name="add_group_photo">Add group photo</string>
-    <string name="remove">Remove</string>
+    <string name="search_people">Buscar por nombre o correo</string>
+    <string name="new_group">Nuevo grupo</string>
+    <string name="search_hint_title">Encuentra personas</string>
+    <string name="search_hint_body">Escribe al menos 2 letras de un nombre, o un correo completo.</string>
+    <string name="add_members">Añadir miembros</string>
+    <string name="selected_count">%1$d seleccionados</string>
+    <string name="next">Siguiente</string>
+    <string name="group_name">Nombre del grupo</string>
+    <string name="group_details">Detalles del grupo</string>
+    <string name="create_group">Crear grupo</string>
+    <string name="members_count">%1$d miembros</string>
+    <string name="add_group_photo">Añadir foto del grupo</string>
+    <string name="remove">Quitar</string>
 
-    <!-- Chat -->
-    <string name="message_hint">Message</string>
-    <string name="send">Send</string>
-    <string name="attach_image">Attach image</string>
-    <string name="online">online</string>
-    <string name="typing">typing…</string>
-    <string name="typing_named">%1$s is typing…</string>
-    <string name="last_seen_today">last seen today at %1$s</string>
-    <string name="last_seen_yesterday">last seen yesterday at %1$s</string>
-    <string name="last_seen_date">last seen %1$s</string>
-    <string name="scroll_to_bottom">Go to latest messages</string>
-    <string name="chat_empty">Say hi 👋</string>
-    <string name="you">You</string>
-    <string name="status_sending">Sending</string>
-    <string name="status_sent">Sent</string>
-    <string name="status_read">Read</string>
-    <string name="group_members_summary">%1$s and %2$d more</string>
+    <string name="message_hint">Mensaje</string>
+    <string name="send">Enviar</string>
+    <string name="attach_image">Adjuntar imagen</string>
+    <string name="online">en línea</string>
+    <string name="typing">escribiendo…</string>
+    <string name="typing_named">%1$s está escribiendo…</string>
+    <string name="last_seen_today">últ. vez hoy a las %1$s</string>
+    <string name="last_seen_yesterday">últ. vez ayer a las %1$s</string>
+    <string name="last_seen_date">últ. vez el %1$s</string>
+    <string name="scroll_to_bottom">Ir a los últimos mensajes</string>
+    <string name="chat_empty">Saluda 👋</string>
+    <string name="you">Tú</string>
+    <string name="status_sending">Enviando</string>
+    <string name="status_sent">Enviado</string>
+    <string name="status_read">Leído</string>
+    <string name="group_members_summary">%1$s y %2$d más</string>
 
-    <!-- Profile -->
-    <string name="about">About</string>
-    <string name="about_placeholder">Hey there! I\'m using Chat SimpApp</string>
-    <string name="save">Save</string>
-    <string name="saved">Profile updated</string>
-    <string name="change_photo">Change photo</string>
-    <string name="account">Account</string>
-    <string name="sign_out">Sign out</string>
-    <string name="version">Version %1$s</string>
+    <string name="about">Info.</string>
+    <string name="about_placeholder">¡Hola! Estoy usando Chat SimpApp</string>
+    <string name="save">Guardar</string>
+    <string name="saved">Perfil actualizado</string>
+    <string name="change_photo">Cambiar foto</string>
+    <string name="account">Cuenta</string>
+    <string name="sign_out">Cerrar sesión</string>
+    <string name="version">Versión %1$s</string>
 
-    <!-- Notifications -->
-    <string name="notification_channel_messages">Messages</string>
-    <string name="notification_channel_messages_desc">New chat messages</string>
-    <string name="notification_photo">📷 Photo</string>
+    <string name="notification_channel_messages">Mensajes</string>
+    <string name="notification_channel_messages_desc">Nuevos mensajes de chat</string>
+    <string name="notification_photo">📷 Foto</string>
+
+    <!-- Comunidad / onboarding -->
+    <string name="onboarding_title">Tu edificio, organizado</string>
+    <string name="onboarding_subtitle">Avisos oficiales, votaciones con quórum, reportes de daños y un tablón entre vecinos. Sin compartir tu número.</string>
+    <string name="join_with_code">Unirme con un código</string>
+    <string name="join_with_code_body">La administración o un vecino te lo comparte.</string>
+    <string name="join_subtitle">Escribe el código de 6 caracteres y tu apartamento o casa.</string>
+    <string name="join">Unirme</string>
+    <string name="create_community">Crear mi comunidad</string>
+    <string name="create_community_body">Para administración, consejo o junta de vecinos.</string>
+    <string name="create_subtitle">Tú quedarás como administración y podrás invitar a los vecinos.</string>
+    <string name="community_name">Nombre del edificio o conjunto</string>
+    <string name="address_optional">Dirección (opcional)</string>
+    <string name="units_count">Número de unidades</string>
+    <string name="units_count_hint">Apartamentos o casas en total. Se usa para calcular el quórum.</string>
+    <string name="your_unit">Tu unidad</string>
+    <string name="your_unit_hint">Ej.: 502, Casa 12, T2-301</string>
+    <string name="invite_code">Código de invitación</string>
+    <string name="invite_code_hint">6 letras y números</string>
+    <string name="error_invite_code">El código tiene 6 caracteres</string>
+    <string name="error_invite_not_found">Ese código no existe. Revisa con quien te lo dio.</string>
+    <string name="error_unit">Escribe tu unidad</string>
+    <string name="error_community_name">Escribe el nombre</string>
+    <string name="error_units_count">Entre 2 y 5000 unidades</string>
+
+    <!-- Pestañas -->
+    <string name="tab_home">Inicio</string>
+    <string name="tab_polls">Votaciones</string>
+    <string name="tab_reports">Reportes</string>
+    <string name="tab_board">Tablón</string>
+
+    <!-- Inicio -->
+    <string name="administration">Administración</string>
+    <string name="official_notices">Avisos oficiales</string>
+    <string name="no_notices">Aún no hay avisos de la administración.</string>
+    <string name="no_notices_admin">Publica el primer aviso: todos los vecinos lo verán aquí y recibirán una notificación.</string>
+    <string name="open_polls">votaciones abiertas</string>
+    <string name="open_reports">reportes pendientes</string>
+    <string name="seen_by">Visto por %1$d</string>
+    <string name="delete">Eliminar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="weekly_summary">Resumen de la semana</string>
+    <string name="weekly_summary_teaser">¿No alcanzaste a leer el chat? La IA te dice en 30 segundos qué se decidió, quién quedó de hacer qué y qué fechas importan.</string>
+    <string name="weekly_summary_empty">Aún no se ha generado el resumen de esta semana.</string>
+    <string name="summary_generate">Generar resumen</string>
+    <string name="summary_refresh">Actualizar</string>
+    <string name="summary_decisions">Acuerdos</string>
+    <string name="summary_commitments">Compromisos</string>
+    <string name="summary_notices">Fechas y avisos</string>
+    <string name="summary_error">No se pudo generar el resumen. Inténtalo más tarde.</string>
+    <string name="summary_privacy">Generado con IA (Gemini) a partir del chat general, avisos y reportes. Puede tener errores.</string>
+    <string name="see_pro">Ver plan Pro</string>
+
+    <!-- Emergencias -->
+    <string name="raise_emergency">Alerta de emergencia</string>
+    <string name="emergency_explain">Avisará de inmediato a todo el edificio con una notificación prioritaria. Úsala solo en emergencias reales.</string>
+    <string name="emergency_water">Fuga o corte de agua</string>
+    <string name="emergency_gas">Olor a gas</string>
+    <string name="emergency_fire">Incendio o humo</string>
+    <string name="emergency_security">Seguridad (intruso, robo)</string>
+    <string name="emergency_power">Corte de luz</string>
+    <string name="emergency_other">Otra emergencia</string>
+    <string name="emergency_title">Emergencia: %1$s</string>
+    <string name="details_optional">Detalles (opcional)</string>
+    <string name="send_alert">Enviar alerta</string>
+    <string name="reported_by_unit">Reportado por %1$s</string>
+
+    <!-- Votaciones -->
+    <string name="poll">Votación</string>
+    <string name="no_polls_title">Sin votaciones</string>
+    <string name="no_polls_body">Cuando la administración abra una votación, aparecerá aquí.</string>
+    <string name="no_polls_admin">Crea una votación: cada unidad vota una sola vez y el quórum se calcula solo.</string>
+    <string name="poll_open">Abierta</string>
+    <string name="poll_closed">Cerrada</string>
+    <string name="poll_closes_at">Cierra %1$s</string>
+    <string name="poll_closed_at">Cerró %1$s</string>
+    <string name="poll_options_count">%1$d opciones</string>
+    <string name="quorum_label">quórum %1$d%%</string>
+    <string name="participation">Han votado %1$d de %2$d unidades</string>
+    <string name="quorum_reached">Quórum del %1$d%% alcanzado.</string>
+    <string name="quorum_missing">Quórum del %1$d%%: faltan %2$d unidades por votar.</string>
+    <string name="vote">Votar</string>
+    <string name="vote_explain">Votas en nombre de la unidad %1$s. Es un voto por unidad y no se puede cambiar.</string>
+    <string name="you_voted">La unidad %1$s ya votó.</string>
+    <string name="error_vote">No se pudo votar. Puede que tu unidad ya haya votado o que la votación esté cerrada.</string>
+    <string name="acta">Acta</string>
+    <string name="share_acta_text">Compartir acta como texto</string>
+    <string name="share_acta_pdf">Descargar acta en PDF</string>
+    <string name="close_poll">Cerrar votación ahora</string>
+    <string name="acta_title">ACTA DE VOTACIÓN · %1$s</string>
+    <string name="acta_question">Pregunta: %1$s</string>
+    <string name="acta_opened">Abierta: %1$s</string>
+    <string name="acta_closes">Cierre: %1$s</string>
+    <string name="acta_participation">Participación: %1$d de %2$d unidades (%3$d%%)</string>
+    <string name="acta_quorum_ok">Quórum requerido (%1$d%%, %2$d unidades): ALCANZADO</string>
+    <string name="acta_quorum_missing">Quórum requerido (%1$d%%, %2$d unidades): NO ALCANZADO</string>
+    <string name="acta_results">Resultados:</string>
+    <string name="acta_winner">Opción con más votos: %1$s</string>
+    <string name="acta_votes_by_unit">Votos por unidad:</string>
+    <string name="acta_footer">Generado con Chat SimpApp. Cada unidad pudo votar una sola vez.</string>
+
+    <!-- Reportes -->
+    <string name="report">Reporte</string>
+    <string name="report_action">Reportar</string>
+    <string name="no_reports_title">Todo en orden</string>
+    <string name="no_reports_body">¿Algo dañado? Repórtalo con foto y sigue su arreglo sin preguntar en el chat.</string>
+    <string name="status_open">Abierto</string>
+    <string name="status_in_progress">En proceso</string>
+    <string name="status_resolved">Resuelto</string>
+    <string name="all">Todos</string>
+    <string name="affected_units">%1$d unidades afectadas</string>
+    <string name="includes_you">incluida la tuya</string>
+    <string name="affects_me_too">A mí también me afecta</string>
+    <string name="not_affected_me">Ya no me afecta</string>
+    <string name="update_status">Actualizar estado</string>
+    <string name="status_note">Nota para los vecinos (opcional)</string>
+    <string name="history">Historial</string>
+    <string name="category">Categoría</string>
+    <string name="cat_plumbing">Plomería</string>
+    <string name="cat_electric">Eléctrico</string>
+    <string name="cat_elevator">Ascensor</string>
+    <string name="cat_security">Seguridad</string>
+    <string name="cat_cleaning">Aseo</string>
+    <string name="cat_common_areas">Zonas comunes</string>
+    <string name="cat_noise">Ruido</string>
+    <string name="cat_other">Otro</string>
+    <string name="report_title_hint">¿Qué pasa? (ej.: Ascensor 2 no funciona)</string>
+    <string name="field_details">Detalles</string>
+
+    <!-- Tablón -->
+    <string name="no_posts_title">El tablón está vacío</string>
+    <string name="no_posts_body">Presta, pide prestado, recomienda un plomero o avisa de algo perdido.</string>
+    <string name="post_lend">Presto</string>
+    <string name="post_borrow">Busco</string>
+    <string name="post_recommend">Recomiendo</string>
+    <string name="post_lost">Perdido/encontrado</string>
+    <string name="post_sell">Vendo</string>
+    <string name="post_other">Otro</string>
+    <string name="post_type">Tipo</string>
+    <string name="post_text_hint">Escribe tu publicación</string>
+    <string name="post_resolved">Resuelto</string>
+    <string name="mark_resolved">Marcar resuelto</string>
+    <string name="reopen">Reabrir</string>
+    <string name="contact">Escribir</string>
+
+    <!-- Formularios -->
+    <string name="new_announcement">Nuevo aviso</string>
+    <string name="new_poll">Nueva votación</string>
+    <string name="new_report">Nuevo reporte</string>
+    <string name="new_post">Publicar en el tablón</string>
+    <string name="publish">Publicar</string>
+    <string name="field_title">Título</string>
+    <string name="field_body">Mensaje</string>
+    <string name="field_question">Pregunta</string>
+    <string name="field_context_optional">Contexto (opcional)</string>
+    <string name="pin_notice">Fijar arriba</string>
+    <string name="announcement_hint">Los avisos oficiales no se mezclan con la charla del chat y todos los vecinos reciben una notificación.</string>
+    <string name="options">Opciones</string>
+    <string name="option_n">Opción %1$d</string>
+    <string name="add_option">Añadir opción</string>
+    <string name="poll_duration">Duración</string>
+    <string name="days_n">%1$d días</string>
+    <string name="quorum_title">Quórum mínimo</string>
+    <string name="quorum_hint">Porcentaje de unidades que deben votar para que el resultado sea válido. Revisa lo que dice el reglamento de tu copropiedad.</string>
+    <string name="add_photo">Añadir foto</string>
+    <string name="error_form_incomplete">Completa los campos obligatorios</string>
+    <string name="error_poll_limit">El plan gratuito permite 2 votaciones abiertas a la vez. Cierra una o pasa a Pro.</string>
+
+    <!-- Comunidad -->
+    <string name="community">Comunidad</string>
+    <string name="units_and_members">%1$d unidades · %2$d vecinos en la app</string>
+    <string name="invite_code_explain">Compártelo solo con residentes. Si se filtra, genera uno nuevo.</string>
+    <string name="invite_message">Únete a %1$s en Chat SimpApp con el código %2$s</string>
+    <string name="share">Compartir</string>
+    <string name="new_code">Nuevo código</string>
+    <string name="plan_free">Plan gratuito</string>
+    <string name="plan_free_body">Con anuncios. Mira lo que incluye Pro.</string>
+    <string name="plan_pro">Plan Pro activo</string>
+    <string name="plan_renews">Se renueva el %1$s</string>
+    <string name="my_communities">Mis comunidades</string>
+    <string name="add_another_community">Unirme o crear otra comunidad</string>
+    <string name="neighbors">Vecinos</string>
+    <string name="make_admin">Hacer administración</string>
+    <string name="remove_admin">Quitar de administración</string>
+    <string name="remove_from_community">Sacar de la comunidad</string>
+    <string name="leave_community">Salir de la comunidad</string>
+    <string name="leave_confirm">Dejarás de ver los avisos, votaciones y el chat de esta comunidad.</string>
+    <string name="leave_last_admin">Eres la única persona en administración. Nombra a alguien más antes de salir.</string>
+    <string name="leave">Salir</string>
+
+    <!-- Pro -->
+    <string name="pro_title">Comunidad Pro</string>
+    <string name="pro_subtitle">Un solo pago para todo %1$s: todos los vecinos lo disfrutan.</string>
+    <string name="pro_no_ads">Sin anuncios para nadie</string>
+    <string name="pro_no_ads_body">Ningún vecino de la comunidad verá publicidad.</string>
+    <string name="pro_ai">Resumen semanal con IA</string>
+    <string name="pro_ai_body">Acuerdos, compromisos y fechas del chat, sin leer cientos de mensajes.</string>
+    <string name="pro_pdf">Actas en PDF</string>
+    <string name="pro_pdf_body">Con participación, quórum y voto por unidad, listas para la asamblea.</string>
+    <string name="pro_polls">Votaciones ilimitadas</string>
+    <string name="pro_polls_body">El plan gratuito permite 2 abiertas a la vez.</string>
+    <string name="pro_seen">Confirmación de lectura de avisos</string>
+    <string name="pro_seen_body">Sabes cuántos vecinos vieron cada aviso oficial.</string>
+    <string name="pro_buy">Activar por %1$s %2$s</string>
+    <string name="per_month">al mes</string>
+    <string name="per_year">al año</string>
+    <string name="pro_active">Esta comunidad ya es Pro. ¡Gracias!</string>
+    <string name="pro_ask_admin">Solo la administración puede activar Pro para la comunidad. Compártele esta pantalla.</string>
+    <string name="pro_unavailable">La suscripción aún no está disponible. Inténtalo más tarde.</string>
+    <string name="pro_error">No se pudo completar el pago. No se te cobró nada.</string>
+    <string name="pro_footer">Se cobra en Google Play y se renueva automáticamente. Puedes cancelar cuando quieras desde Google Play.</string>
+
+    <string name="notification_channel_emergency">Emergencias</string>
+    <string name="notification_channel_emergency_desc">Alertas de emergencia de tu edificio</string>
+    <string name="notification_channel_notices">Avisos oficiales</string>
 </resources>

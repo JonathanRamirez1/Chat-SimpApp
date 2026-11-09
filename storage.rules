@@ -1,22 +1,31 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    function isImage() {
-      return request.resource.size < 8 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    function isImage(maxMb) {
+      return request.resource.size < maxMb * 1024 * 1024 && request.resource.contentType.matches('image/.*');
+    }
+    function memberOf(cid) {
+      return request.auth != null &&
+        firestore.exists(/databases/(default)/documents/communities/$(cid)/members/$(request.auth.uid));
+    }
+    function inChat(chatId) {
+      return request.auth != null &&
+        request.auth.uid in firestore.get(/databases/(default)/documents/chats/$(chatId)).data.members;
     }
 
     match /users/{uid}/{file=**} {
       allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == uid && isImage();
+      allow write: if request.auth != null && request.auth.uid == uid && isImage(2);
     }
 
     match /chats/{chatId}/{file=**} {
-      function isMember() {
-        return request.auth != null &&
-          request.auth.uid in firestore.get(/databases/(default)/documents/chats/$(chatId)).data.members;
-      }
-      allow read: if isMember();
-      allow write: if isMember() && isImage();
+      allow read: if inChat(chatId);
+      allow write: if inChat(chatId) && isImage(5);
+    }
+
+    match /communities/{cid}/{file=**} {
+      allow read: if memberOf(cid);
+      allow write: if memberOf(cid) && isImage(5);
     }
   }
 }

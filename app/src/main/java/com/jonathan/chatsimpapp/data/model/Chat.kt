@@ -26,12 +26,13 @@ data class Chat(
     var lastRead: Map<String, Timestamp> = emptyMap(),
 ) {
     @get:Exclude
-    val isGroup: Boolean get() = type == TYPE_GROUP
+    val isGroup: Boolean get() = type == TYPE_GROUP || type == TYPE_COMMUNITY
 
     fun otherMember(myUid: String): String? = members.firstOrNull { it != myUid }
 
     companion object {
         const val TYPE_DIRECT = "direct"
+        const val TYPE_COMMUNITY = "community"
         const val TYPE_GROUP = "group"
     }
 }
