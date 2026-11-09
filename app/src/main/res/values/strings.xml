@@ -1,110 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Chat SimpApp</string>
+    <string name="app_name" translatable="false">Chat SimpApp</string>
+    <string name="app_tagline">Simple conversations, in real time.</string>
 
-    <!-- Splash View -->
-    <string name="splash_by">by</string>
-    <string name="splash_name_creator">Jonathan Javier Ramirez</string>
+    <!-- Auth -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_title">Welcome back</string>
+    <string name="sign_in_with_google">Continue with Google</string>
+    <string name="or">or</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="create_account">Create account</string>
+    <string name="create_account_subtitle">It only takes a minute.</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="password_hint">At least 6 characters</string>
+    <string name="reset_password_title">Reset your password</string>
+    <string name="reset_password_subtitle">Enter the email you used to sign up and we\'ll send you a link to create a new password.</string>
+    <string name="send_link">Send link</string>
+    <string name="reset_password_sent">Check your inbox. We sent a link to %1$s.</string>
+    <string name="back_to_sign_in">Back to sign in</string>
+    <string name="back">Back</string>
 
-    <!-- Login View -->
-    <string name="login_username">Username</string>
-    <string name="login_email">Email</string>
-    <string name="login_password">Password</string>
-    <string name="login_confirm_password">Confirm Password</string>
-    <string name="login_sign_in">Sign In</string>
-    <string name="login_signUp">Sign Up</string>
-    <string name="login_reset_password">Reset Password</string>
-    <string name="login_signIn_google">Sign In with Google</string>
-    <string name="login_forgot_password">I have fotgotten my password</string>
-    <string name="login_create_account">Sign up here</string>
-    <string name="login_go_to_login">Go back to Login</string>
-    <string name="login_option">or</string>
+    <!-- Validation / errors -->
+    <string name="error_email_invalid">Enter a valid email</string>
+    <string name="error_password_short">Password must have at least 6 characters</string>
+    <string name="error_name_empty">Enter your name</string>
+    <string name="error_invalid_credentials">Wrong email or password</string>
+    <string name="error_email_in_use">There is already an account with this email</string>
+    <string name="error_weak_password">That password is too weak</string>
+    <string name="error_network">No connection. Check your internet and try again.</string>
+    <string name="error_too_many_requests">Too many attempts. Wait a moment and try again.</string>
+    <string name="error_google">Couldn\'t sign in with Google</string>
+    <string name="error_generic">Something went wrong. Try again.</string>
+    <string name="error_send_message">The message couldn\'t be sent</string>
+    <string name="error_upload">The image couldn\'t be uploaded</string>
 
-    <string name="login_enter_app">ENTER THE APP</string>
-    <string name="login_no_account">You do not have an account?</string>
+    <!-- Chats -->
+    <string name="chats">Chats</string>
+    <string name="search_chats">Search chats</string>
+    <string name="new_chat">New chat</string>
+    <string name="no_chats_title">No conversations yet</string>
+    <string name="no_chats_body">Find someone by name or email and say hi.</string>
+    <string name="start_chat">Start a chat</string>
+    <string name="no_results">No results</string>
+    <string name="you_prefix">You: %1$s</string>
+    <string name="photo">Photo</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="today">Today</string>
+    <string name="unknown_user">Unknown user</string>
+    <string name="profile">Profile</string>
+    <string name="unread_count">%1$d unread messages</string>
 
-    <!-- Register -->
-    <string name="register_send_email">An email has been sent to you. Confirm before logging in</string>
-    <string name="register_error_create">Unexpected error occurred. Please try again</string>
-    <string name="register_user_saved">User successfully saved</string>
-    <string name="register_user_saved_error">Unexpected Error</string>
-    <string name="register_form">To start fill out the form</string>
-    <string name="register_app">REGISTER IN THE APP</string>
-
-    <!-- Sign In and Sign Up -->
-    <string name="username_is_no_valid">Username is not valid</string>
-    <string name="email_is_no_valid">Email is not valid</string>
-    <string name="password_is_no_valid">Password should contain 1 lowercase, 1 uppercase,  1 special character and 8 characters length at least.</string>
-    <string name="confirm_password_is_no_valid">Confirm Password does not match with Password</string>
-
-    <string name="chat_edittext_message_hint">Type here a message…</string>
-
-    <!-- Bottom Navigation Menu -->
-    <string name="navigation_bottom_info">Info</string>
-    <string name="navigation_bottom_rates">Rates</string>
-    <string name="navigation_bottom_chat">Chat</string>
-
-    <!-- ProfileFragment -->
-    <string name="phone_number_profile">Phone Number</string>
-    <string name="registration_date">Registration Date</string>
-    <string name="username_profile">Username</string>
-    <string name="email_profile">Email</string>
-    <string name="info_no_name">Name is not available</string>
-    <string name="options_menu_log_out">Log out</string>
-
-    <string name="user_message">User Message</string>
-    <string name="username_rooms">Username</string>
-
-    <!-- AlertDialog-->
-    <string name="alert_dialog_title">Rate the App!</string>
-    <string name="alert_dialog_title_wait">Wait a moment, please…</string>
-    <string name="alert_dialog_edit_text_hint">Leave your feedback</string>
-    <string name="alert_dialog_ok">Rate</string>
-    <string name="alert_dialog_cancel">Cancel</string>
-
-    <!-- Facebook Sign In -->
-    <string name="facebook_app_id">1313125555774064</string>
-    <string name="fb_login_protocol_scheme">fb1313125555774064</string>
-
-    <!-- CompleteInfoFragment -->
-    <string name="search">Search…</string>
-    <string name="username">Username</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="complete">Complete</string>
-    <string name="choose">Choose an option</string>
-    <string name="gallery_image">Gallery image</string>
-    <string name="camera_photo">Take photo</string>
-    <string name="complete_info">COMPLETE YOUR INFORMATION</string>
-    <string name="phone_number_is_no_valid">Enter 10 digits without special character</string>
+    <!-- New chat / group -->
+    <string name="search_people">Search by name or email</string>
+    <string name="new_group">New group</string>
+    <string name="search_hint_title">Find people</string>
+    <string name="search_hint_body">Type at least 2 letters of a name, or a full email.</string>
+    <string name="add_members">Add members</string>
+    <string name="selected_count">%1$d selected</string>
+    <string name="next">Next</string>
+    <string name="group_name">Group name</string>
+    <string name="group_details">Group details</string>
+    <string name="create_group">Create group</string>
+    <string name="members_count">%1$d members</string>
+    <string name="add_group_photo">Add group photo</string>
+    <string name="remove">Remove</string>
 
     <!-- Chat -->
-    <string name="online">Online</string>
-    <string name="time_ago">A while ago</string>
-    <string name="offline">Offline</string>
-    <string name="offline_title">Connect to a network</string>
-    <string name="offline_message">To use LoginFuturo, activate cell phone data or connect to a wifi network.</string>
-    <string name="offline_button">OK</string>
-    <string name="writing">Writing…</string>
+    <string name="message_hint">Message</string>
+    <string name="send">Send</string>
+    <string name="attach_image">Attach image</string>
+    <string name="online">online</string>
+    <string name="typing">typing…</string>
+    <string name="typing_named">%1$s is typing…</string>
+    <string name="last_seen_today">last seen today at %1$s</string>
+    <string name="last_seen_yesterday">last seen yesterday at %1$s</string>
+    <string name="last_seen_date">last seen %1$s</string>
+    <string name="scroll_to_bottom">Go to latest messages</string>
+    <string name="chat_empty">Say hi 👋</string>
+    <string name="you">You</string>
+    <string name="status_sending">Sending</string>
+    <string name="status_sent">Sent</string>
+    <string name="status_read">Read</string>
+    <string name="group_members_summary">%1$s and %2$d more</string>
 
-    <!-- Notification -->
-    <string name="new_message">NEW MESSAGE</string>
-    <string name="your_message">Your Message…</string>
-    <string name="reply_message">Reply</string>
-    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <!-- Profile -->
+    <string name="about">About</string>
+    <string name="about_placeholder">Hey there! I\'m using Chat SimpApp</string>
+    <string name="save">Save</string>
+    <string name="saved">Profile updated</string>
+    <string name="change_photo">Change photo</string>
+    <string name="account">Account</string>
+    <string name="sign_out">Sign out</string>
+    <string name="version">Version %1$s</string>
 
-    <!-- Google Admob -->
-    <string name="test_application_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="test_banner">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="test_interstitial">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="test_interstitial_video">ca-app-pub-3940256099942544/8691691433</string>
-    <string name="test_native_advanced">ca-app-pub-3940256099942544/2247696110</string>
-    <string name="test_native_advanced_video">ca-app-pub-3940256099942544/1044960115</string>
-
-    <string name="application_id">ca-app-pub-2631068461383213~1013661868</string>
-    <string name="banner_register">ca-app-pub-2631068461383213/6230329527</string>
-    <string name="interstitial_rooms">ca-app-pub-2631068461383213/5267729509</string>
-    <string name="interstitial_rates">ca-app-pub-2631068461383213/4135267778</string>
-    <string name="native_advanced">ca-app-pub-2631068461383213/7627967834</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <!-- Notifications -->
+    <string name="notification_channel_messages">Messages</string>
+    <string name="notification_channel_messages_desc">New chat messages</string>
+    <string name="notification_photo">📷 Photo</string>
 </resources>

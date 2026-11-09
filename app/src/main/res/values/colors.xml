@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colortTextBlack">#222</color>
-
-    <color name="colorGooglePlus">#DD4B39</color>
-    <color name="colorGooglePlusDark">#B92D21</color>
-
-    <color name="primary">#00E5FF</color>
-    <color name="primary_light">#6EFFFF</color>
-    <color name="primary_dark">#00B2CC</color>
-    <color name="secondary">#00E575</color>
-    <color name="secondary_light">#66FFA5</color>
-    <color name="secondary_dark">#00B147</color>
-
-    <color name="text_color_black">#000000</color>
-    <color name="text_color_white">#FFFFFF</color>
+    <color name="brand">#4F46E5</color>
+    <color name="brand_dark">#3730A3</color>
+    <color name="window_background">#FBFAFF</color>
 </resources>

@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isMe(uid) { return signedIn() && request.auth.uid == uid; }
+
+    // Perfiles públicos para usuarios con sesión; cada quien edita solo el suyo.
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create, update: if isMe(uid);
+      allow delete: if false;
+
+      // Tokens de notificación: privados.
+      match /private/{doc} {
+        allow read, write: if isMe(uid);
+      }
+    }
+
+    // Colección de la versión anterior: solo lectura propia, para migrar nombre y foto.
+    match /UsersRegister/{uid} {
+      allow read: if isMe(uid);
+    }
+
+    match /chats/{chatId} {
+      function isMember() { return request.auth.uid in resource.data.members; }
+
+      allow get: if signedIn() && (resource == null || isMember());
+      allow list: if signedIn() && request.auth.uid in resource.data.members;
+      allow create: if signedIn()
+        && request.auth.uid in request.resource.data.members
+        && request.resource.data.members.size() >= 2
+        && request.resource.data.type in ['direct', 'group'];
+      // Los miembros pueden actualizar el resumen, pero no cambiar quién pertenece al chat.
+      allow update: if signedIn() && isMember()
+        && request.resource.data.members == resource.data.members
+        && request.resource.data.type == resource.data.type;
+      allow delete: if false;
+
+      match /messages/{messageId} {
+        function chatMembers() {
+          return get(/databases/$(database)/documents/chats/$(chatId)).data.members;
+        }
+        allow read: if signedIn() && request.auth.uid in chatMembers();
+        allow create: if signedIn()
+          && request.auth.uid in chatMembers()
+          && request.resource.data.senderId == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() <= 4000;
+        allow update, delete: if false;
+      }
+    }
+  }
+}

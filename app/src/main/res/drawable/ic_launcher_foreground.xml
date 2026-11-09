@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- Burbuja trasera -->
+    <path android:fillColor="#A5B4FC"
+        android:pathData="M48,34h20c6.6,0 12,5.4 12,12v10c0,6.6 -5.4,12 -12,12h-2v7l-9,-7h-9c-6.6,0 -12,-5.4 -12,-12v-10c0,-6.6 5.4,-12 12,-12z" />
+    <!-- Burbuja delantera -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M40,40h20c6.6,0 12,5.4 12,12v10c0,6.6 -5.4,12 -12,12h-9l-9,7v-7h-2c-6.6,0 -12,-5.4 -12,-12v-10c0,-6.6 5.4,-12 12,-12z" />
+    <path android:fillColor="#4F46E5"
+        android:pathData="M41,57m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0M50,57m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0M59,57m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+</vector>
