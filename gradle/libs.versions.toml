@@ -15,6 +15,7 @@ firebaseBom = "34.19.0"
 playServicesAds = "25.5.0"
 ump = "3.2.0"
 billing = "8.3.0"
+playAppUpdate = "2.1.0"
 credentials = "1.5.0"
 googleId = "1.1.1"
 coil = "2.7.0"
@@ -60,6 +61,8 @@ firebase-appcheck-playintegrity = { group = "com.google.firebase", name = "fireb
 firebase-appcheck-debug = { group = "com.google.firebase", name = "firebase-appcheck-debug" }
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
 ump = { group = "com.google.android.ump", name = "user-messaging-platform", version.ref = "ump" }
+play-app-update = { group = "com.google.android.play", name = "app-update", version.ref = "playAppUpdate" }
+play-app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "playAppUpdate" }
 billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
 
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }

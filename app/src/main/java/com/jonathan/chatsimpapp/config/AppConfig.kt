@@ -20,6 +20,7 @@ class AppConfig @Inject constructor() {
                 KEY_AI_MODEL to "gemini-3.5-flash-lite",
                 KEY_FREE_MAX_OPEN_POLLS to 2L,
                 KEY_ADS_ENABLED to true,
+                KEY_MIN_VERSION_CODE to 0L,
             ),
         )
         remote.fetchAndActivate()
@@ -29,9 +30,18 @@ class AppConfig @Inject constructor() {
     val freeMaxOpenPolls: Int get() = remote.getLong(KEY_FREE_MAX_OPEN_POLLS).toInt()
     val adsEnabled: Boolean get() = remote.getBoolean(KEY_ADS_ENABLED)
 
+    /** Versión mínima permitida (respaldo de la actualización obligatoria). 0 = sin mínimo. */
+    val minVersionCode: Long get() = remote.getLong(KEY_MIN_VERSION_CODE)
+
+    /** Se llama cuando Remote Config trae valores nuevos. */
+    fun onActivated(block: () -> Unit) {
+        remote.fetchAndActivate().addOnCompleteListener { block() }
+    }
+
     private companion object {
         const val KEY_AI_MODEL = "ai_model"
         const val KEY_FREE_MAX_OPEN_POLLS = "free_max_open_polls"
         const val KEY_ADS_ENABLED = "ads_enabled"
+        const val KEY_MIN_VERSION_CODE = "min_version_code"
     }
 }

@@ -315,4 +315,9 @@
     <string name="notification_channel_emergency">Emergencias</string>
     <string name="notification_channel_emergency_desc">Alertas de emergencia de tu edificio</string>
     <string name="notification_channel_notices">Avisos oficiales</string>
+
+    <!-- Actualización obligatoria -->
+    <string name="update_required_title">Debes actualizar para continuar</string>
+    <string name="update_required_body">Hay una versión nueva de Chat SimpApp con mejoras importantes. Actualiza para seguir usando la app.</string>
+    <string name="update_now">Actualizar ahora</string>
 </resources>

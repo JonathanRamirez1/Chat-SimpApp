@@ -107,6 +107,8 @@ dependencies {
     implementation(libs.play.services.ads)
     implementation(libs.ump)
     implementation(libs.billing.ktx)
+    implementation(libs.play.app.update)
+    implementation(libs.play.app.update.ktx)
 
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services)

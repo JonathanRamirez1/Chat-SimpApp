@@ -9,6 +9,11 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jonathan.chatsimpapp.ads.Ads
 import com.jonathan.chatsimpapp.ads.AdsController
 import com.jonathan.chatsimpapp.billing.BillingManager
+import com.jonathan.chatsimpapp.config.AppConfig
+import com.jonathan.chatsimpapp.update.ForcedUpdateManager
+import com.jonathan.chatsimpapp.update.UpdateRequiredScreen
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jonathan.chatsimpapp.data.repository.CommunitySession
 import com.jonathan.chatsimpapp.data.repository.CommunityState
 import com.jonathan.chatsimpapp.notifications.NotificationHelper
@@ -25,6 +30,9 @@ class MainActivity : ComponentActivity() {
     @Inject lateinit var session: CommunitySession
     @Inject lateinit var billing: BillingManager
     @Inject lateinit var ads: AdsController
+    @Inject lateinit var config: AppConfig
+
+    private lateinit var forcedUpdate: ForcedUpdateManager
 
     private val openChatRequests = Channel<String>(Channel.CONFLATED)
 
@@ -34,12 +42,21 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
+        // Actualización obligatoria (regla de RJ2): debe registrarse antes de que la Activity arranque.
+        forcedUpdate = ForcedUpdateManager(this, config)
+        forcedUpdate.onCreate()
+
         Ads.init(this)
         billing.restore()
         if (savedInstanceState == null) handleIntent(intent)
 
         setContent {
             ChatSimpAppTheme {
+                val updateBlocked by forcedUpdate.blocked.collectAsStateWithLifecycle()
+                if (updateBlocked) {
+                    UpdateRequiredScreen(onUpdate = forcedUpdate::retry)
+                    return@ChatSimpAppTheme
+                }
                 AppNavHost(
                     session = session.state,
                     openChatRequests = openChatRequests.receiveAsFlow(),
@@ -48,6 +65,11 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        forcedUpdate.onResume()
     }
 
     override fun onNewIntent(intent: Intent) {

@@ -133,6 +133,12 @@ admobRewardedId=ca-app-pub-XXXXXXXX/4444444444
 Sin esto se usan los ids de prueba de Google. El consentimiento de anuncios (UMP) ya está integrado; configura
 el mensaje en AdMob → Privacidad y mensajes.
 
+## Actualización obligatoria
+
+Cuando se publica una versión nueva en Google Play, la app obliga a actualizar al abrirse (Play In-App Updates,
+modo IMMEDIATE) y no deja usarla con la versión vieja. Como respaldo, el parámetro `min_version_code` de Remote
+Config bloquea versiones antiguas. Es una regla del proyecto: ver [CLAUDE.md](CLAUDE.md).
+
 ## Seguridad
 
 Las reglas de [`firestore.rules`](firestore.rules) impiden, entre otras cosas, que alguien: lea una comunidad de la
