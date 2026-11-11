@@ -4,25 +4,23 @@
  * - Notificaciones push: mensajes de chats privados/grupos, avisos oficiales, emergencias,
  *   votaciones nuevas y cambios de estado de reportes. El chat general del edificio NO envía
  *   push a propósito: es justamente el ruido que los vecinos quieren evitar.
- * - Pagos: valida suscripciones de Google Play y activa el plan Pro de la comunidad.
+ * - Alertas del barrio: avisa a los edificios cercanos (solo alertas de seguridad).
+ * - Pagos: sincroniza el plan Pro de cada comunidad desde RevenueCat.
  *
  * Se usa FCM HTTP v1 a través del Admin SDK (la API heredada con "server key" fue apagada en 2024).
  */
 const { onDocumentCreated, onDocumentUpdated } = require("firebase-functions/v2/firestore");
-const { onCall, HttpsError } = require("firebase-functions/v2/https");
-const { onMessagePublished } = require("firebase-functions/v2/pubsub");
+const { onCall, onRequest, HttpsError } = require("firebase-functions/v2/https");
+const { defineSecret } = require("firebase-functions/params");
 const { logger } = require("firebase-functions");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore, FieldValue, Timestamp } = require("firebase-admin/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
-const { google } = require("googleapis");
+const { geohashQueryBounds, distanceBetween } = require("geofire-common");
 
 initializeApp();
 const db = getFirestore();
 
-const PACKAGE_NAME = "com.jonathan.chatsimpapp";
-const PRO_PRODUCT_ID = "comunidad_pro";
-const RTDN_TOPIC = "play-billing";
 
 const INVALID_TOKEN_ERRORS = new Set([
   "messaging/registration-token-not-registered",
@@ -181,98 +179,130 @@ exports.onReportUpdated = onDocumentUpdated("communities/{cid}/reports/{rid}", a
 });
 
 // ---------------------------------------------------------------------------
-// Pagos: suscripción "Comunidad Pro"
+// Alertas del barrio
 // ---------------------------------------------------------------------------
 
-const publisher = google.androidpublisher({
-  version: "v3",
-  auth: new google.auth.GoogleAuth({ scopes: ["https://www.googleapis.com/auth/androidpublisher"] }),
-});
+const SECTOR_RADIUS_M = 2000;
+const ALERT_LABELS = {
+  theft: "Robo o peligro",
+  streetlight: "Luz apagada",
+  road: "Daño en la calle",
+  water: "Fuga de agua",
+  trash: "Basura",
+  noise: "Ruido",
+};
+// Solo las alertas de seguridad suenan; las demás se ven en el mapa sin molestar.
+const PUSH_ALERT_TYPES = new Set(["theft"]);
 
-/** Rango de unidades que cubre cada plan base (`u80-mensual` cubre hasta 80 unidades). */
-const TIERS = { u30: 30, u80: 80, u200: 200, u500: 500, u5000: 5000 };
-function maxUnitsFor(basePlanId) {
-  const prefix = (basePlanId || "").split("-")[0];
-  return TIERS[prefix] || 0;
-}
-
-const ACTIVE_STATES = new Set(["SUBSCRIPTION_STATE_ACTIVE", "SUBSCRIPTION_STATE_IN_GRACE_PERIOD"]);
-
-/** Consulta la suscripción en Google Play y actualiza el plan de la comunidad que la pagó. */
-async function syncSubscription(purchaseToken, expectedCommunityId, expectedUid) {
-  const { data: sub } = await publisher.purchases.subscriptionsv2.get({ packageName: PACKAGE_NAME, token: purchaseToken });
-
-  const item = (sub.lineItems || []).find((li) => li.productId === PRO_PRODUCT_ID);
-  if (!item) throw new HttpsError("invalid-argument", "La compra no es del plan Pro.");
-
-  const ids = sub.externalAccountIdentifiers || {};
-  const communityId = ids.obfuscatedExternalProfileId;
-  if (!communityId) throw new HttpsError("failed-precondition", "La compra no está asociada a una comunidad.");
-  if (expectedCommunityId && communityId !== expectedCommunityId) {
-    throw new HttpsError("permission-denied", "La compra es de otra comunidad.");
-  }
-  if (expectedUid && ids.obfuscatedExternalAccountId !== expectedUid) {
-    throw new HttpsError("permission-denied", "La compra la hizo otra persona.");
-  }
-
-  const maxUnits = maxUnitsFor(item.offerDetails && item.offerDetails.basePlanId);
-  if (expectedCommunityId) {
-    const community = (await db.doc(`communities/${communityId}`).get()).data() || {};
-    if (maxUnits && (community.unitsCount || 0) > maxUnits) {
-      throw new HttpsError("failed-precondition", `El plan cubre hasta ${maxUnits} unidades y el edificio tiene ${community.unitsCount}.`);
+/** Comunidades cuyo edificio está a menos de `radius` metros del punto. */
+async function communitiesNear(lat, lng, radius) {
+  const bounds = geohashQueryBounds([lat, lng], radius);
+  const snaps = await Promise.all(
+    bounds.map(([start, end]) => db.collection("communities").orderBy("geohash").startAt(start).endAt(end).get()),
+  );
+  const found = new Map();
+  for (const snap of snaps) {
+    for (const doc of snap.docs) {
+      const c = doc.data();
+      if (typeof c.lat !== "number" || typeof c.lng !== "number") continue;
+      const meters = distanceBetween([lat, lng], [c.lat, c.lng]) * 1000;
+      if (meters <= radius) found.set(doc.id, { id: doc.id, name: c.name || "", meters });
     }
   }
-
-  const active = ACTIVE_STATES.has(sub.subscriptionState);
-  const expiry = item.expiryTime ? Timestamp.fromDate(new Date(item.expiryTime)) : null;
-  await db.doc(`communities/${communityId}`).update({
-    plan: active ? "pro" : "free",
-    planExpiresAt: expiry,
-    planMaxUnits: maxUnits,
-    planPurchaseToken: purchaseToken,
-    planUpdatedAt: FieldValue.serverTimestamp(),
-  });
-
-  // Google cancela y reembolsa las compras que no se confirman en 3 días.
-  if (active && sub.acknowledgementState === "ACKNOWLEDGEMENT_STATE_PENDING") {
-    await publisher.purchases.subscriptions.acknowledge({
-      packageName: PACKAGE_NAME,
-      subscriptionId: PRO_PRODUCT_ID,
-      token: purchaseToken,
-      requestBody: {},
-    });
-  }
-  logger.info(`comunidad ${communityId}: ${sub.subscriptionState}, vence ${item.expiryTime}`);
-  return { active, communityId, expiresAt: item.expiryTime || null };
+  return [...found.values()];
 }
 
-/** La app llama a esto después de una compra (o al abrirse, para reflejar renovaciones). */
-exports.verifyProSubscription = onCall(async (request) => {
+exports.onAlertCreated = onDocumentCreated("alerts/{alertId}", async (event) => {
+  const alert = event.data && event.data.data();
+  if (!alert || !PUSH_ALERT_TYPES.has(alert.type)) return;
+  const { alertId } = event.params;
+
+  const nearby = await communitiesNear(alert.lat, alert.lng, SECTOR_RADIUS_M);
+  let sent = 0;
+  for (const c of nearby) {
+    const recipients = (await memberUids(c.id)).filter((uid) => uid !== alert.createdBy);
+    const blocks = Math.max(1, Math.round(c.meters / 100));
+    sent += await sendToUsers(recipients, {
+      kind: "alert",
+      key: `al-${alertId}`,
+      communityId: c.id,
+      title: `🛡️ ${ALERT_LABELS[alert.type] || "Alerta"} cerca de ${c.name}`,
+      body: [`A ${blocks} ${blocks === 1 ? "cuadra" : "cuadras"}`, alert.description].filter(Boolean).join(" · "),
+    });
+  }
+  logger.info(`alerta ${alertId}: ${nearby.length} comunidades, ${sent} notificaciones`);
+});
+
+// ---------------------------------------------------------------------------
+// Pagos: suscripción "Comunidad Pro" con RevenueCat
+// ---------------------------------------------------------------------------
+//
+// El cliente de RevenueCat es la comunidad: App User ID = "community_<id>".
+// Entitlement "pro". Productos de Play "comunidad_pro:<rango>-mensual|anual" (u30, u80, u200, u500, u5000).
+// Las compras de prueba (sandbox) se tratan igual que las reales: nunca se bloquean.
+
+const REVENUECAT_SECRET_KEY = defineSecret("REVENUECAT_SECRET_KEY");
+const REVENUECAT_WEBHOOK_AUTH = defineSecret("REVENUECAT_WEBHOOK_AUTH");
+const ENTITLEMENT = "pro";
+const TIERS = { u30: 30, u80: 80, u200: 200, u500: 500, u5000: 5000 };
+
+/** "comunidad_pro:u80-mensual" -> 80 unidades. */
+function maxUnitsFor(productId) {
+  const basePlan = (productId || "").split(":")[1] || productId || "";
+  return TIERS[basePlan.split("-")[0]] || 0;
+}
+
+/** Lee el estado real en RevenueCat y lo copia a Firestore (fuente de verdad para las reglas). */
+async function syncCommunity(communityId) {
+  const appUserId = `community_${communityId}`;
+  const res = await fetch(`https://api.revenuecat.com/v1/subscribers/${encodeURIComponent(appUserId)}`, {
+    headers: { Authorization: `Bearer ${REVENUECAT_SECRET_KEY.value()}` },
+  });
+  if (!res.ok) throw new Error(`RevenueCat ${res.status}`);
+  const { subscriber } = await res.json();
+  const ent = subscriber && subscriber.entitlements && subscriber.entitlements[ENTITLEMENT];
+  const expires = ent && ent.expires_date ? new Date(ent.expires_date) : null;
+  const active = !!expires && expires.getTime() > Date.now();
+
+  await db.doc(`communities/${communityId}`).update({
+    plan: active ? "pro" : "free",
+    planExpiresAt: expires ? Timestamp.fromDate(expires) : null,
+    planMaxUnits: ent ? maxUnitsFor(ent.product_identifier) : 0,
+    planUpdatedAt: FieldValue.serverTimestamp(),
+  });
+  logger.info(`comunidad ${communityId}: pro=${active} hasta ${expires} (${ent && ent.product_identifier})`);
+  return { active, expiresAt: expires ? expires.toISOString() : null };
+}
+
+/** La app lo llama después de comprar o al abrir la pantalla de Pro. */
+exports.syncProPlan = onCall({ secrets: [REVENUECAT_SECRET_KEY] }, async (request) => {
   const uid = request.auth && request.auth.uid;
   if (!uid) throw new HttpsError("unauthenticated", "Inicia sesión.");
-  const { communityId, purchaseToken } = request.data || {};
-  if (typeof communityId !== "string" || typeof purchaseToken !== "string") {
-    throw new HttpsError("invalid-argument", "Faltan datos.");
-  }
+  const { communityId } = request.data || {};
+  if (typeof communityId !== "string") throw new HttpsError("invalid-argument", "Falta la comunidad.");
   const community = (await db.doc(`communities/${communityId}`).get()).data();
   if (!community) throw new HttpsError("not-found", "La comunidad no existe.");
-  if (!(community.admins || []).includes(uid)) {
-    throw new HttpsError("permission-denied", "Solo la administración puede activar Pro.");
-  }
-  return syncSubscription(purchaseToken, communityId, uid);
+  if (!(community.admins || []).includes(uid)) throw new HttpsError("permission-denied", "Solo la administración.");
+  return syncCommunity(communityId);
 });
 
 /**
- * Notificaciones en tiempo real de Google Play (renovación, cancelación, reembolso...).
- * Configura en Play Console → Monetización → Configuración el tema Pub/Sub "play-billing".
+ * Webhook de RevenueCat (renovaciones, cancelaciones, reembolsos, compras de prueba).
+ * En RevenueCat → Integrations → Webhooks: URL de esta función y el mismo valor en "Authorization header".
  */
-exports.playBillingNotifications = onMessagePublished(RTDN_TOPIC, async (event) => {
-  const payload = event.data.message.json || {};
-  const token = payload.subscriptionNotification && payload.subscriptionNotification.purchaseToken;
-  if (!token) return;
+exports.revenueCatWebhook = onRequest({ secrets: [REVENUECAT_SECRET_KEY, REVENUECAT_WEBHOOK_AUTH] }, async (req, res) => {
+  if (req.get("Authorization") !== REVENUECAT_WEBHOOK_AUTH.value()) {
+    res.status(401).send("unauthorized");
+    return;
+  }
+  const event = (req.body && req.body.event) || {};
+  const ids = [event.app_user_id, event.original_app_user_id, ...(event.aliases || []), ...(event.transferred_to || [])]
+    .filter((id) => typeof id === "string" && id.startsWith("community_"));
   try {
-    await syncSubscription(token);
+    await Promise.all([...new Set(ids)].map((id) => syncCommunity(id.slice("community_".length))));
+    res.status(200).send("ok");
   } catch (e) {
-    logger.error("No se pudo sincronizar la suscripción", e);
+    logger.error("Webhook de RevenueCat falló", e);
+    res.status(500).send("error"); // RevenueCat reintenta
   }
 });

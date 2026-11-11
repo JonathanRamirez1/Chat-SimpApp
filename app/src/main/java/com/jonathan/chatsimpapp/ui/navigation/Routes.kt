@@ -17,3 +17,5 @@ import kotlinx.serialization.Serializable
 @Serializable data class PollRoute(val pollId: String)
 @Serializable data class ReportRoute(val reportId: String)
 @Serializable data class FormRoute(val kind: String)
+@Serializable data object SectorRoute
+@Serializable data object NewAlertRoute

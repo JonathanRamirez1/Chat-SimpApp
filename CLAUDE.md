@@ -18,7 +18,22 @@ Ver README.md para arquitectura, monetización y puesta en marcha.
 - Pruebas: `ForcedUpdateTest` (con `FakeAppUpdateManager`). En dispositivo, In-App Updates solo funciona con la
   app instalada desde Google Play (pista de prueba interna o Internal App Sharing).
 
+## Regla: compras de prueba del dueño
+
+Jonathan (ramirezjj201@gmail.com) SIEMPRE debe poder hacer compras de prueba reales de Google Play (sin cobro)
+en prueba interna, cerrada y producción. Nunca bloquear, ignorar ni revertir compras sandbox: RevenueCat debe
+otorgar el entitlement `pro` y la Cloud Function `syncProPlan`/`revenueCatWebhook` debe activarlo igual que una
+compra real. En Play Console la lista de testers con licencia ("Prueba Paxora Plus") debe seguir marcada.
+
+## Cuentas (RJ2)
+
+- Firebase y RevenueCat: rj2techsolutions@gmail.com. Play Console y AdMob: cuenta personal.
+- Paquete final: `com.rj2techsolutions.chatsimpapp` (pendiente: hoy compila con `com.jonathan.chatsimpapp`
+  hasta tener el `google-services.json` del proyecto nuevo).
+- Correo público de la app: chatsimpapp@rj2techsolutions.com. Nunca el correo personal en nada público.
+
 ## Notas de compilación
 
 - Pruebas: `./gradlew testDebugUnitTest` · reglas de Firestore: `cd rules-tests && npm test`.
+- Claves locales en `~/.gradle/gradle.properties` (nunca en el repo): `revenueCatApiKey`, `mapsApiKey`, ids de AdMob.
 - Subir `versionCode` en `app/build.gradle.kts` en cada publicación.

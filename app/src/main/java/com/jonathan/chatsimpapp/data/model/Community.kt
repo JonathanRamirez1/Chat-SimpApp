@@ -23,7 +23,14 @@ data class Community(
     /** Unidades que cubre la suscripción pagada (según el rango comprado). */
     var planMaxUnits: Long = 0,
     var createdAt: Timestamp? = null,
+    /** Ubicación del edificio (para el mapa del barrio). La marca la administración. */
+    var lat: Double? = null,
+    var lng: Double? = null,
+    var geohash: String? = null,
 ) {
+    @get:Exclude
+    val hasLocation: Boolean get() = lat != null && lng != null
+
     @get:Exclude
     val isPro: Boolean
         get() = plan == PLAN_PRO &&

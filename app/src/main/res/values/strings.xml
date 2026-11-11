@@ -124,7 +124,7 @@
     <string name="error_units_count">Entre 2 y 5000 unidades</string>
 
     <!-- Pestañas -->
-    <string name="tab_home">Inicio</string>
+    <string name="tab_home">Comunidad</string>
     <string name="tab_polls">Votaciones</string>
     <string name="tab_reports">Reportes</string>
     <string name="tab_board">Tablón</string>
@@ -320,4 +320,67 @@
     <string name="update_required_title">Debes actualizar para continuar</string>
     <string name="update_required_body">Hay una versión nueva de Chat SimpApp con mejoras importantes. Actualiza para seguir usando la app.</string>
     <string name="update_now">Actualizar ahora</string>
+
+    <!-- Alertas del barrio (mapa) -->
+    <string name="sector_title">Alertas del barrio</string>
+    <string name="sector_subtitle">Alrededor de %1$s</string>
+    <string name="sector_link">Ver alertas del barrio en el mapa</string>
+    <string name="sector_card_body">Lo que pasa en la calle, en un mapa</string>
+    <string name="sector_card_none">Todo tranquilo cerca de tu edificio</string>
+    <plurals name="sector_card_count">
+        <item quantity="one">%1$d alerta activa cerca de tu edificio</item>
+        <item quantity="other">%1$d alertas activas cerca de tu edificio</item>
+    </plurals>
+    <string name="alert_group_security">Seguridad</string>
+    <string name="alert_group_damage">Daños</string>
+    <string name="alert_group_other">Otros</string>
+    <string name="alert_theft">Robo o peligro</string>
+    <string name="alert_streetlight">Luz apagada</string>
+    <string name="alert_road">Daño en la calle</string>
+    <string name="alert_water">Fuga de agua</string>
+    <string name="alert_trash">Basura</string>
+    <string name="alert_noise">Ruido</string>
+    <string name="most_recent">Lo más reciente</string>
+    <string name="sector_empty">No hay alertas cerca. Todo tranquilo.</string>
+    <string name="back_home">Volver a mi casa</string>
+    <string name="report_something">Reportar algo</string>
+    <string name="set_building_here">El edificio está aquí (usar mi ubicación)</string>
+    <string name="use_my_location">Usar mi ubicación</string>
+    <string name="sector_no_location_title">Falta ubicar el barrio</string>
+    <string name="sector_no_location_body">Activa tu ubicación para ver lo que pasa cerca, o pídele a la administración que marque dónde está el edificio.</string>
+    <string name="sector_no_location_admin">Estando en el edificio, toca el botón para marcar su ubicación. Así todos los vecinos verán su barrio en el mapa.</string>
+    <string name="reported_by_neighbor_of">Lo reportó un vecino de %1$s</string>
+    <string name="i_saw_it_too">Yo también lo vi</string>
+    <string name="you_confirmed">Lo confirmaste (toca para quitar)</string>
+    <string name="not_there_anymore">Ya no está</string>
+    <string name="delete_my_alert">Borrar mi alerta</string>
+    <plurals name="confirmed_by">
+        <item quantity="one">%1$d vecino lo confirmó</item>
+        <item quantity="other">%1$d vecinos lo confirmaron</item>
+    </plurals>
+    <string name="very_close">Muy cerca</string>
+    <plurals name="blocks_away">
+        <item quantity="one">A %1$d cuadra</item>
+        <item quantity="other">A %1$d cuadras</item>
+    </plurals>
+    <string name="km_away">A %1$s km</string>
+    <string name="just_now">hace un momento</string>
+    <plurals name="minutes_ago">
+        <item quantity="one">hace %1$d minuto</item>
+        <item quantity="other">hace %1$d minutos</item>
+    </plurals>
+    <plurals name="hours_ago">
+        <item quantity="one">hace %1$d hora</item>
+        <item quantity="other">hace %1$d horas</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">hace %1$d día</item>
+        <item quantity="other">hace %1$d días</item>
+    </plurals>
+    <string name="what_happened">¿Qué pasó?</string>
+    <string name="what_happened_hint">Toca una opción. Después solo confirmas el lugar.</string>
+    <string name="was_it_here">¿Fue aquí?</string>
+    <string name="was_it_here_hint">Mueve el mapa hasta que el pin quede donde pasó.</string>
+    <string name="yes_here_publish">Sí, aquí. Publicar</string>
+    <string name="finding_location">Buscando tu ubicación…</string>
 </resources>

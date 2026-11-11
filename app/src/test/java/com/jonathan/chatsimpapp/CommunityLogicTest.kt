@@ -8,6 +8,10 @@ import com.jonathan.chatsimpapp.data.model.Message
 import com.jonathan.chatsimpapp.data.model.Vote
 import com.google.firebase.Timestamp
 import com.jonathan.chatsimpapp.util.InviteCodes
+import com.jonathan.chatsimpapp.util.Distance
+import com.jonathan.chatsimpapp.util.LatLngPoint
+import com.jonathan.chatsimpapp.data.model.Alert
+import com.jonathan.chatsimpapp.data.model.AlertType
 import com.jonathan.chatsimpapp.util.PollResult
 import com.jonathan.chatsimpapp.util.Weeks
 import org.junit.Assert.assertEquals
@@ -94,6 +98,29 @@ class CommunityLogicTest {
         )
         assertTrue(pro.isPro)
         assertFalse(pro.copy(unitsCount = 120).isPro)
+    }
+
+    @Test
+    fun distancesAreShownInBlocks() {
+        val a = LatLngPoint(4.6000, -74.0800)
+        val b = LatLngPoint(4.6018, -74.0800) // ~200 m al norte
+        val m = Distance.meters(a, b)
+        assertTrue(m in 190.0..210.0)
+        assertEquals(2, Distance.blocks(m))
+        assertEquals(1, Distance.blocks(20.0))
+    }
+
+    @Test
+    fun securityAlertsExpireFastAndFalseOnesHide() {
+        assertEquals(12, AlertType.THEFT.hoursVisible)
+        assertTrue(AlertType.STREETLIGHT.hoursVisible > 24 * 7)
+        val now = System.currentTimeMillis()
+        val alert = Alert(type = "theft", expiresAt = Timestamp(Date(now + 60_000)))
+        assertTrue(alert.isActive(now))
+        assertFalse(alert.copy(expiresAt = Timestamp(Date(now - 1))).isActive(now))
+        assertFalse(alert.copy(goneBy = listOf("a", "b")).isActive(now))
+        assertTrue(alert.copy(goneBy = listOf("a", "b"), confirmedBy = listOf("c", "d", "e")).isActive(now))
+        assertEquals(AlertType.ROAD, AlertType.of("desconocido"))
     }
 
     @Test

@@ -41,7 +41,7 @@ class ChatMessagingService : FirebaseMessagingService() {
         if (auth.currentUserId == null) return
         // Avisos de la comunidad (los arma la Cloud Function con título y texto ya listos).
         when (data["kind"]) {
-            "emergency", "notice", "poll", "report" -> {
+            "emergency", "notice", "poll", "report", "alert" -> {
                 val channel = when (data["kind"]) {
                     "emergency" -> NotificationHelper.CHANNEL_EMERGENCY
                     else -> NotificationHelper.CHANNEL_NOTICES

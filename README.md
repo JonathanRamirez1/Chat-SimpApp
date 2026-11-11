@@ -21,7 +21,21 @@ lo que los grupos de WhatsApp del edificio hacen mal.
 | Tu número queda expuesto a 200 personas | Te identificas por **tu unidad**; chats privados sin compartir teléfono |
 | Nadie lee 300 mensajes | **Resumen semanal con IA**: acuerdos, compromisos y fechas |
 | Una fuga de gas se avisa igual que un meme | **Alerta de emergencia** con sonido de alarma para todo el edificio |
+| Lo que pasa en la calle no le llega a los edificios vecinos | **Alertas del barrio**: mapa simple con lo que reportan los vecinos de los edificios cercanos |
 | Préstamos y recomendaciones se pierden | **Tablón**: presto, busco, recomiendo, perdido/encontrado, vendo |
+
+El **chat es lo principal**: es la primera pestaña y la que se abre. Las alertas del barrio no tienen pestaña
+propia: se abren desde una tarjeta en "Comunidad" y desde "Reportes".
+
+### Alertas del barrio (mapa)
+- Google Maps para Android (gratis y sin límite de uso) con un estilo simple: sin negocios ni transporte.
+- Pensado para personas mayores: pines grandes, 3 colores siempre con ícono y palabra, distancias en cuadras,
+  tiempos en palabras ("hace 20 minutos"), botón "Volver a mi casa" y la misma información en lista.
+- Reportar en 2 pasos: "¿Qué pasó?" (6 botones grandes) y "¿Fue aquí?" (se mueve el mapa, el pin queda fijo).
+- Se reportan hechos, no personas: no existe "persona sospechosa". Ubicación redondeada a ~11 m.
+- "Yo también lo vi" confirma; si varios dicen "Ya no está", se oculta. Robos: 12 h; daños: hasta 30 días.
+- Radio de 2 km alrededor del edificio; no se puede alejar más de ~5 km. Búsqueda por cercanía con geohash.
+- Solo las alertas de seguridad envían notificación; las demás se ven en el mapa sin sonar.
 
 Además conserva el chat general del edificio, chats privados y grupos (texto e imágenes, en línea, escribiendo,
 leído). El chat general **no envía notificaciones push** a propósito: es el ruido que los vecinos quieren evitar.
@@ -109,18 +123,31 @@ comunes (salón, BBQ) como función Pro, y un panel web para la administración.
    cd functions && npm install && cd .. && firebase deploy --only functions
    ```
 
-### 2. Google Play (para cobrar)
-1. Crea la app en Play Console y una **suscripción** con id `comunidad_pro` y un plan base por rango y periodo:
-   `u30-mensual`, `u30-anual`, `u80-mensual`, `u80-anual`… (ver la tabla de precios). Play Console permite fijar el
-   precio de cada plan por país.
-2. En *Usuarios y permisos*, invita a la cuenta de servicio de las Cloud Functions
-   (`chat-simpapp@appspot.gserviceaccount.com` o la que aparezca en Cloud Functions) con permiso para ver datos
-   financieros y gestionar pedidos y suscripciones.
-3. En *Monetización → Configuración*, activa las **notificaciones en tiempo real** con el tema Pub/Sub
-   `projects/chat-simpapp/topics/play-billing` (la función `playBillingNotifications` lo escucha y procesa
-   renovaciones, cancelaciones y reembolsos).
+### 2. Google Play + RevenueCat (para cobrar)
+1. **Play Console**: suscripción `comunidad_pro` con un plan base por rango y periodo: `u30-mensual`,
+   `u30-anual`, `u80-mensual`, `u80-anual`, … `u5000-anual` (precios con coma decimal; se pueden fijar por país).
+2. **RevenueCat** (proyecto en rj2techsolutions@gmail.com): conecta la app de Play (credenciales de cuenta de
+   servicio), crea el entitlement `pro` y un **offering por rango** con id `u30`, `u80`, `u200`, `u500`,
+   `u5000`, cada uno con paquete *Monthly* y *Annual*. Todos los productos dan `pro`.
+3. La clave pública de Android (`goog_…`) va en `~/.gradle/gradle.properties` como `revenueCatApiKey`.
+4. Secretos de las funciones:
+   ```bash
+   firebase functions:secrets:set REVENUECAT_SECRET_KEY     # clave secreta v1 (sk_…)
+   firebase functions:secrets:set REVENUECAT_WEBHOOK_AUTH   # un texto largo inventado
+   ```
+5. RevenueCat → Integrations → **Webhooks**: URL de la función `revenueCatWebhook` y el mismo valor de
+   `REVENUECAT_WEBHOOK_AUTH` en *Authorization header*.
 
-### 3. AdMob
+El cliente de RevenueCat es la comunidad (App User ID `community_<id>`), así la suscripción queda atada al
+edificio aunque cambie la administración. Las compras de prueba funcionan igual que las reales.
+
+### 3. Google Maps
+En Google Cloud (mismo proyecto de Firebase) activa **Maps SDK for Android**, crea una clave restringida a la app
+(paquete + SHA-1) y solo a ese SDK, y ponla en `~/.gradle/gradle.properties` como `mapsApiKey`. Mostrar el mapa
+en Android no tiene costo; la app no usa servicios pagos (direcciones, lugares, rutas).
+Activa además la **política TTL** de Firestore sobre `alerts.expiresAt` para que las alertas vencidas se borren solas.
+
+### 4. AdMob
 Crea la app y cuatro bloques de anuncios: *banner*, *apertura de app*, *intersticial* y *recompensado*.
 Pon los ids en `~/.gradle/gradle.properties` (no en el repositorio):
 ```properties
@@ -146,7 +173,7 @@ que no es miembro, se una sin el código vigente, vote dos veces o por otra unid
 avisos oficiales sin ser administración, cambie el estado de un reporte, o **se active el plan Pro sin pagar** (solo
 la Cloud Function, tras validar la compra con Google Play, puede escribir el plan).
 
-Están probadas contra el emulador: `cd rules-tests && npm install && npm test` (16 pruebas).
+Están probadas contra el emulador: `cd rules-tests && npm install && npm test` (19 pruebas).
 
 > ⚠️ La antigua *server key* de FCM de la versión 1 quedó en el historial de git. Ya no sirve con la API nueva,
 > pero revócala en Configuración del proyecto → Cloud Messaging.
@@ -158,13 +185,13 @@ app/src/main/java/com/jonathan/chatsimpapp/
 ├── data/model          Comunidad, miembro, aviso, votación, reporte, publicación, chat, mensaje
 ├── data/repository     Firebase como Flow/suspend; CommunitySession = comunidad seleccionada
 ├── ai                  Resumen semanal con Gemini (Firebase AI Logic)
-├── billing             Google Play Billing (la verificación la hace el servidor)
+├── billing             RevenueCat (la activación del plan la hace el servidor)
 ├── ads                 AdMob + consentimiento UMP
 ├── config              Remote Config (modelo de IA, límites del plan gratuito)
 ├── notifications       FCM: chats, avisos, emergencias (canal con alarma)
 ├── ui/…                Pantallas Compose + ViewModels
 └── util                Quórum, códigos de invitación, fechas, PDF del acta
-functions/              Cloud Functions: notificaciones y verificación de pagos
+functions/              Cloud Functions: notificaciones, alertas del barrio y RevenueCat
 rules-tests/            Pruebas de las reglas de seguridad
 ```
 
@@ -180,6 +207,7 @@ Kotlin 2.2, Jetpack Compose + Material 3, Hilt, corrutinas/Flow, Navigation con 
 | `communities/{id}/polls/{pid}/votes/{unidad}` | un documento por unidad = un voto por unidad |
 | `communities/{id}/reports`, `posts`, `summaries` | reportes, tablón, resúmenes IA |
 | `invites/{código}` | a qué comunidad lleva cada código |
+| `alerts/{id}` | alertas del barrio: tipo, ubicación, geohash, vencimiento, confirmaciones |
 | `chats/{id}` | chat general (mismo id que la comunidad), privados y grupos |
 
 ## Pruebas

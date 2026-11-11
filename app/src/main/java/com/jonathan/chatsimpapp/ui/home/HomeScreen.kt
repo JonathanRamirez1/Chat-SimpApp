@@ -82,8 +82,9 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 enum class HomeTab(val label: Int, val icon: ImageVector, val selectedIcon: ImageVector) {
-    FEED(R.string.tab_home, Icons.Outlined.Home, Icons.Rounded.Home),
+    // El chat es lo principal: primera pestaña y la que se abre por defecto.
     CHATS(R.string.chats, Icons.AutoMirrored.Outlined.Chat, Icons.AutoMirrored.Rounded.Chat),
+    FEED(R.string.tab_home, Icons.Outlined.Home, Icons.Rounded.Home),
     POLLS(R.string.tab_polls, Icons.Outlined.HowToVote, Icons.Rounded.HowToVote),
     REPORTS(R.string.tab_reports, Icons.Outlined.Construction, Icons.Rounded.Construction),
     BOARD(R.string.tab_board, Icons.Outlined.Storefront, Icons.Rounded.Storefront),
@@ -116,13 +117,14 @@ data class HomeActions(
     val openPoll: (String) -> Unit,
     val openReport: (String) -> Unit,
     val form: (FormKind) -> Unit,
+    val sector: () -> Unit = {},
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(actions: HomeActions, viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var tab by rememberSaveable { mutableStateOf(HomeTab.FEED) }
+    var tab by rememberSaveable { mutableStateOf(HomeTab.CHATS) }
     val ctx = state.context
 
     val feedVm: FeedViewModel = hiltViewModel()
@@ -148,6 +150,7 @@ fun HomeScreen(actions: HomeActions, viewModel: HomeViewModel = hiltViewModel())
                     s, feedVm::generateSummary, actions.upgrade,
                     onOpenPolls = { tab = HomeTab.POLLS }, onOpenReports = { tab = HomeTab.REPORTS },
                     onRaiseEmergency = feedVm::raiseEmergency, onDelete = feedVm::delete, contentPadding = inner,
+                    onOpenSector = actions.sector,
                 )
             }
             HomeTab.CHATS -> {
@@ -160,7 +163,7 @@ fun HomeScreen(actions: HomeActions, viewModel: HomeViewModel = hiltViewModel())
             }
             HomeTab.REPORTS -> {
                 val s by reportsVm.state.collectAsStateWithLifecycle()
-                ReportsTab(s, actions.openReport, inner)
+                ReportsTab(s, actions.openReport, inner, onOpenSector = actions.sector)
             }
             HomeTab.BOARD -> {
                 val s by boardVm.state.collectAsStateWithLifecycle()

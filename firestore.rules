@@ -181,6 +181,40 @@ service cloud.firestore {
       }
     }
 
+    // ---------- Alertas del barrio (mapa) ----------
+    // Las ven y publican solo vecinos verificados (que pertenecen a alguna comunidad).
+    match /alerts/{alertId} {
+      function hasCommunity() {
+        return signedIn() && get(/databases/$(database)/documents/users/$(uid())).data.get('communities', []).size() > 0;
+      }
+      /** Entre el antes y el después, el único que entra o sale de la lista es quien escribe. */
+      function onlySelfChanged(field) {
+        let before = resource.data[field].toSet();
+        let after = request.resource.data[field].toSet();
+        return after.difference(before).union(before.difference(after)).hasOnly([uid()]);
+      }
+      allow read: if hasCommunity();
+      allow create: if signedIn()
+        && request.resource.data.createdBy == uid()
+        && isMember(request.resource.data.communityId)
+        && request.resource.data.communityName == community(request.resource.data.communityId).name
+        && request.resource.data.type in ['theft', 'streetlight', 'road', 'water', 'trash', 'noise']
+        && request.resource.data.lat is number && request.resource.data.lat >= -90 && request.resource.data.lat <= 90
+        && request.resource.data.lng is number && request.resource.data.lng >= -180 && request.resource.data.lng <= 180
+        && request.resource.data.geohash is string && request.resource.data.geohash.size() <= 12
+        && request.resource.data.description is string && request.resource.data.description.size() <= 280
+        && request.resource.data.confirmedBy == [] && request.resource.data.goneBy == []
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.expiresAt is timestamp
+        && request.resource.data.expiresAt > request.time
+        && request.resource.data.expiresAt < request.time + duration.value(31, 'd');
+      allow update: if hasCommunity()
+        && changed().hasOnly(['confirmedBy', 'goneBy'])
+        && (!('confirmedBy' in changed()) || onlySelfChanged('confirmedBy'))
+        && (!('goneBy' in changed()) || onlySelfChanged('goneBy'));
+      allow delete: if signedIn() && resource.data.createdBy == uid();
+    }
+
     // ---------- Chats ----------
     match /chats/{chatId} {
       function isChatMember() { return uid() in resource.data.members; }

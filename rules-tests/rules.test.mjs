@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { after, before, beforeEach, describe, test } from "node:test";
 import { assertFails, assertSucceeds, initializeTestEnvironment } from "@firebase/rules-unit-testing";
 import {
-  arrayUnion, doc, getDoc, serverTimestamp, setDoc, Timestamp, updateDoc, writeBatch, addDoc, collection,
+  arrayUnion, deleteDoc, doc, getDoc, serverTimestamp, setDoc, Timestamp, updateDoc, writeBatch, addDoc, collection,
 } from "firebase/firestore";
 
 let env;
@@ -158,6 +158,37 @@ describe("reportes", () => {
     await assertFails(updateDoc(doc(db("ana"), `communities/${CID}/reports/${RID}`), { affectedUnits: arrayUnion("303") }));
     await assertFails(updateDoc(doc(db("ana"), `communities/${CID}/reports/${RID}`), { status: "resolved" }));
     await assertSucceeds(updateDoc(doc(db("admin"), `communities/${CID}/reports/${RID}`), { status: "resolved" }));
+  });
+});
+
+describe("alertas del barrio", () => {
+  const alert = (uid, overrides = {}) => ({
+    type: "theft", description: "", lat: 4.6, lng: -74.08, geohash: "d2g6f", communityId: CID,
+    communityName: "Torres del Parque", createdBy: uid, createdAt: serverTimestamp(),
+    expiresAt: Timestamp.fromMillis(Date.now() + 12 * 3600e3), confirmedBy: [], goneBy: [], ...overrides,
+  });
+
+  test("solo vecinos de una comunidad pueden publicar y ver alertas", async () => {
+    await setup();
+    await assertFails(addDoc(collection(db("eve"), "alerts"), alert("eve")));
+    await assertSucceeds(addDoc(collection(db("ana"), "alerts"), alert("ana")));
+    await assertFails(getDoc(doc(db("eve"), "alerts/x")));
+  });
+
+  test("no se pueden inventar tipos, confirmaciones ni alertas eternas", async () => {
+    await setup();
+    await assertFails(addDoc(collection(db("ana"), "alerts"), alert("ana", { type: "sospechoso" })));
+    await assertFails(addDoc(collection(db("ana"), "alerts"), alert("ana", { confirmedBy: ["x", "y"] })));
+    await assertFails(addDoc(collection(db("ana"), "alerts"), alert("ana", { expiresAt: Timestamp.fromMillis(Date.now() + 90 * 86400e3) })));
+  });
+
+  test("cada vecino solo agrega o quita su propia confirmación", async () => {
+    await setup();
+    await env.withSecurityRulesDisabled((ctx) => setDoc(doc(ctx.firestore(), "alerts/a1"), { ...alert("admin"), createdAt: Timestamp.now() }));
+    await assertSucceeds(updateDoc(doc(db("ana"), "alerts/a1"), { confirmedBy: arrayUnion("ana") }));
+    await assertFails(updateDoc(doc(db("ana"), "alerts/a1"), { confirmedBy: arrayUnion("otro") }));
+    await assertFails(updateDoc(doc(db("ana"), "alerts/a1"), { type: "noise" }));
+    await assertFails(deleteDoc(doc(db("ana"), "alerts/a1")));
   });
 });
 

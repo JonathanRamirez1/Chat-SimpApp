@@ -31,8 +31,10 @@ android {
         buildConfigField("String", "ADMOB_APP_OPEN_ID", "\"${adId("admobAppOpenId", "ca-app-pub-3940256099942544/9257395921")}\"")
         buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"${adId("admobInterstitialId", "ca-app-pub-3940256099942544/1033173712")}\"")
         buildConfigField("String", "ADMOB_REWARDED_ID", "\"${adId("admobRewardedId", "ca-app-pub-3940256099942544/5224354917")}\"")
-        // Id del producto de suscripción en Google Play Console.
-        buildConfigField("String", "PRO_PRODUCT_ID", "\"comunidad_pro\"")
+        // RevenueCat (clave pública de Android, empieza por "goog_") y Google Maps.
+        // Defínelas en ~/.gradle/gradle.properties: revenueCatApiKey=goog_..., mapsApiKey=AIza...
+        buildConfigField("String", "REVENUECAT_API_KEY", "\"${providers.gradleProperty("revenueCatApiKey").getOrElse("")}\"")
+        manifestPlaceholders["mapsApiKey"] = providers.gradleProperty("mapsApiKey").getOrElse("")
     }
 
     buildTypes {
@@ -106,7 +108,10 @@ dependencies {
 
     implementation(libs.play.services.ads)
     implementation(libs.ump)
-    implementation(libs.billing.ktx)
+    implementation(libs.revenuecat)
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.location)
+    implementation(libs.geofire)
     implementation(libs.play.app.update)
     implementation(libs.play.app.update.ktx)
 

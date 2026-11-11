@@ -18,6 +18,8 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.Campaign
+import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.DeleteOutline
 import androidx.compose.material.icons.rounded.HowToVote
 import androidx.compose.material.icons.rounded.PushPin
@@ -47,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -70,6 +73,7 @@ fun FeedTab(
     onRaiseEmergency: (String, String) -> Unit,
     onDelete: (Announcement) -> Unit,
     contentPadding: PaddingValues,
+    onOpenSector: () -> Unit = {},
 ) {
     if (state.loading) {
         CenteredLoading(Modifier.fillMaxSize())
@@ -105,6 +109,8 @@ fun FeedTab(
                 Text(stringResource(R.string.raise_emergency))
             }
         }
+
+        item { SectorCard(state.sectorAlerts, onOpenSector) }
 
         item { SummaryCard(state.summary, ctx.isPro, state.generating, state.summaryError, onGenerateSummary, onUpgrade) }
 
@@ -151,6 +157,30 @@ private fun StatCard(icon: ImageVector, count: Int, label: String, onClick: () -
             Spacer(Modifier.height(8.dp))
             Text(count.toString(), style = MaterialTheme.typography.headlineSmall)
             Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
+
+/** Acceso discreto al mapa del barrio: una fila, no un banner. */
+@Composable
+private fun SectorCard(count: Int?, onClick: () -> Unit) {
+    Surface(onClick = onClick, shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerLow) {
+        Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Rounded.Map, null, tint = MaterialTheme.colorScheme.primary)
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.sector_title), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    when (count) {
+                        null -> stringResource(R.string.sector_card_body)
+                        0 -> stringResource(R.string.sector_card_none)
+                        else -> pluralStringResource(R.plurals.sector_card_count, count, count)
+                    },
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Icon(Icons.Rounded.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

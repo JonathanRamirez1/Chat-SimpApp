@@ -38,6 +38,7 @@ import com.jonathan.chatsimpapp.ui.upgrade.UpgradeContent
 import com.jonathan.chatsimpapp.ui.upgrade.UpgradeUiState
 import com.jonathan.chatsimpapp.billing.ProOffer
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.background
 import java.util.Date
 import com.jonathan.chatsimpapp.ui.auth.LoginContent
 import com.jonathan.chatsimpapp.ui.auth.LoginUiState
@@ -147,7 +148,7 @@ class ScreenshotTest {
     )
 
     @Test fun homeFeed() = capture("01_home") {
-        home(HomeTab.FEED, pro = true) { FeedTab(feed, {}, {}, {}, {}, { _, _ -> }, {}, PaddingValues()) }
+        home(HomeTab.FEED, pro = true) { FeedTab(feed.copy(sectorAlerts = 3), {}, {}, {}, {}, { _, _ -> }, {}, PaddingValues()) }
     }
 
     @Test fun homeFeedFree() = capture("02_home_free_dark", dark = true) {
@@ -200,9 +201,83 @@ class ScreenshotTest {
 
     @Test fun upgrade() = capture("08_pro") {
         UpgradeContent(
-            UpgradeUiState(ctx(admin = true), listOf(ProOffer("u80-mensual", "t", "US\$ 9,99", "P1M"), ProOffer("u80-anual", "t2", "US\$ 99,90", "P1Y")), offersLoaded = true),
+            UpgradeUiState(ctx(admin = true), listOf(ProOffer("u80", false, "US\$ 12,99"), ProOffer("u80", true, "US\$ 129,90")), offersLoaded = true),
             {}, {},
         )
+    }
+
+    // ---------- Alertas del barrio ----------
+
+    private val center = com.jonathan.chatsimpapp.util.LatLngPoint(4.6000, -74.0800)
+    private fun alert(id: String, type: String, dLat: Double, dLng: Double, minutesAgo: Long, confirmed: Int = 0, desc: String = "") =
+        com.jonathan.chatsimpapp.data.model.Alert(
+            id = id, type = type, lat = center.lat + dLat, lng = center.lng + dLng, description = desc,
+            communityName = "Torres del Parque", createdBy = "x", createdAt = ts(now - minutesAgo * minute),
+            expiresAt = ts(now + day), confirmedBy = List(confirmed) { "u$it" },
+        )
+    private val sectorAlerts = listOf(
+        alert("a1", "theft", 0.0018, 0.0006, 20, confirmed = 4, desc = "Dos personas en moto, cerca del parque"),
+        alert("a2", "streetlight", 0.0009, -0.0004, 60 * 48),
+        alert("a3", "trash", -0.0025, 0.0030, 60 * 5, confirmed = 1),
+        alert("a4", "noise", 0.0030, -0.0035, 45),
+    )
+    private val sectorState = com.jonathan.chatsimpapp.ui.sector.SectorUiState(false, ctx(), center, true, sectorAlerts)
+
+    /** Mapa simulado para las capturas (Google Maps no se dibuja en pruebas). */
+    @Composable
+    private fun FakeMap(modifier: androidx.compose.ui.Modifier) {
+        androidx.compose.foundation.layout.Box(modifier.background(androidx.compose.ui.graphics.Color(0xFFF3F1EC))) {
+            androidx.compose.foundation.Canvas(androidx.compose.ui.Modifier.matchParentSize()) {
+                val road = androidx.compose.ui.graphics.Color.White
+                listOf(0.32f, 0.68f).forEach { f ->
+                    drawRect(road, topLeft = androidx.compose.ui.geometry.Offset(0f, size.height * f - 18f), size = androidx.compose.ui.geometry.Size(size.width, 36f))
+                    drawRect(road, topLeft = androidx.compose.ui.geometry.Offset(size.width * f - 18f, 0f), size = androidx.compose.ui.geometry.Size(36f, size.height))
+                }
+                drawRect(androidx.compose.ui.graphics.Color(0xFFCDEBD3), topLeft = androidx.compose.ui.geometry.Offset(size.width * 0.34f, size.height * 0.34f), size = androidx.compose.ui.geometry.Size(size.width * 0.32f, size.height * 0.32f))
+                drawCircle(androidx.compose.ui.graphics.Color(0x144F46E5), radius = size.minDimension * 0.46f)
+                drawCircle(androidx.compose.ui.graphics.Color(0x664F46E5), radius = size.minDimension * 0.46f, style = androidx.compose.ui.graphics.drawscope.Stroke(3f))
+            }
+            androidx.compose.foundation.layout.Box(androidx.compose.ui.Modifier.align(androidx.compose.ui.Alignment.Center)) { com.jonathan.chatsimpapp.ui.sector.HomePin() }
+            androidx.compose.foundation.layout.Box(androidx.compose.ui.Modifier.align(androidx.compose.ui.BiasAlignment(0.35f, -0.55f))) { com.jonathan.chatsimpapp.ui.sector.AlertPin(com.jonathan.chatsimpapp.data.model.AlertType.THEFT) }
+            androidx.compose.foundation.layout.Box(androidx.compose.ui.Modifier.align(androidx.compose.ui.BiasAlignment(-0.3f, -0.25f))) { com.jonathan.chatsimpapp.ui.sector.AlertPin(com.jonathan.chatsimpapp.data.model.AlertType.STREETLIGHT) }
+            androidx.compose.foundation.layout.Box(androidx.compose.ui.Modifier.align(androidx.compose.ui.BiasAlignment(0.7f, 0.6f))) { com.jonathan.chatsimpapp.ui.sector.AlertPin(com.jonathan.chatsimpapp.data.model.AlertType.TRASH) }
+            androidx.compose.foundation.layout.Box(androidx.compose.ui.Modifier.align(androidx.compose.ui.BiasAlignment(-0.7f, -0.8f))) { com.jonathan.chatsimpapp.ui.sector.AlertPin(com.jonathan.chatsimpapp.data.model.AlertType.NOISE) }
+        }
+    }
+
+    @Test fun sectorMap() = capture("18_sector_map") {
+        com.jonathan.chatsimpapp.ui.sector.SectorContent(
+            sectorState, {}, {}, { _, _ -> }, {}, {}, {}, {}, {},
+            map = { m, _ -> FakeMap(m) },
+        )
+    }
+
+    @Test fun sectorDetail() = capture("19_sector_alert") {
+        com.jonathan.chatsimpapp.ui.sector.SectorContent(
+            sectorState, {}, {}, { _, _ -> }, {}, {}, {}, {}, {},
+            map = { m, _ -> FakeMap(m) },
+            initialSelected = "a1",
+        )
+    }
+
+    @Test fun newAlert() = capture("20_new_alert") {
+        com.jonathan.chatsimpapp.ui.sector.NewAlertContent(
+            com.jonathan.chatsimpapp.ui.sector.NewAlertUiState(type = com.jonathan.chatsimpapp.data.model.AlertType.THEFT),
+            {}, {}, {}, {}, {}, map = { FakeMap(it) },
+        )
+    }
+
+    @Test fun newAlertWhere() = capture("21_new_alert_where") {
+        com.jonathan.chatsimpapp.ui.sector.NewAlertContent(
+            com.jonathan.chatsimpapp.ui.sector.NewAlertUiState(step = 1, type = com.jonathan.chatsimpapp.data.model.AlertType.STREETLIGHT, start = center),
+            {}, {}, {}, {}, {}, map = { FakeMap(it) },
+        )
+    }
+
+    @Test fun homeChats() = capture("22_home_chats") {
+        home(HomeTab.CHATS) {
+            ChatsContent(ChatsUiState(loading = false, me = User(uid = "me", displayName = "Jonathan R"), rows = rows), {}, {}, {}, {}, embedded = true)
+        }
     }
 
     @Test fun login() = capture("10_login") {

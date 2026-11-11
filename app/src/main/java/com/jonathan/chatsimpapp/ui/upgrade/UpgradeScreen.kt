@@ -44,7 +44,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.jonathan.chatsimpapp.R
-import com.jonathan.chatsimpapp.billing.BillingManager
+import com.jonathan.chatsimpapp.billing.ProBilling
 import com.jonathan.chatsimpapp.billing.ProOffer
 import com.jonathan.chatsimpapp.billing.ProTiers
 import com.jonathan.chatsimpapp.billing.PurchaseState
@@ -56,6 +56,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -69,27 +71,32 @@ data class UpgradeUiState(
 
 @HiltViewModel
 class UpgradeViewModel @Inject constructor(
-    session: CommunitySession,
-    private val billing: BillingManager,
+    private val billing: ProBilling,
+    private val session: CommunitySession,
 ) : ViewModel() {
     private val offers = MutableStateFlow<List<ProOffer>?>(null)
 
     val state: StateFlow<UpgradeUiState> = combine(session.current, offers, billing.purchase) { ctx, offers, purchase ->
-        // Solo se ofrecen los planes del rango que corresponde al tamaño del edificio.
-        val tier = ProTiers.forUnits(ctx?.community?.unitsCount?.toInt() ?: 0)
-        val forTier = offers.orEmpty().filter { ProTiers.ofBasePlan(it.basePlanId) == tier }.sortedBy { it.billingPeriod != "P1M" }
-        UpgradeUiState(ctx, forTier, offers != null, purchase)
+        UpgradeUiState(ctx, offers.orEmpty(), offers != null, purchase)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UpgradeUiState())
 
     init {
         billing.reset()
-        billing.restore()
-        viewModelScope.launch { offers.value = runCatching { billing.loadOffers() }.getOrDefault(emptyList()) }
+        viewModelScope.launch {
+            val ctx = session.current.filterNotNull().first()
+            // Solo la administración compra; se ofrecen solo los planes del rango del edificio.
+            offers.value = if (ctx.isAdmin) {
+                billing.sync(ctx.id)
+                runCatching { billing.loadOffers(ctx.id, ctx.community.unitsCount.toInt()) }.getOrDefault(emptyList())
+            } else {
+                emptyList()
+            }
+        }
     }
 
     fun buy(activity: Activity, offer: ProOffer) {
         val ctx = state.value.context ?: return
-        billing.buy(activity, offer, ctx.id, ctx.uid)
+        viewModelScope.launch { billing.buy(activity, offer, ctx.id) }
     }
 }
 
@@ -162,7 +169,7 @@ fun UpgradeContent(state: UpgradeUiState, onBuy: (ProOffer) -> Unit, onClose: ()
                 )
                 else -> state.offers.forEach { offer ->
                     PrimaryButton(
-                        text = stringResource(R.string.pro_buy, offer.formattedPrice, periodLabel(offer.billingPeriod)),
+                        text = stringResource(R.string.pro_buy, offer.formattedPrice, stringResource(if (offer.annual) R.string.per_year else R.string.per_month)),
                         onClick = { onBuy(offer) },
                         loading = state.purchase is PurchaseState.Processing,
                         modifier = Modifier.padding(bottom = 8.dp),
@@ -182,13 +189,6 @@ fun UpgradeContent(state: UpgradeUiState, onBuy: (ProOffer) -> Unit, onClose: ()
             Spacer(Modifier.height(24.dp))
         }
     }
-}
-
-@Composable
-private fun periodLabel(iso: String): String = when (iso) {
-    "P1M" -> stringResource(R.string.per_month)
-    "P1Y" -> stringResource(R.string.per_year)
-    else -> iso
 }
 
 @Composable

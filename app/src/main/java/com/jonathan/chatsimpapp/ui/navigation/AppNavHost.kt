@@ -31,6 +31,8 @@ import com.jonathan.chatsimpapp.ui.onboarding.OnboardingScreen
 import com.jonathan.chatsimpapp.ui.polls.PollDetailScreen
 import com.jonathan.chatsimpapp.ui.profile.ProfileScreen
 import com.jonathan.chatsimpapp.ui.reports.ReportDetailScreen
+import com.jonathan.chatsimpapp.ui.sector.NewAlertScreen
+import com.jonathan.chatsimpapp.ui.sector.SectorScreen
 import com.jonathan.chatsimpapp.ui.upgrade.UpgradeScreen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -108,6 +110,7 @@ fun AppNavHost(
                     openPoll = { navController.navigate(PollRoute(it)) },
                     openReport = { navController.navigate(ReportRoute(it)) },
                     form = { navController.navigate(FormRoute(it.name)) },
+                    sector = { navController.navigate(SectorRoute) },
                 ),
             )
         }
@@ -140,6 +143,12 @@ fun AppNavHost(
                 onUpgrade = { navController.navigate(UpgradeRoute) },
                 showRewarded = showRewarded,
             )
+        }
+        composable<SectorRoute> {
+            SectorScreen(onBack = navController::popBackStack, onReport = { navController.navigate(NewAlertRoute) })
+        }
+        composable<NewAlertRoute> {
+            NewAlertScreen(onDone = { navController.popBackStack(); onNaturalBreak() })
         }
         composable<ReportRoute> { ReportDetailScreen(onBack = { navController.popBackStack(); onNaturalBreak() }) }
         composable<FormRoute> { entry ->

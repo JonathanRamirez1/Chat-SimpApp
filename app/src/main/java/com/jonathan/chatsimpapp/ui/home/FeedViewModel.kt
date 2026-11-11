@@ -7,7 +7,9 @@ import com.jonathan.chatsimpapp.data.model.Announcement
 import com.jonathan.chatsimpapp.data.model.Poll
 import com.jonathan.chatsimpapp.data.model.Report
 import com.jonathan.chatsimpapp.data.model.WeeklySummary
+import com.jonathan.chatsimpapp.data.repository.AlertsRepository
 import com.jonathan.chatsimpapp.data.repository.CommunityContentRepository
+import com.jonathan.chatsimpapp.util.LatLngPoint
 import com.jonathan.chatsimpapp.data.repository.CommunityContext
 import com.jonathan.chatsimpapp.data.repository.CommunitySession
 import com.jonathan.chatsimpapp.util.Weeks
@@ -18,6 +20,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
@@ -38,6 +42,8 @@ data class FeedUiState(
     val seenCounts: Map<String, Long> = emptyMap(),
     val generating: Boolean = false,
     val summaryError: Boolean = false,
+    /** Alertas activas en el barrio; null si el edificio aún no tiene ubicación. */
+    val sectorAlerts: Int? = null,
 )
 
 private data class FeedData(
@@ -53,7 +59,14 @@ class FeedViewModel @Inject constructor(
     private val session: CommunitySession,
     private val content: CommunityContentRepository,
     private val summaries: SummaryGenerator,
+    alerts: AlertsRepository,
 ) : ViewModel() {
+
+    private val sectorCount = session.current
+        .map { ctx -> ctx?.community?.let { c -> if (c.lat != null && c.lng != null) LatLngPoint(c.lat!!, c.lng!!) else null } }
+        .distinctUntilChanged()
+        .flatMapLatest { p -> if (p == null) flowOf(null) else alerts.observeNearby(p, AlertsRepository.SECTOR_RADIUS_M).map { it.size } }
+
 
     private val generating = MutableStateFlow(false)
     private val summaryError = MutableStateFlow(false)
@@ -70,8 +83,15 @@ class FeedViewModel @Inject constructor(
         ) { a, s, r, p -> FeedData(a, s, r, p) }
     }
 
+    private val flags = combine(generating, summaryError, seenCounts, sectorCount) { g, e, s, c -> Flags(g, e, s, c) }
+
+    private data class Flags(val generating: Boolean, val error: Boolean, val seen: Map<String, Long>, val sector: Int?)
+
     val state: StateFlow<FeedUiState> =
-        combine(session.current, data, generating, summaryError, seenCounts) { ctx, data, gen, err, seen ->
+        combine(session.current, data, flags) { ctx, data, f ->
+            val gen = f.generating
+            val err = f.error
+            val seen = f.seen
             if (ctx == null || data == null) return@combine FeedUiState()
             val recent = System.currentTimeMillis() - EMERGENCY_WINDOW_MS
             val (emergencies, notices) = data.announcements.partition { it.isEmergency }
@@ -86,6 +106,7 @@ class FeedViewModel @Inject constructor(
                 seenCounts = seen,
                 generating = gen,
                 summaryError = err,
+                sectorAlerts = f.sector,
             )
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), FeedUiState())
 

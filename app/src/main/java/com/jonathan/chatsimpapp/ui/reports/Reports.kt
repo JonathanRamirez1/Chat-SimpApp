@@ -23,6 +23,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Apartment
 import androidx.compose.material.icons.rounded.TaskAlt
+import androidx.compose.material.icons.rounded.Map
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -101,14 +103,17 @@ class ReportsViewModel @Inject constructor(
 private val StatusFilters = listOf(null, Report.STATUS_OPEN, Report.STATUS_IN_PROGRESS, Report.STATUS_RESOLVED)
 
 @Composable
-fun ReportsTab(state: ReportsUiState, onOpen: (String) -> Unit, contentPadding: PaddingValues) {
+fun ReportsTab(state: ReportsUiState, onOpen: (String) -> Unit, contentPadding: PaddingValues, onOpenSector: () -> Unit = {}) {
     var filter by rememberSaveable { mutableStateOf<String?>(null) }
     if (state.loading) {
         CenteredLoading(Modifier.fillMaxSize())
         return
     }
     if (state.reports.isEmpty()) {
-        EmptyState(Icons.Rounded.TaskAlt, stringResource(R.string.no_reports_title), stringResource(R.string.no_reports_body), Modifier.fillMaxSize())
+        Column(Modifier.fillMaxSize()) {
+            SectorLink(onOpenSector)
+            EmptyState(Icons.Rounded.TaskAlt, stringResource(R.string.no_reports_title), stringResource(R.string.no_reports_body), Modifier.fillMaxSize())
+        }
         return
     }
     val visible = state.reports.filter { filter == null || it.status == filter }
@@ -117,6 +122,7 @@ fun ReportsTab(state: ReportsUiState, onOpen: (String) -> Unit, contentPadding: 
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.fillMaxSize(),
     ) {
+        item { SectorLink(onOpenSector) }
         item {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(StatusFilters) { s ->
@@ -132,6 +138,16 @@ fun ReportsTab(state: ReportsUiState, onOpen: (String) -> Unit, contentPadding: 
             }
         }
         items(visible, key = { it.id }) { r -> ReportCard(r, state.context?.myUnit, onClick = { onOpen(r.id) }) }
+    }
+}
+
+/** Los reportes son del edificio; lo que pasa en la calle está en el mapa del barrio. */
+@Composable
+private fun SectorLink(onClick: () -> Unit) {
+    TextButton(onClick = onClick) {
+        Icon(Icons.Rounded.Map, null, Modifier.size(18.dp))
+        Spacer(Modifier.width(8.dp))
+        Text(stringResource(R.string.sector_link))
     }
 }
 

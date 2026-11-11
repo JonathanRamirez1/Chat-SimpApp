@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jonathan.chatsimpapp.ads.Ads
 import com.jonathan.chatsimpapp.ads.AdsController
-import com.jonathan.chatsimpapp.billing.BillingManager
 import com.jonathan.chatsimpapp.config.AppConfig
 import com.jonathan.chatsimpapp.update.ForcedUpdateManager
 import com.jonathan.chatsimpapp.update.UpdateRequiredScreen
@@ -28,7 +27,6 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var session: CommunitySession
-    @Inject lateinit var billing: BillingManager
     @Inject lateinit var ads: AdsController
     @Inject lateinit var config: AppConfig
 
@@ -47,7 +45,6 @@ class MainActivity : ComponentActivity() {
         forcedUpdate.onCreate()
 
         Ads.init(this)
-        billing.restore()
         if (savedInstanceState == null) handleIntent(intent)
 
         setContent {

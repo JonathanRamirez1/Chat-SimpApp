@@ -14,7 +14,10 @@ splashscreen = "1.0.1"
 firebaseBom = "34.19.0"
 playServicesAds = "25.5.0"
 ump = "3.2.0"
-billing = "8.3.0"
+revenuecat = "11.2.1"
+mapsCompose = "8.0.0"
+playServicesLocation = "21.4.0"
+geofire = "3.2.0"
 playAppUpdate = "2.1.0"
 credentials = "1.5.0"
 googleId = "1.1.1"
@@ -63,7 +66,10 @@ play-services-ads = { group = "com.google.android.gms", name = "play-services-ad
 ump = { group = "com.google.android.ump", name = "user-messaging-platform", version.ref = "ump" }
 play-app-update = { group = "com.google.android.play", name = "app-update", version.ref = "playAppUpdate" }
 play-app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "playAppUpdate" }
-billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
+revenuecat = { group = "com.revenuecat.purchases", name = "purchases", version.ref = "revenuecat" }
+maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+geofire = { group = "com.firebase", name = "geofire-android-common", version.ref = "geofire" }
 
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
 androidx-credentials-play-services = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }
