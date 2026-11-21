@@ -9,7 +9,9 @@ interface ServiceAccount {
 const SCOPES = [
   "https://www.googleapis.com/auth/firebase.messaging",
   "https://www.googleapis.com/auth/datastore",
+  "https://www.googleapis.com/auth/identitytoolkit",
 ].join(" ");
+const CACHE_KEY = "google_token_v2";
 
 let memory: { token: string; expiresAt: number } | null = null;
 
@@ -21,7 +23,7 @@ export async function googleAccessToken(env: Env): Promise<string> {
   const now = Date.now();
   if (memory && memory.expiresAt - 300_000 > now) return memory.token;
 
-  const cached = await env.DB.prepare("SELECT value, expires_at FROM kv WHERE key = 'google_token'").first<{ value: string; expires_at: number }>();
+  const cached = await env.DB.prepare("SELECT value, expires_at FROM kv WHERE key = ?").bind(CACHE_KEY).first<{ value: string; expires_at: number }>();
   if (cached && cached.expires_at - 300_000 > now) {
     memory = { token: cached.value, expiresAt: cached.expires_at };
     return cached.value;
@@ -47,8 +49,8 @@ export async function googleAccessToken(env: Env): Promise<string> {
   const data = (await res.json()) as { access_token: string; expires_in: number };
   const expiresAt = now + data.expires_in * 1000;
   memory = { token: data.access_token, expiresAt };
-  await env.DB.prepare("INSERT OR REPLACE INTO kv (key, value, expires_at) VALUES ('google_token', ?, ?)")
-    .bind(data.access_token, expiresAt)
+  await env.DB.prepare("INSERT OR REPLACE INTO kv (key, value, expires_at) VALUES (?, ?, ?)")
+    .bind(CACHE_KEY, data.access_token, expiresAt)
     .run();
   return data.access_token;
 }

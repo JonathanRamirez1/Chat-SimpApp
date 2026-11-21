@@ -107,12 +107,14 @@ export async function patchDoc(env: Env, path: string, data: Record<string, unkn
   if (!res.ok) throw new Error(`Firestore PATCH ${path}: ${res.status}`);
 }
 
+/** Aplica varias escrituras (borrados o transformaciones) de forma atómica. */
+export async function commit(env: Env, writes: unknown[]): Promise<void> {
+  if (writes.length === 0) return;
+  const res = await call(env, `${base(env)}:commit`, { method: "POST", body: JSON.stringify({ writes }) });
+  if (!res.ok) throw new Error(`Firestore commit: ${res.status}`);
+}
+
 /** Borra varios documentos (nombres completos) en una sola escritura. */
 export async function deleteDocs(env: Env, names: string[]): Promise<void> {
-  if (names.length === 0) return;
-  const res = await call(env, `${base(env)}:commit`, {
-    method: "POST",
-    body: JSON.stringify({ writes: names.map((name) => ({ delete: name })) }),
-  });
-  if (!res.ok) throw new Error(`Firestore commit: ${res.status}`);
+  await commit(env, names.map((name) => ({ delete: name })));
 }

@@ -57,6 +57,11 @@ class WorkerApi @Inject constructor(
         return map.mapNotNull { (k, v) -> (v as? JsonPrimitive)?.longOrNull?.let { k to it } }.toMap()
     }
 
+    /** Elimina la cuenta y sus datos en el servidor (perfil, membresías, tokens y usuario de Auth). */
+    suspend fun deleteAccount() {
+        post("/v1/account/delete", JsonObject(emptyMap()))
+    }
+
     suspend fun syncProPlan(communityId: String) {
         post("/v1/pro/sync", obj("communityId" to communityId))
     }

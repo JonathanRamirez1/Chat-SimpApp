@@ -3,6 +3,7 @@ package com.jonathan.chatsimpapp.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.jonathan.chatsimpapp.data.remote.WorkerApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -21,6 +22,7 @@ class AuthRepository @Inject constructor(
     private val auth: FirebaseAuth,
     private val users: UserRepository,
     private val presence: PresenceRepository,
+    private val api: WorkerApi,
 ) {
     val currentUserId: String? get() = auth.currentUser?.uid
 
@@ -38,6 +40,12 @@ class AuthRepository @Inject constructor(
         users.ensureProfile(user)
         runCatching { users.registerCurrentFcmToken() }
         presence.ping()
+    }
+
+    /** Elimina la cuenta (exigido por Google Play). El servidor borra los datos y el usuario de Auth. */
+    suspend fun deleteAccount() {
+        api.deleteAccount()
+        auth.signOut()
     }
 
     suspend fun signOut() {

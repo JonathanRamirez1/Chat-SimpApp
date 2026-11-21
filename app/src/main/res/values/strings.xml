@@ -94,6 +94,12 @@
     <string name="change_photo">Cambiar foto</string>
     <string name="account">Cuenta</string>
     <string name="sign_out">Cerrar sesión</string>
+    <string name="delete_account">Eliminar mi cuenta</string>
+    <string name="delete_account_subtitle">Borra tu perfil y te saca de tus comunidades</string>
+    <string name="delete_account_confirm_title">¿Eliminar tu cuenta?</string>
+    <string name="delete_account_confirm_body">Se borran tu perfil, tus membresías y tus datos de notificaciones, y saldrás de todas tus comunidades. Tus mensajes ya enviados quedan sin tu nombre. Esto no se puede deshacer.\n\nSi eres administración y pagaste Pro, cancela la suscripción en Google Play: es del edificio, no de tu cuenta.</string>
+    <string name="delete_account_confirm">Eliminar</string>
+    <string name="error_delete_account">No se pudo eliminar la cuenta. Revisa tu conexión e inténtalo de nuevo.</string>
     <string name="version">Versión %1$s</string>
 
     <string name="notification_channel_messages">Mensajes</string>

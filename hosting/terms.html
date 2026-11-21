@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Términos y Condiciones de Chat SimpApp</title>
+  <style>
+    :root {
+      --ink: #1f2340;
+      --muted: #5e6685;
+      --line: #dde2f2;
+      --bg: #f6f8ff;
+      --card: #ffffff;
+      --accent: #4c63d2;
+      --accent-2: #eef2ff;
+      --shadow: 0 8px 28px rgba(25, 32, 74, 0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .lang-switcher {
+      display: inline-flex;
+      gap: 8px;
+      background: #fff;
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 18px;
+      z-index: 20;
+    }
+    .lang-switcher button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .lang-switcher button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    h1, h2, h3 { line-height: 1.2; }
+    h1 { font-size: 2rem; margin: 0 0 10px; }
+    h2 { font-size: 1.35rem; margin-top: 34px; }
+    h3 { font-size: 1.05rem; margin-top: 24px; }
+    p, li { font-size: 1rem; }
+    .meta { color: var(--muted); margin-bottom: 20px; }
+    .lead {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--accent-2);
+      border: 1px solid #dbe4ff;
+      margin: 20px 0 24px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    ul { padding-left: 20px; }
+    a { color: var(--accent); }
+    [data-lang-content] { display: none; }
+    [data-lang-content].active { display: block; }
+    @media (min-width: 760px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="lang-switcher" aria-label="Language selector">
+        <button type="button" data-lang-btn="es" class="active">ES</button>
+        <button type="button" data-lang-btn="en">EN</button>
+      </div>
+    </div>
+
+    <div class="card" id="policy-root"></div>
+  </div>
+
+  <script>
+    const policyData = {
+  "es": {
+    "htmlLang": "es",
+    "pageTitle": "Términos y Condiciones de Chat SimpApp",
+    "title": "Términos y Condiciones de Chat SimpApp",
+    "meta": [
+      "Última actualización: 21 de noviembre de 2026",
+      "Proveedor: Jonathan Javier Ramirez – RJ2 Tech Solutions (persona natural, operador en Google Play)",
+      "Correo de contacto: chatsimpapp@rj2techsolutions.com"
+    ],
+    "lead": "Estos Términos regulan el uso de la app <strong>Chat SimpApp</strong>. Al instalarla o usarla los aceptas; si no estás de acuerdo, no la uses. El tratamiento de tus datos se explica en la <a href=\"/privacy-policy.html\">Política de Privacidad</a>, que forma parte de estos términos.",
+    "sections": [
+      {
+        "h2": "1. Quién ofrece Chat SimpApp",
+        "paragraphs": [
+          "Chat SimpApp es ofrecida por <strong>Jonathan Javier Ramirez</strong> (RJ2 Tech Solutions), persona natural con domicilio en Cl. 22 #30-7, Cúcuta - 540013, Colombia, que actúa como operador (comerciante) en Google Play. Contacto: <strong>chatsimpapp@rj2techsolutions.com</strong>."
+        ]
+      },
+      {
+        "h2": "2. Qué es Chat SimpApp",
+        "paragraphs": [
+          "Una herramienta de comunicación para comunidades de vecinos: chat, avisos oficiales, alertas de emergencia, votaciones con quórum, reportes de daños, tablón y alertas del barrio en un mapa.",
+          "<strong>Chat SimpApp no es la administración de tu edificio ni un servicio de emergencias.</strong> Las votaciones y actas son una ayuda: su validez legal depende del reglamento de tu copropiedad y de la ley de tu país. Las alertas no reemplazan a las autoridades: ante una emergencia real llama a los servicios de emergencia de tu país."
+        ]
+      },
+      {
+        "h2": "3. Requisitos",
+        "list": [
+          "tener una cuenta de Google y al menos 18 años, o la autorización de tus padres o tutores;",
+          "pertenecer de verdad a la comunidad a la que te unes y declarar tu unidad correcta;",
+          "usar la app solo para fines lícitos y de convivencia."
+        ]
+      },
+      {
+        "h2": "4. Reglas de convivencia",
+        "paragraphs": [
+          "En Chat SimpApp no está permitido:"
+        ],
+        "list": [
+          "acosar, amenazar, insultar, discriminar o difamar a otras personas;",
+          "señalar o reportar a personas como “sospechosas” o publicar datos personales de terceros (nombres, fotos, placas, teléfonos) sin su autorización;",
+          "publicar alertas o emergencias falsas;",
+          "enviar spam, publicidad no solicitada o contenido ilegal;",
+          "suplantar a otra persona, a la administración o a una unidad;",
+          "intentar acceder a comunidades ajenas, abusar del servicio o interferir con su funcionamiento."
+        ],
+        "afterList": [
+          "Podemos retirar contenido y suspender o eliminar cuentas que incumplan estas reglas. La administración de cada comunidad también puede sacar a quien ya no pertenezca a ella."
+        ]
+      },
+      {
+        "h2": "5. Tu contenido",
+        "paragraphs": [
+          "Eres responsable de lo que publicas. Nos das permiso para guardarlo y mostrarlo a las personas que corresponde (tu comunidad, tu chat o, en las alertas del barrio, a los edificios cercanos) solo para que la app funcione. No reclamamos la propiedad de tu contenido."
+        ]
+      },
+      {
+        "h2": "6. La administración de la comunidad",
+        "paragraphs": [
+          "Quien crea una comunidad queda como administración y puede nombrar a otras personas. La administración es responsable de compartir el código de invitación solo con residentes, de publicar avisos y votaciones con información veraz y de gestionar los reportes."
+        ]
+      },
+      {
+        "h2": "7. Plan gratuito y anuncios",
+        "paragraphs": [
+          "El plan gratuito incluye las funciones principales y muestra anuncios (banners, anuncios al abrir la app y anuncios a pantalla completa en pausas naturales). Algunos límites aplican, como el número de votaciones abiertas a la vez."
+        ]
+      },
+      {
+        "h2": "8. Comunidad Pro (suscripción)",
+        "list": [
+          "Es una suscripción <strong>por comunidad</strong> que compra la administración en Google Play; beneficia a todos los vecinos de esa comunidad.",
+          "El precio depende del tamaño del edificio (rango de unidades) y se muestra antes de comprar, con impuestos según tu país.",
+          "Se renueva automáticamente cada mes o año hasta que la canceles en Google Play (Suscripciones). Puedes cancelar cuando quieras; seguirá activa hasta el final del periodo pagado.",
+          "Los reembolsos se rigen por las políticas de Google Play.",
+          "Si el número de unidades del edificio supera el rango pagado, las funciones Pro se pausan hasta cambiar al plan correspondiente.",
+          "Eliminar tu cuenta no cancela la suscripción: cancélala en Google Play."
+        ]
+      },
+      {
+        "h2": "9. Resumen con inteligencia artificial",
+        "paragraphs": [
+          "El resumen semanal de las comunidades Pro se genera automáticamente con IA a partir del chat general, avisos y reportes. Puede contener errores u omisiones: no lo uses como única fuente para decisiones importantes."
+        ]
+      },
+      {
+        "h2": "10. Disponibilidad del servicio",
+        "paragraphs": [
+          "Hacemos lo posible para que la app funcione siempre, pero depende de servicios de terceros (Google, Cloudflare, RevenueCat, mapas de OpenStreetMap) y puede tener interrupciones, límites de uso o cambios. Podemos actualizar, cambiar o retirar funciones. Algunas versiones exigen actualizar la app para seguir usándola."
+        ]
+      },
+      {
+        "h2": "11. Responsabilidad",
+        "paragraphs": [
+          "En la medida que permita la ley, Chat SimpApp se ofrece “tal como está”. No somos responsables por el contenido que publican los usuarios, por decisiones tomadas en votaciones o con base en alertas o resúmenes, ni por daños indirectos derivados del uso de la app. Nada en estos términos limita los derechos que te da la ley de protección al consumidor de tu país."
+        ]
+      },
+      {
+        "h2": "12. Fin del uso",
+        "paragraphs": [
+          "Puedes dejar de usar la app y eliminar tu cuenta cuando quieras (<a href=\"/delete-data.html\">cómo hacerlo</a>). Podemos suspender cuentas que incumplan estos términos."
+        ]
+      },
+      {
+        "h2": "13. Cambios",
+        "paragraphs": [
+          "Podemos actualizar estos términos. Publicaremos la nueva versión aquí con su fecha y, si el cambio es importante, te avisaremos en la app."
+        ]
+      },
+      {
+        "h2": "14. Ley aplicable",
+        "paragraphs": [
+          "Estos términos se rigen por las leyes de la República de Colombia, sin perjuicio de las normas de protección al consumidor de tu país de residencia."
+        ]
+      },
+      {
+        "h2": "15. Contacto",
+        "paragraphs": [
+          "<strong>chatsimpapp@rj2techsolutions.com</strong><br>Dirección: Cl. 22 #30-7, Cúcuta - 540013, Colombia"
+        ]
+      }
+    ]
+  },
+  "en": {
+    "htmlLang": "en",
+    "pageTitle": "Chat SimpApp Terms and Conditions",
+    "title": "Chat SimpApp Terms and Conditions",
+    "meta": [
+      "Last updated: November 21, 2026",
+      "Provider: Jonathan Javier Ramirez – RJ2 Tech Solutions (individual, merchant on Google Play)",
+      "Contact email: chatsimpapp@rj2techsolutions.com"
+    ],
+    "lead": "These Terms govern your use of the <strong>Chat SimpApp</strong> app. By installing or using it you accept them; if you do not agree, do not use it. How we handle your data is explained in the <a href=\"/privacy-policy.html\">Privacy Policy</a>, which is part of these terms.",
+    "sections": [
+      {
+        "h2": "1. Who provides Chat SimpApp",
+        "paragraphs": [
+          "Chat SimpApp is provided by <strong>Jonathan Javier Ramirez</strong> (RJ2 Tech Solutions), an individual located at Cl. 22 #30-7, Cúcuta - 540013, Colombia, acting as merchant on Google Play. Contact: <strong>chatsimpapp@rj2techsolutions.com</strong>."
+        ]
+      },
+      {
+        "h2": "2. What Chat SimpApp is",
+        "paragraphs": [
+          "A communication tool for neighbor communities: chat, official notices, emergency alerts, votes with quorum, damage reports, a bulletin board and neighborhood alerts on a map.",
+          "<strong>Chat SimpApp is not your building’s administration nor an emergency service.</strong> Votes and minutes are an aid: their legal validity depends on your building’s bylaws and the law of your country. Alerts do not replace the authorities: in a real emergency, call your country’s emergency services."
+        ]
+      },
+      {
+        "h2": "3. Requirements",
+        "list": [
+          "have a Google account and be at least 18 years old, or have your parents’ or guardians’ permission;",
+          "truly belong to the community you join and state your correct unit;",
+          "use the app only for lawful, community purposes."
+        ]
+      },
+      {
+        "h2": "4. Community rules",
+        "paragraphs": [
+          "In Chat SimpApp you may not:"
+        ],
+        "list": [
+          "harass, threaten, insult, discriminate against or defame others;",
+          "point at or report people as “suspicious”, or post third parties’ personal data (names, photos, license plates, phone numbers) without their permission;",
+          "post false alerts or emergencies;",
+          "send spam, unsolicited advertising or illegal content;",
+          "impersonate another person, the administration or a unit;",
+          "try to access other communities, abuse the service or interfere with its operation."
+        ],
+        "afterList": [
+          "We may remove content and suspend or delete accounts that break these rules. Each community’s administration may also remove people who no longer belong to it."
+        ]
+      },
+      {
+        "h2": "5. Your content",
+        "paragraphs": [
+          "You are responsible for what you post. You allow us to store it and show it to the right people (your community, your chat or, for neighborhood alerts, nearby buildings) only to make the app work. We do not claim ownership of your content."
+        ]
+      },
+      {
+        "h2": "6. Community administration",
+        "paragraphs": [
+          "Whoever creates a community becomes its administration and can appoint others. The administration is responsible for sharing the invite code only with residents, posting truthful notices and votes, and handling reports."
+        ]
+      },
+      {
+        "h2": "7. Free plan and ads",
+        "paragraphs": [
+          "The free plan includes the main features and shows ads (banners, app-open ads and full-screen ads at natural breaks). Some limits apply, such as the number of open votes at a time."
+        ]
+      },
+      {
+        "h2": "8. Community Pro (subscription)",
+        "list": [
+          "It is a <strong>per-community</strong> subscription bought by the administration on Google Play; it benefits all neighbors of that community.",
+          "The price depends on the building’s size (unit range) and is shown before purchase, with taxes according to your country.",
+          "It renews automatically every month or year until you cancel it on Google Play (Subscriptions). You can cancel anytime; it stays active until the end of the paid period.",
+          "Refunds follow Google Play’s policies.",
+          "If the building’s number of units exceeds the paid range, Pro features pause until switching to the matching plan.",
+          "Deleting your account does not cancel the subscription: cancel it on Google Play."
+        ]
+      },
+      {
+        "h2": "9. AI summary",
+        "paragraphs": [
+          "The weekly summary for Pro communities is generated automatically with AI from the general chat, notices and reports. It may contain errors or omissions: do not rely on it alone for important decisions."
+        ]
+      },
+      {
+        "h2": "10. Service availability",
+        "paragraphs": [
+          "We do our best to keep the app working, but it depends on third-party services (Google, Cloudflare, RevenueCat, OpenStreetMap maps) and may have interruptions, usage limits or changes. We may update, change or remove features. Some versions require updating the app to keep using it."
+        ]
+      },
+      {
+        "h2": "11. Liability",
+        "paragraphs": [
+          "To the extent permitted by law, Chat SimpApp is provided “as is”. We are not responsible for content posted by users, for decisions made in votes or based on alerts or summaries, or for indirect damages arising from using the app. Nothing in these terms limits the rights granted to you by consumer protection law in your country."
+        ]
+      },
+      {
+        "h2": "12. Ending use",
+        "paragraphs": [
+          "You can stop using the app and delete your account at any time (<a href=\"/delete-data.html\">how</a>). We may suspend accounts that break these terms."
+        ]
+      },
+      {
+        "h2": "13. Changes",
+        "paragraphs": [
+          "We may update these terms. We will publish the new version here with its date and, for important changes, notify you in the app."
+        ]
+      },
+      {
+        "h2": "14. Governing law",
+        "paragraphs": [
+          "These terms are governed by the laws of the Republic of Colombia, without prejudice to the consumer protection rules of your country of residence."
+        ]
+      },
+      {
+        "h2": "15. Contact",
+        "paragraphs": [
+          "<strong>chatsimpapp@rj2techsolutions.com</strong><br>Address: Cl. 22 #30-7, Cúcuta - 540013, Colombia"
+        ]
+      }
+    ]
+  }
+};
+
+    function renderList(items) {
+      if (!items || !items.length) return '';
+      return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+    }
+
+    function renderSubsection(sub) {
+      return `
+        <h3>${sub.h3}</h3>
+        ${(sub.paragraphs || []).map(p => `<p>${p}</p>`).join('')}
+        ${renderList(sub.list)}
+        ${(sub.afterList || []).map(p => `<p>${p}</p>`).join('')}
+      `;
+    }
+
+    function renderSection(section) {
+      if (section.grid) {
+        return `
+          <section>
+            <h2>${section.h2}</h2>
+            <div class="grid grid-2">
+              ${section.grid.map(col => `
+                <div>
+                  <h3>${col.h3}</h3>
+                  ${renderList(col.list)}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        `;
+      }
+
+      return `
+        <section>
+          <h2>${section.h2}</h2>
+          ${(section.paragraphs || []).map(p => `<p>${p}</p>`).join('')}
+          ${renderList(section.list)}
+          ${(section.afterList || []).map(p => `<p>${p}</p>`).join('')}
+          ${(section.subsections || []).map(renderSubsection).join('')}
+        </section>
+      `;
+    }
+
+    function renderPolicy(lang) {
+      const t = policyData[lang];
+      document.documentElement.lang = t.htmlLang;
+      document.title = t.pageTitle;
+      document.getElementById('policy-root').innerHTML = `
+        <div data-lang-content="${lang}" class="active">
+          <h1>${t.title}</h1>
+          <div class="meta">${t.meta.join('<br>')}</div>
+          <div class="lead">${t.lead}</div>
+          ${t.sections.map(renderSection).join('')}
+        </div>
+      `;
+
+      document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.langBtn === lang);
+      });
+    }
+
+    const savedLang = localStorage.getItem('chatsimpapp-policy-lang');
+    const browserLang = (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en';
+    const initialLang = savedLang && policyData[savedLang] ? savedLang : browserLang;
+    renderPolicy(initialLang);
+
+    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.langBtn;
+        localStorage.setItem('chatsimpapp-policy-lang', lang);
+        renderPolicy(lang);
+      });
+    });
+  </script>
+</body>
+</html>

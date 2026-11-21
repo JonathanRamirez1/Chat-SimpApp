@@ -1,3 +1,4 @@
+import { deleteAccount } from "./account";
 import { authenticate, safeEqual } from "./auth";
 import { CRON_TASKS, type CronTask } from "./cron";
 import type { Env } from "./env";
@@ -15,6 +16,7 @@ import { handleWebhook, syncFromApp } from "./revenuecat";
  *   POST /v1/presence/query      → últ. vez de varias personas             (app)
  *   POST /v1/notify              → envía la notificación de algo publicado (app)
  *   POST /v1/pro/sync            → sincroniza Pro desde RevenueCat         (app, administración)
+ *   POST /v1/account/delete      → elimina la cuenta y sus datos           (app)
  *   POST /webhooks/revenuecat    → webhook de RevenueCat
  *   POST /cron/<tarea>           → tareas programadas (Worker compartido rj2-cron)
  */
@@ -72,6 +74,8 @@ export default {
           return json({ ok: true, ...(await notify(env, uid, body)) });
         case "/v1/pro/sync":
           return json({ ok: true, ...(await syncFromApp(env, uid, body)) });
+        case "/v1/account/delete":
+          return json({ ok: true, ...(await deleteAccount(env, uid)) });
         default:
           throw new HttpError(404, "No encontrado");
       }

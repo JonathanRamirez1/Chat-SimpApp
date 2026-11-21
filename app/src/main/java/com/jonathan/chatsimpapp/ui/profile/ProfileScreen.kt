@@ -21,10 +21,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Logout
+import androidx.compose.material.icons.rounded.DeleteForever
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Mail
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +43,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,6 +78,7 @@ data class ProfileUiState(
     val name: String = "",
     val about: String = "",
     val saving: Boolean = false,
+    val deleting: Boolean = false,
     @param:StringRes val message: Int? = null,
 ) {
     val dirty: Boolean get() = user != null && (name.trim() != user.displayName || about.trim() != user.about)
@@ -115,6 +122,14 @@ class ProfileViewModel @Inject constructor(
     fun signOut() {
         viewModelScope.launch { auth.signOut() }
     }
+
+    fun deleteAccount() {
+        viewModelScope.launch {
+            _state.update { it.copy(deleting = true) }
+            runCatching { auth.deleteAccount() }
+                .onFailure { _state.update { it.copy(deleting = false, message = R.string.error_delete_account) } }
+        }
+    }
 }
 
 @Composable
@@ -126,6 +141,7 @@ fun ProfileScreen(onBack: () -> Unit, viewModel: ProfileViewModel = hiltViewMode
         onAboutChange = viewModel::onAboutChange,
         onSave = viewModel::save,
         onSignOut = viewModel::signOut,
+        onDeleteAccount = viewModel::deleteAccount,
         onBack = onBack,
         onMessageShown = viewModel::onMessageShown,
     )
@@ -141,7 +157,9 @@ fun ProfileContent(
     onSignOut: () -> Unit,
     onBack: () -> Unit,
     onMessageShown: () -> Unit,
+    onDeleteAccount: () -> Unit = {},
 ) {
+    var confirmDelete by rememberSaveable { mutableStateOf(false) }
     val snackbar = remember { SnackbarHostState() }
     val message = state.message?.let { stringResource(it) }
     LaunchedEffect(message) {
@@ -217,6 +235,13 @@ fun ProfileContent(
                         tint = colors.error,
                         onClick = onSignOut,
                     )
+                    InfoRow(
+                        Icons.Rounded.DeleteForever,
+                        stringResource(R.string.delete_account),
+                        stringResource(R.string.delete_account_subtitle),
+                        tint = colors.error,
+                        onClick = { confirmDelete = true },
+                    )
                 }
             }
             Spacer(Modifier.height(24.dp))
@@ -227,6 +252,24 @@ fun ProfileContent(
             )
             Spacer(Modifier.height(24.dp))
         }
+    }
+
+    if (confirmDelete) {
+        AlertDialog(
+            onDismissRequest = { if (!state.deleting) confirmDelete = false },
+            icon = { Icon(Icons.Rounded.DeleteForever, null, tint = colors.error) },
+            title = { Text(stringResource(R.string.delete_account_confirm_title)) },
+            text = { Text(stringResource(R.string.delete_account_confirm_body)) },
+            confirmButton = {
+                TextButton(onClick = onDeleteAccount, enabled = !state.deleting) {
+                    if (state.deleting) CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
+                    else Text(stringResource(R.string.delete_account_confirm), color = colors.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { confirmDelete = false }, enabled = !state.deleting) { Text(stringResource(R.string.cancel)) }
+            },
+        )
     }
 }
 

@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Política de Privacidad de Chat SimpApp</title>
+  <style>
+    :root {
+      --ink: #1f2340;
+      --muted: #5e6685;
+      --line: #dde2f2;
+      --bg: #f6f8ff;
+      --card: #ffffff;
+      --accent: #4c63d2;
+      --accent-2: #eef2ff;
+      --shadow: 0 8px 28px rgba(25, 32, 74, 0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .lang-switcher {
+      display: inline-flex;
+      gap: 8px;
+      background: #fff;
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 18px;
+      z-index: 20;
+    }
+    .lang-switcher button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .lang-switcher button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    h1, h2, h3 { line-height: 1.2; }
+    h1 { font-size: 2rem; margin: 0 0 10px; }
+    h2 { font-size: 1.35rem; margin-top: 34px; }
+    h3 { font-size: 1.05rem; margin-top: 24px; }
+    p, li { font-size: 1rem; }
+    .meta { color: var(--muted); margin-bottom: 20px; }
+    .lead {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--accent-2);
+      border: 1px solid #dbe4ff;
+      margin: 20px 0 24px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    ul { padding-left: 20px; }
+    a { color: var(--accent); }
+    [data-lang-content] { display: none; }
+    [data-lang-content].active { display: block; }
+    @media (min-width: 760px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="lang-switcher" aria-label="Language selector">
+        <button type="button" data-lang-btn="es" class="active">ES</button>
+        <button type="button" data-lang-btn="en">EN</button>
+      </div>
+    </div>
+
+    <div class="card" id="policy-root"></div>
+  </div>
+
+  <script>
+    const policyData = {
+  "es": {
+    "htmlLang": "es",
+    "pageTitle": "Política de Privacidad de Chat SimpApp",
+    "title": "Política de Privacidad de Chat SimpApp",
+    "meta": [
+      "Última actualización: 21 de noviembre de 2026",
+      "Responsable: Jonathan Javier Ramirez – RJ2 Tech Solutions (persona natural, operador en Google Play)",
+      "Correo de contacto: chatsimpapp@rj2techsolutions.com"
+    ],
+    "lead": "Chat SimpApp es una app para comunidades de vecinos (edificios y conjuntos residenciales): chat, avisos oficiales, votaciones, reportes de daños, tablón y alertas del barrio. Aquí explicamos qué datos usamos, para qué y cómo puedes controlarlos. <strong>No pedimos tu número de teléfono, tus contactos, tus fotos ni tus archivos.</strong>",
+    "sections": [
+      {
+        "h2": "1. Quién es responsable de tus datos",
+        "paragraphs": [
+          "El responsable es <strong>Jonathan Javier Ramirez</strong> (RJ2 Tech Solutions), persona natural con domicilio en Cl. 22 #30-7, Cúcuta - 540013, Colombia. Para cualquier consulta sobre tus datos escribe a <strong>chatsimpapp@rj2techsolutions.com</strong>."
+        ]
+      },
+      {
+        "h2": "2. Qué datos usamos",
+        "subsections": [
+          {
+            "h3": "Tu cuenta de Google",
+            "paragraphs": [
+              "Para entrar usas tu cuenta de Google. Recibimos tu <strong>nombre, correo, foto de perfil e identificador de cuenta</strong>. No recibimos tu contraseña."
+            ]
+          },
+          {
+            "h3": "Tu perfil y tu comunidad",
+            "list": [
+              "nombre visible y el texto de “Info” que escribas;",
+              "las comunidades a las que perteneces, tu <strong>unidad</strong> (apartamento o casa), tu rol (residente o administración) y la fecha en que entraste;",
+              "la hora de la última vez que abriste la app (para mostrar “últ. vez”)."
+            ]
+          },
+          {
+            "h3": "Lo que publicas",
+            "list": [
+              "mensajes de texto en chats privados, grupos y el chat general del edificio;",
+              "avisos oficiales y alertas de emergencia;",
+              "votaciones y los votos de cada unidad;",
+              "reportes de daños, sus estados y notas;",
+              "publicaciones del tablón (presto, busco, recomiendo, perdido, vendo)."
+            ]
+          },
+          {
+            "h3": "Alertas del barrio y ubicación",
+            "paragraphs": [
+              "Si usas el mapa de alertas del barrio, la app pide tu ubicación <strong>solo mientras lo usas</strong> (nunca en segundo plano) para centrar el mapa y marcar dónde pasó lo que reportas. La alerta guarda el tipo, una descripción opcional y una <strong>ubicación aproximada</strong> (redondeada a unos 11 metros), no la de tu casa. La administración puede marcar la ubicación del edificio para dibujar el barrio."
+            ]
+          },
+          {
+            "h3": "Datos técnicos",
+            "list": [
+              "un token para enviarte notificaciones;",
+              "verificaciones de integridad de la app (Firebase App Check con Google Play Integrity) para impedir abusos;",
+              "registros técnicos de errores y uso del servidor."
+            ]
+          },
+          {
+            "h3": "Compras",
+            "paragraphs": [
+              "El plan <strong>Comunidad Pro</strong> se paga con Google Play. Google procesa el pago; nosotros nunca vemos los datos de tu tarjeta. RevenueCat registra el estado de la suscripción de la comunidad."
+            ]
+          },
+          {
+            "h3": "Publicidad",
+            "paragraphs": [
+              "En el plan gratuito mostramos anuncios de Google AdMob. Según tu consentimiento (que se pide en la app cuando la ley lo exige), AdMob puede usar el identificador de publicidad del dispositivo y datos técnicos para mostrar y medir anuncios. Las comunidades Pro no ven anuncios."
+            ]
+          }
+        ]
+      },
+      {
+        "h2": "3. Para qué usamos tus datos",
+        "list": [
+          "crear tu cuenta y mostrar tu perfil a tus vecinos;",
+          "hacer funcionar el chat, los avisos, las votaciones, los reportes, el tablón y el mapa;",
+          "enviarte notificaciones (avisos, emergencias, votaciones, cambios en reportes que afectan a tu unidad, alertas de seguridad cerca de tu edificio y mensajes privados);",
+          "activar y mantener la suscripción Pro de tu comunidad;",
+          "generar, solo en comunidades Pro, el <strong>resumen semanal con inteligencia artificial</strong>;",
+          "proteger la app contra abusos, fraude y uso indebido, y cumplir la ley;",
+          "mostrar publicidad en el plan gratuito."
+        ]
+      },
+      {
+        "h2": "4. Quién ve tu información",
+        "list": [
+          "<strong>Tus vecinos de la misma comunidad</strong> ven tu nombre, foto, unidad, “Info”, tus mensajes en los chats que comparten, tus avisos, reportes, publicaciones y los votos por unidad en las actas.",
+          "<strong>Vecinos de edificios cercanos</strong> (unos 2 km) ven las alertas del barrio que publicas, con el nombre de tu edificio pero <strong>sin tu nombre</strong>.",
+          "Las personas de un chat privado o grupo ven los mensajes de ese chat.",
+          "No vendemos tus datos ni los compartimos con terceros para su propia publicidad."
+        ]
+      },
+      {
+        "h2": "5. Proveedores que nos ayudan",
+        "paragraphs": [
+          "Usamos estos servicios, que tratan datos por nuestra cuenta y con sus propias medidas de seguridad:"
+        ],
+        "list": [
+          "<strong>Google Firebase</strong>: inicio de sesión, base de datos, notificaciones, configuración remota, App Check y alojamiento de estas páginas.",
+          "<strong>Google Gemini</strong> (vía Firebase AI Logic): solo en comunidades Pro, para el resumen semanal procesa los mensajes del chat general, avisos y reportes de la última semana, identificando a las personas por su unidad.",
+          "<strong>Cloudflare</strong>: servidor de la app (notificaciones, “últ. vez”, suscripciones) y su base de datos.",
+          "<strong>RevenueCat</strong> y <strong>Google Play</strong>: compras y suscripciones.",
+          "<strong>Google AdMob</strong>: publicidad en el plan gratuito.",
+          "<strong>OpenFreeMap / OpenStreetMap</strong>: imágenes del mapa; al cargarlo reciben tu dirección IP, como cualquier sitio web."
+        ],
+        "afterList": [
+          "Estos proveedores pueden tener servidores fuera de tu país (por ejemplo, en Estados Unidos). Al usar la app aceptas esa transferencia, que se hace con las garantías que ofrecen."
+        ]
+      },
+      {
+        "h2": "6. Cuánto tiempo guardamos los datos",
+        "list": [
+          "Alertas del barrio: se borran solas al vencer (12 horas las de seguridad, hasta 30 días las de daños).",
+          "Tu perfil y membresías: mientras tengas la cuenta.",
+          "Mensajes y contenido de la comunidad: mientras exista el chat o la comunidad. Si eliminas tu cuenta, lo que ya enviaste queda sin tu nombre.",
+          "Tokens de notificación: se borran tras 6 meses sin uso o al cerrar sesión.",
+          "Registros técnicos: hasta 30 días."
+        ]
+      },
+      {
+        "h2": "7. Tus derechos",
+        "paragraphs": [
+          "Puedes conocer, actualizar, rectificar y pedir la eliminación de tus datos, y revocar tu consentimiento, conforme a la Ley 1581 de 2012 de Colombia y a las leyes de protección de datos que te apliquen. Puedes editar tu nombre e “Info” en tu perfil, eliminar tu cuenta desde la app o escribirnos a <strong>chatsimpapp@rj2techsolutions.com</strong>. Respondemos en un máximo de 15 días hábiles."
+        ]
+      },
+      {
+        "h2": "8. Eliminar tu cuenta",
+        "paragraphs": [
+          "En la app: <strong>Perfil → Eliminar mi cuenta</strong>. También puedes pedirlo sin la app. Los pasos y qué se borra están en <a href=\"/delete-data.html\">Eliminar cuenta y datos</a>."
+        ]
+      },
+      {
+        "h2": "9. Menores de edad",
+        "paragraphs": [
+          "Chat SimpApp no está dirigida a menores de 13 años. Si crees que un menor nos dio datos sin autorización, escríbenos a <strong>chatsimpapp@rj2techsolutions.com</strong> y los borraremos."
+        ]
+      },
+      {
+        "h2": "10. Seguridad",
+        "paragraphs": [
+          "Usamos conexiones cifradas, reglas de acceso que solo dejan ver la información de tu comunidad, verificación de la app (App Check) y claves guardadas fuera del código. Ningún sistema es 100 % seguro, pero trabajamos para proteger tus datos."
+        ]
+      },
+      {
+        "h2": "11. Cambios a esta política",
+        "paragraphs": [
+          "Si cambiamos esta política, actualizaremos la fecha de arriba y, si el cambio es importante, te avisaremos en la app."
+        ]
+      },
+      {
+        "h2": "12. Contacto",
+        "paragraphs": [
+          "<strong>chatsimpapp@rj2techsolutions.com</strong><br>Dirección: Cl. 22 #30-7, Cúcuta - 540013, Colombia"
+        ]
+      }
+    ]
+  },
+  "en": {
+    "htmlLang": "en",
+    "pageTitle": "Chat SimpApp Privacy Policy",
+    "title": "Chat SimpApp Privacy Policy",
+    "meta": [
+      "Last updated: November 21, 2026",
+      "Controller: Jonathan Javier Ramirez – RJ2 Tech Solutions (individual, merchant on Google Play)",
+      "Contact email: chatsimpapp@rj2techsolutions.com"
+    ],
+    "lead": "Chat SimpApp is an app for neighbor communities (apartment buildings and residential complexes): chat, official notices, votes, damage reports, a bulletin board and neighborhood alerts. This policy explains what data we use, why, and how you can control it. <strong>We do not ask for your phone number, contacts, photos or files.</strong>",
+    "sections": [
+      {
+        "h2": "1. Who is responsible for your data",
+        "paragraphs": [
+          "The controller is <strong>Jonathan Javier Ramirez</strong> (RJ2 Tech Solutions), an individual located at Cl. 22 #30-7, Cúcuta - 540013, Colombia. For any question about your data, write to <strong>chatsimpapp@rj2techsolutions.com</strong>."
+        ]
+      },
+      {
+        "h2": "2. Data we use",
+        "subsections": [
+          {
+            "h3": "Your Google account",
+            "paragraphs": [
+              "You sign in with your Google account. We receive your <strong>name, email, profile photo and account identifier</strong>. We never receive your password."
+            ]
+          },
+          {
+            "h3": "Your profile and community",
+            "list": [
+              "display name and the “About” text you write;",
+              "the communities you belong to, your <strong>unit</strong> (apartment or house), your role (resident or administration) and when you joined;",
+              "the last time you opened the app (to show “last seen”)."
+            ]
+          },
+          {
+            "h3": "What you post",
+            "list": [
+              "text messages in private chats, groups and the building’s general chat;",
+              "official notices and emergency alerts;",
+              "votes and each unit’s vote;",
+              "damage reports, their status and notes;",
+              "bulletin board posts (lend, looking for, recommend, lost, sell)."
+            ]
+          },
+          {
+            "h3": "Neighborhood alerts and location",
+            "paragraphs": [
+              "If you use the neighborhood alerts map, the app asks for your location <strong>only while you use it</strong> (never in the background) to center the map and mark where the reported event happened. An alert stores its type, an optional description and an <strong>approximate location</strong> (rounded to about 11 meters), not your home. The administration may mark the building’s location to draw the neighborhood."
+            ]
+          },
+          {
+            "h3": "Technical data",
+            "list": [
+              "a token to send you notifications;",
+              "app integrity checks (Firebase App Check with Google Play Integrity) to prevent abuse;",
+              "technical error and server usage logs."
+            ]
+          },
+          {
+            "h3": "Purchases",
+            "paragraphs": [
+              "The <strong>Community Pro</strong> plan is paid through Google Play. Google processes the payment; we never see your card details. RevenueCat records the community’s subscription status."
+            ]
+          },
+          {
+            "h3": "Advertising",
+            "paragraphs": [
+              "On the free plan we show Google AdMob ads. Depending on your consent (requested in the app where the law requires it), AdMob may use the device advertising ID and technical data to show and measure ads. Pro communities see no ads."
+            ]
+          }
+        ]
+      },
+      {
+        "h2": "3. Why we use your data",
+        "list": [
+          "to create your account and show your profile to your neighbors;",
+          "to run the chat, notices, votes, reports, bulletin board and map;",
+          "to send you notifications (notices, emergencies, votes, updates to reports affecting your unit, security alerts near your building and private messages);",
+          "to activate and maintain your community’s Pro subscription;",
+          "to generate, only in Pro communities, the <strong>weekly AI summary</strong>;",
+          "to protect the app against abuse and fraud and to comply with the law;",
+          "to show ads on the free plan."
+        ]
+      },
+      {
+        "h2": "4. Who sees your information",
+        "list": [
+          "<strong>Neighbors in the same community</strong> see your name, photo, unit, “About”, your messages in shared chats, your notices, reports, posts and per-unit votes in the minutes.",
+          "<strong>Neighbors in nearby buildings</strong> (about 2 km) see the neighborhood alerts you post, with your building’s name but <strong>without your name</strong>.",
+          "People in a private chat or group see that chat’s messages.",
+          "We do not sell your data or share it with third parties for their own advertising."
+        ]
+      },
+      {
+        "h2": "5. Service providers",
+        "paragraphs": [
+          "We use these services, which process data on our behalf with their own security measures:"
+        ],
+        "list": [
+          "<strong>Google Firebase</strong>: sign-in, database, notifications, remote configuration, App Check and hosting of these pages.",
+          "<strong>Google Gemini</strong> (via Firebase AI Logic): only in Pro communities, for the weekly summary it processes the last week’s general chat messages, notices and reports, identifying people by their unit.",
+          "<strong>Cloudflare</strong>: the app’s server (notifications, “last seen”, subscriptions) and its database.",
+          "<strong>RevenueCat</strong> and <strong>Google Play</strong>: purchases and subscriptions.",
+          "<strong>Google AdMob</strong>: ads on the free plan.",
+          "<strong>OpenFreeMap / OpenStreetMap</strong>: map images; when the map loads they receive your IP address, like any website."
+        ],
+        "afterList": [
+          "These providers may have servers outside your country (for example, in the United States). By using the app you accept this transfer, made under the safeguards they offer."
+        ]
+      },
+      {
+        "h2": "6. How long we keep data",
+        "list": [
+          "Neighborhood alerts: deleted automatically when they expire (12 hours for security alerts, up to 30 days for damage).",
+          "Your profile and memberships: while you keep your account.",
+          "Messages and community content: while the chat or community exists. If you delete your account, what you already sent remains without your name.",
+          "Notification tokens: deleted after 6 months without use or when you sign out.",
+          "Technical logs: up to 30 days."
+        ]
+      },
+      {
+        "h2": "7. Your rights",
+        "paragraphs": [
+          "You can access, update, correct and request deletion of your data, and withdraw your consent, under Colombia’s Law 1581 of 2012 and any data protection law that applies to you. You can edit your name and “About” in your profile, delete your account in the app, or write to <strong>chatsimpapp@rj2techsolutions.com</strong>. We answer within 15 business days."
+        ]
+      },
+      {
+        "h2": "8. Deleting your account",
+        "paragraphs": [
+          "In the app: <strong>Profile → Delete my account</strong>. You can also request it without the app. The steps and what is deleted are on <a href=\"/delete-data.html\">Delete account and data</a>."
+        ]
+      },
+      {
+        "h2": "9. Children",
+        "paragraphs": [
+          "Chat SimpApp is not directed to children under 13. If you believe a child gave us data without authorization, write to <strong>chatsimpapp@rj2techsolutions.com</strong> and we will delete it."
+        ]
+      },
+      {
+        "h2": "10. Security",
+        "paragraphs": [
+          "We use encrypted connections, access rules that only show your community’s information, app verification (App Check) and keys stored outside the code. No system is 100% secure, but we work to protect your data."
+        ]
+      },
+      {
+        "h2": "11. Changes to this policy",
+        "paragraphs": [
+          "If we change this policy we will update the date above and, for important changes, notify you in the app."
+        ]
+      },
+      {
+        "h2": "12. Contact",
+        "paragraphs": [
+          "<strong>chatsimpapp@rj2techsolutions.com</strong><br>Address: Cl. 22 #30-7, Cúcuta - 540013, Colombia"
+        ]
+      }
+    ]
+  }
+};
+
+    function renderList(items) {
+      if (!items || !items.length) return '';
+      return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+    }
+
+    function renderSubsection(sub) {
+      return `
+        <h3>${sub.h3}</h3>
+        ${(sub.paragraphs || []).map(p => `<p>${p}</p>`).join('')}
+        ${renderList(sub.list)}
+        ${(sub.afterList || []).map(p => `<p>${p}</p>`).join('')}
+      `;
+    }
+
+    function renderSection(section) {
+      if (section.grid) {
+        return `
+          <section>
+            <h2>${section.h2}</h2>
+            <div class="grid grid-2">
+              ${section.grid.map(col => `
+                <div>
+                  <h3>${col.h3}</h3>
+                  ${renderList(col.list)}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        `;
+      }
+
+      return `
+        <section>
+          <h2>${section.h2}</h2>
+          ${(section.paragraphs || []).map(p => `<p>${p}</p>`).join('')}
+          ${renderList(section.list)}
+          ${(section.afterList || []).map(p => `<p>${p}</p>`).join('')}
+          ${(section.subsections || []).map(renderSubsection).join('')}
+        </section>
+      `;
+    }
+
+    function renderPolicy(lang) {
+      const t = policyData[lang];
+      document.documentElement.lang = t.htmlLang;
+      document.title = t.pageTitle;
+      document.getElementById('policy-root').innerHTML = `
+        <div data-lang-content="${lang}" class="active">
+          <h1>${t.title}</h1>
+          <div class="meta">${t.meta.join('<br>')}</div>
+          <div class="lead">${t.lead}</div>
+          ${t.sections.map(renderSection).join('')}
+        </div>
+      `;
+
+      document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.langBtn === lang);
+      });
+    }
+
+    const savedLang = localStorage.getItem('chatsimpapp-policy-lang');
+    const browserLang = (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en';
+    const initialLang = savedLang && policyData[savedLang] ? savedLang : browserLang;
+    renderPolicy(initialLang);
+
+    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.langBtn;
+        localStorage.setItem('chatsimpapp-policy-lang', lang);
+        renderPolicy(lang);
+      });
+    });
+  </script>
+</body>
+</html>

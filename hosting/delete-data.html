@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eliminar cuenta y datos · Chat SimpApp</title>
+  <style>
+    :root {
+      --ink: #1f2340;
+      --muted: #5e6685;
+      --line: #dde2f2;
+      --bg: #f6f8ff;
+      --card: #ffffff;
+      --accent: #4c63d2;
+      --accent-2: #eef2ff;
+      --shadow: 0 8px 28px rgba(25, 32, 74, 0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .lang-switcher {
+      display: inline-flex;
+      gap: 8px;
+      background: #fff;
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 18px;
+      z-index: 20;
+    }
+    .lang-switcher button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .lang-switcher button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    h1, h2, h3 { line-height: 1.2; }
+    h1 { font-size: 2rem; margin: 0 0 10px; }
+    h2 { font-size: 1.35rem; margin-top: 34px; }
+    h3 { font-size: 1.05rem; margin-top: 24px; }
+    p, li { font-size: 1rem; }
+    .meta { color: var(--muted); margin-bottom: 20px; }
+    .lead {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--accent-2);
+      border: 1px solid #dbe4ff;
+      margin: 20px 0 24px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    ul { padding-left: 20px; }
+    a { color: var(--accent); }
+    [data-lang-content] { display: none; }
+    [data-lang-content].active { display: block; }
+    @media (min-width: 760px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="lang-switcher" aria-label="Language selector">
+        <button type="button" data-lang-btn="es" class="active">ES</button>
+        <button type="button" data-lang-btn="en">EN</button>
+      </div>
+    </div>
+
+    <div class="card" id="policy-root"></div>
+  </div>
+
+  <script>
+    const policyData = {
+  "es": {
+    "htmlLang": "es",
+    "pageTitle": "Eliminar cuenta y datos · Chat SimpApp",
+    "title": "Eliminar tu cuenta y tus datos de Chat SimpApp",
+    "meta": [
+      "Última actualización: 21 de noviembre de 2026",
+      "Responsable: Jonathan Javier Ramirez – RJ2 Tech Solutions (persona natural, operador en Google Play)",
+      "Correo de contacto: chatsimpapp@rj2techsolutions.com"
+    ],
+    "lead": "Puedes eliminar tu cuenta de <strong>Chat SimpApp</strong> (de RJ2 Tech Solutions) y sus datos cuando quieras, desde la app o sin ella.",
+    "sections": [
+      {
+        "h2": "1. Desde la app",
+        "list": [
+          "Abre Chat SimpApp e inicia sesión.",
+          "Toca tu foto arriba a la derecha para abrir tu <strong>Perfil</strong>.",
+          "Toca <strong>Eliminar mi cuenta</strong> y confirma con <strong>Eliminar</strong>."
+        ],
+        "afterList": [
+          "La eliminación es inmediata y no se puede deshacer."
+        ]
+      },
+      {
+        "h2": "2. Sin la app",
+        "paragraphs": [
+          "Escribe a <strong>chatsimpapp@rj2techsolutions.com</strong> desde el correo de la cuenta de Google con la que entras, con el asunto <strong>“Eliminar mi cuenta”</strong>. Eliminaremos la cuenta y te confirmaremos en un máximo de 15 días hábiles."
+        ]
+      },
+      {
+        "h2": "3. Qué se elimina",
+        "list": [
+          "tu perfil (nombre, foto, correo e “Info”);",
+          "tu membresía y tu unidad en cada comunidad (sales de sus chats generales y de la administración);",
+          "tus tokens de notificación y tu “últ. vez”;",
+          "tu usuario de inicio de sesión (Firebase Authentication)."
+        ]
+      },
+      {
+        "h2": "4. Qué se conserva",
+        "list": [
+          "Los mensajes que ya enviaste quedan en sus chats <strong>sin tu nombre</strong> (aparecen como “Usuario desconocido”).",
+          "Los votos ya emitidos se conservan asociados a la <strong>unidad</strong>, no a ti, para que las actas de la comunidad sigan siendo correctas.",
+          "Los avisos, reportes y publicaciones que hiciste quedan en la comunidad sin tu nombre. Antes de eliminar la cuenta puedes borrar tus publicaciones del tablón y tus alertas del barrio desde la app, o pedirnos por correo que las borremos.",
+          "Las alertas del barrio se borran solas al vencer (máximo 30 días).",
+          "Registros técnicos del servidor: hasta 30 días."
+        ]
+      },
+      {
+        "h2": "5. Suscripción Pro",
+        "paragraphs": [
+          "La suscripción Comunidad Pro es del edificio y se paga en Google Play. <strong>Eliminar tu cuenta no la cancela</strong>: si la pagaste, cancélala en Google Play → Pagos y suscripciones → Suscripciones."
+        ]
+      },
+      {
+        "h2": "6. Contacto",
+        "paragraphs": [
+          "<strong>chatsimpapp@rj2techsolutions.com</strong><br>Dirección: Cl. 22 #30-7, Cúcuta - 540013, Colombia"
+        ]
+      }
+    ]
+  },
+  "en": {
+    "htmlLang": "en",
+    "pageTitle": "Delete account and data · Chat SimpApp",
+    "title": "Delete your Chat SimpApp account and data",
+    "meta": [
+      "Last updated: November 21, 2026",
+      "Controller: Jonathan Javier Ramirez – RJ2 Tech Solutions (individual, merchant on Google Play)",
+      "Contact email: chatsimpapp@rj2techsolutions.com"
+    ],
+    "lead": "You can delete your <strong>Chat SimpApp</strong> (by RJ2 Tech Solutions) account and its data at any time, in the app or without it.",
+    "sections": [
+      {
+        "h2": "1. In the app",
+        "list": [
+          "Open Chat SimpApp and sign in.",
+          "Tap your photo at the top right to open your <strong>Profile</strong>.",
+          "Tap <strong>Delete my account</strong> (“Eliminar mi cuenta”) and confirm."
+        ],
+        "afterList": [
+          "Deletion is immediate and cannot be undone."
+        ]
+      },
+      {
+        "h2": "2. Without the app",
+        "paragraphs": [
+          "Write to <strong>chatsimpapp@rj2techsolutions.com</strong> from the email of the Google account you sign in with, with the subject <strong>“Delete my account”</strong>. We will delete the account and confirm within 15 business days."
+        ]
+      },
+      {
+        "h2": "3. What is deleted",
+        "list": [
+          "your profile (name, photo, email and “About”);",
+          "your membership and unit in each community (you leave their general chats and administration);",
+          "your notification tokens and “last seen”;",
+          "your sign-in user (Firebase Authentication)."
+        ]
+      },
+      {
+        "h2": "4. What is kept",
+        "list": [
+          "Messages you already sent remain in their chats <strong>without your name</strong> (shown as “Unknown user”).",
+          "Votes already cast remain linked to the <strong>unit</strong>, not to you, so the community’s minutes stay correct.",
+          "Notices, reports and posts you made remain in the community without your name. Before deleting your account you can delete your bulletin board posts and neighborhood alerts in the app, or ask us by email to delete them.",
+          "Neighborhood alerts are deleted automatically when they expire (30 days at most).",
+          "Server technical logs: up to 30 days."
+        ]
+      },
+      {
+        "h2": "5. Pro subscription",
+        "paragraphs": [
+          "The Community Pro subscription belongs to the building and is paid on Google Play. <strong>Deleting your account does not cancel it</strong>: if you paid for it, cancel it in Google Play → Payments & subscriptions → Subscriptions."
+        ]
+      },
+      {
+        "h2": "6. Contact",
+        "paragraphs": [
+          "<strong>chatsimpapp@rj2techsolutions.com</strong><br>Address: Cl. 22 #30-7, Cúcuta - 540013, Colombia"
+        ]
+      }
+    ]
+  }
+};
+
+    function renderList(items) {
+      if (!items || !items.length) return '';
+      return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+    }
+
+    function renderSubsection(sub) {
+      return `
+        <h3>${sub.h3}</h3>
+        ${(sub.paragraphs || []).map(p => `<p>${p}</p>`).join('')}
+        ${renderList(sub.list)}
+        ${(sub.afterList || []).map(p => `<p>${p}</p>`).join('')}
+      `;
+    }
+
+    function renderSection(section) {
+      if (section.grid) {
+        return `
+          <section>
+            <h2>${section.h2}</h2>
+            <div class="grid grid-2">
+              ${section.grid.map(col => `
+                <div>
+                  <h3>${col.h3}</h3>
+                  ${renderList(col.list)}
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        `;
+      }
+
+      return `
+        <section>
+          <h2>${section.h2}</h2>
+          ${(section.paragraphs || []).map(p => `<p>${p}</p>`).join('')}
+          ${renderList(section.list)}
+          ${(section.afterList || []).map(p => `<p>${p}</p>`).join('')}
+          ${(section.subsections || []).map(renderSubsection).join('')}
+        </section>
+      `;
+    }
+
+    function renderPolicy(lang) {
+      const t = policyData[lang];
+      document.documentElement.lang = t.htmlLang;
+      document.title = t.pageTitle;
+      document.getElementById('policy-root').innerHTML = `
+        <div data-lang-content="${lang}" class="active">
+          <h1>${t.title}</h1>
+          <div class="meta">${t.meta.join('<br>')}</div>
+          <div class="lead">${t.lead}</div>
+          ${t.sections.map(renderSection).join('')}
+        </div>
+      `;
+
+      document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.langBtn === lang);
+      });
+    }
+
+    const savedLang = localStorage.getItem('chatsimpapp-policy-lang');
+    const browserLang = (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en';
+    const initialLang = savedLang && policyData[savedLang] ? savedLang : browserLang;
+    renderPolicy(initialLang);
+
+    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.langBtn;
+        localStorage.setItem('chatsimpapp-policy-lang', lang);
+        renderPolicy(lang);
+      });
+    });
+  </script>
+</body>
+</html>
