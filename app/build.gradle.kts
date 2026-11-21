@@ -22,15 +22,6 @@ android {
         versionName = "2.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // AdMob: por defecto los ids de PRUEBA de Google. Para producción, define en ~/.gradle/gradle.properties:
-        // admobAppId, admobBannerId, admobAppOpenId, admobInterstitialId, admobRewardedId.
-        val admobAppId = providers.gradleProperty("admobAppId").getOrElse("ca-app-pub-3940256099942544~3347511713")
-        fun adId(name: String, testId: String) = providers.gradleProperty(name).getOrElse(testId)
-        manifestPlaceholders["admobAppId"] = admobAppId
-        buildConfigField("String", "ADMOB_BANNER_ID", "\"${adId("admobBannerId", "ca-app-pub-3940256099942544/9214589741")}\"")
-        buildConfigField("String", "ADMOB_APP_OPEN_ID", "\"${adId("admobAppOpenId", "ca-app-pub-3940256099942544/9257395921")}\"")
-        buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"${adId("admobInterstitialId", "ca-app-pub-3940256099942544/1033173712")}\"")
-        buildConfigField("String", "ADMOB_REWARDED_ID", "\"${adId("admobRewardedId", "ca-app-pub-3940256099942544/5224354917")}\"")
         // RevenueCat: clave pública de Android ("goog_..."), en ~/.gradle/gradle.properties como revenueCatApiKey.
         buildConfigField("String", "REVENUECAT_API_KEY", "\"${providers.gradleProperty("revenueCatApiKey").getOrElse("")}\"")
         // Servidor en Cloudflare (Worker chat-simpapp-api).
@@ -58,8 +49,37 @@ android {
         }
     }
 
+    // AdMob. Los IDs no son secretos. Release usa los reales de Chat SimpApp (se pueden cambiar en
+    // ~/.gradle/gradle.properties); debug usa SIEMPRE los de prueba de Google, para no generar
+    // clics inválidos en la cuenta de AdMob mientras se prueba.
+    val admobTest = mapOf(
+        "admobAppId" to "ca-app-pub-3940256099942544~3347511713",
+        "admobBannerId" to "ca-app-pub-3940256099942544/9214589741",
+        "admobAppOpenId" to "ca-app-pub-3940256099942544/9257395921",
+        "admobInterstitialId" to "ca-app-pub-3940256099942544/1033173712",
+        "admobRewardedId" to "ca-app-pub-3940256099942544/5224354917",
+    )
+    val admobProd = mapOf(
+        "admobAppId" to "ca-app-pub-2631068461383213~6764034990",
+        "admobBannerId" to "ca-app-pub-2631068461383213/6847795470",
+        "admobAppOpenId" to "ca-app-pub-2631068461383213/5770729550",
+        "admobInterstitialId" to "ca-app-pub-2631068461383213/4457647885",
+        "admobRewardedId" to "ca-app-pub-2631068461383213/6884500675",
+    ).mapValues { (key, value) -> providers.gradleProperty(key).getOrElse(value) }
+    fun com.android.build.api.dsl.ApplicationBuildType.admob(ids: Map<String, String>) {
+        manifestPlaceholders["admobAppId"] = ids.getValue("admobAppId")
+        buildConfigField("String", "ADMOB_BANNER_ID", "\"${ids.getValue("admobBannerId")}\"")
+        buildConfigField("String", "ADMOB_APP_OPEN_ID", "\"${ids.getValue("admobAppOpenId")}\"")
+        buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"${ids.getValue("admobInterstitialId")}\"")
+        buildConfigField("String", "ADMOB_REWARDED_ID", "\"${ids.getValue("admobRewardedId")}\"")
+    }
+
     buildTypes {
+        debug {
+            admob(admobTest)
+        }
         release {
+            admob(admobProd)
             signingConfigs.findByName("upload")?.let { signingConfig = it }
             isMinifyEnabled = true
             isShrinkResources = true

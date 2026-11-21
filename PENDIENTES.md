@@ -19,7 +19,7 @@ Proyecto: **`chat-simpapp-efb77`** (número 929638718992), plan Spark. App Andro
 - [ ] Crear `chatsimpapp@rj2techsolutions.com` en Spaceship (reenvío a rj2techsolutions@gmail.com).
 - [x] Proyecto Firebase en plan Spark.
 - [x] App Android `com.rj2techsolutions.chatsimpapp`.
-- [ ] Agregar las huellas en Configuración del proyecto → la app Android:
+- [x] Agregar las huellas en Configuración del proyecto → la app Android:
 
       | Clave | SHA-1 | SHA-256 |
       |---|---|---|
@@ -30,8 +30,8 @@ Proyecto: **`chat-simpapp-efb77`** (número 929638718992), plan Spark. App Andro
 - [ ] **Pasarle a Claude el `google-services.json`** para cambiar el paquete en el código.
 - [x] Authentication → **Google** (nombre público Chat SimpApp).
 - [x] **Firestore** Standard en `nam5`, modo producción.
-- [ ] **App Check** → registrar la app con **Play Integrity**; en depuración, agregar el token de prueba de Logcat.
-- [ ] **AI Logic** → Comenzar → proveedor **Gemini Developer API** (gratis en Spark).
+- [x] **App Check** → registrar la app con **Play Integrity**; en depuración, agregar el token de prueba de Logcat.
+- [x] **AI Logic** → Comenzar → proveedor **Gemini Developer API** (gratis en Spark).
 - [ ] **Remote Config** → crear `min_version_code` (0) y, si se quiere, `ai_model`.
 - [ ] Desplegar: `firebase deploy --only firestore,hosting` (reglas, índices y páginas legales).
 - [ ] Cuenta de servicio: Configuración del proyecto → Cuentas de servicio → **Generar nueva clave privada**
@@ -57,18 +57,21 @@ IDs exactos (el código depende de ellos):
 | Offerings | `u30`, `u80`, `u200`, `u500`, `u5000` |
 | Paquetes de cada offering | **Monthly** (`$rc_monthly`) → `…-mensual` del mismo rango; **Annual** (`$rc_annual`) → `…-anual` del mismo rango |
 
-- [ ] Crear el proyecto y conectar la app de Play (credenciales de cuenta de servicio de Play).
-- [ ] Crear entitlement, productos, offerings y paquetes como en la tabla (los paquetes deben ser de tipo
+- [x] Proyecto Chat SimpApp con la app de Play.
+- [x] Entitlement, productos, offerings y paquetes como en la tabla (los paquetes deben ser de tipo
       Monthly y Annual estándar: la app los busca por tipo). Marcar cualquiera como *current* (la app no lo usa).
-- [ ] Webhook → `https://chat-simpapp-api.rj2techsolutions.workers.dev/webhooks/revenuecat`, *Authorization header*
+- [ ] Webhook → **`https://chat-simpapp-api.rj2techsolutions.workers.dev/webhooks/revenuecat`**, *Authorization header*
       = el contenido del archivo `revenuecat-webhook-authorization.txt` (enviado por Claude), entorno *Both*.
-- [ ] Clave pública `goog_…` en `~/.gradle/gradle.properties` como `revenueCatApiKey`.
-- [ ] Clave secreta v1 (`sk_…`) como secreto `REVENUECAT_SECRET_KEY` del Worker.
+- [ ] Clave pública `goog_…` (no es secreta): pasársela a Claude para compilar el AAB, o ponerla en
+      `~/.gradle/gradle.properties` como `revenueCatApiKey`. Sin ella la pantalla Pro dice "no disponible".
+- [ ] Clave secreta v1 (`sk_…`) como secreto `REVENUECAT_SECRET_KEY` del Worker (panel de Cloudflare).
 
 ## 4. Play Console (cuenta personal)
 
-- [ ] Crear la app con el paquete `com.rj2techsolutions.chatsimpapp`.
-- [ ] Ficha: correo de contacto `chatsimpapp@rj2techsolutions.com`, sitio web https://rj2techsolutions.com.
+- [x] App creada: `com.rj2techsolutions.chatsimpapp`, es-419, gratis.
+- [x] Ficha: correo `chatsimpapp@rj2techsolutions.com`, sitio web https://rj2techsolutions.com.
+- [ ] Subir el primer AAB a prueba interna (Claude lo compila cuando tenga el `google-services.json` nuevo). La
+      suscripción solo se puede crear después de subir un AAB.
 - [ ] Suscripción con ID de producto **`comunidad_pro`** y 10 **planes base** de renovación automática:
 
       | Plan base | Periodo | Precio sugerido (USD) |
@@ -89,21 +92,19 @@ IDs exactos (el código depende de ellos):
 
 ## 5. AdMob (cuenta personal)
 
-- [ ] App Android "Chat SimpApp" (vincular con Play cuando esté publicada).
-- [ ] 4 bloques de anuncios:
+- [x] App y 4 bloques creados. Los IDs (no son secretos) ya están en `app/build.gradle.kts` para **release**;
+      debug usa siempre los de prueba de Google. Copia también en `gradle.properties.example`.
 
-      | Formato en AdMob | Nombre sugerido | Propiedad en `~/.gradle/gradle.properties` | Dónde se usa |
-      |---|---|---|---|
-      | (ID de la app) | — | `admobAppId` (`ca-app-pub-…~…`) | Manifest |
-      | **Banner** | Chat SimpApp – Banner inferior | `admobBannerId` | Banner adaptativo fijo abajo en Comunidad, Votaciones, Reportes y Tablón |
-      | **Apertura de app** (App open) | Chat SimpApp – Apertura | `admobAppOpenId` | Al volver a la app tras 2+ min, máx. 1 cada 4 h |
-      | **Intersticial** | Chat SimpApp – Intersticial | `admobInterstitialId` | Al publicar o salir de una votación/reporte, máx. 1 cada 3 min y 6 al día |
-      | **Bonificado** (Rewarded) | Chat SimpApp – Acta PDF | `admobRewardedId` | Desbloquea el acta en PDF en el plan gratuito |
+      | Formato | Propiedad | ID |
+      |---|---|---|
+      | App | `admobAppId` | `ca-app-pub-2631068461383213~6764034990` |
+      | Banner | `admobBannerId` | `ca-app-pub-2631068461383213/6847795470` |
+      | Apertura de app | `admobAppOpenId` | `ca-app-pub-2631068461383213/5770729550` |
+      | Intersticial | `admobInterstitialId` | `ca-app-pub-2631068461383213/4457647885` |
+      | Bonificado | `admobRewardedId` | `ca-app-pub-2631068461383213/6884500675` |
 
-      En el bonificado la cantidad y el nombre de la recompensa no importan (p. ej. 1 "acta"). Los límites de
-      frecuencia ya están en el código; no hace falta configurarlos en AdMob.
 - [ ] Mensaje de consentimiento (Privacidad y mensajes → GDPR y regulaciones de EE. UU.).
-- [ ] `app-ads.txt`: ya vive en rj2techsolutions.com (no hay que hacer nada en esta app).
+- [ ] Vincular AdMob con la app de Play cuando esté publicada.
 
 ## 6. Páginas legales (Firebase Hosting)
 

@@ -1,0 +1,21 @@
+# Copia estas líneas en ~/.gradle/gradle.properties del computador donde compilas la versión para Play.
+# NO pongas este archivo con valores secretos en el repositorio.
+
+# --- Firma de subida a Google Play (SECRETO: valores en chat-simpapp-upload.properties) ---
+uploadStoreFile=/ruta/a/chat-simpapp-upload.jks
+uploadStorePassword=...
+uploadKeyAlias=upload
+uploadKeyPassword=...
+
+# --- RevenueCat: clave pública de Android (Project settings → API keys → Public app-specific key) ---
+revenueCatApiKey=goog_...
+
+# --- AdMob (no son secretos; release ya los trae por defecto, debug usa los de prueba) ---
+admobAppId=ca-app-pub-2631068461383213~6764034990
+admobBannerId=ca-app-pub-2631068461383213/6847795470
+admobAppOpenId=ca-app-pub-2631068461383213/5770729550
+admobInterstitialId=ca-app-pub-2631068461383213/4457647885
+admobRewardedId=ca-app-pub-2631068461383213/6884500675
+
+# --- Opcional: otro servidor (por defecto https://chat-simpapp-api.rj2techsolutions.workers.dev) ---
+# apiBaseUrl=https://...
