@@ -37,8 +37,30 @@ android {
         buildConfigField("String", "API_BASE_URL", "\"${providers.gradleProperty("apiBaseUrl").getOrElse("https://chat-simpapp-api.rj2techsolutions.workers.dev")}\"")
     }
 
+    signingConfigs {
+        // Clave debug compartida del proyecto (no es secreta): así la huella SHA-1 registrada en Firebase
+        // sirve en cualquier computador. Es la de Android por defecto: contraseña "android".
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+        // Clave de SUBIDA a Google Play: secreta, fuera del repo. Se lee de ~/.gradle/gradle.properties.
+        val uploadStore = providers.gradleProperty("uploadStoreFile").orNull
+        if (uploadStore != null) {
+            create("upload") {
+                storeFile = file(uploadStore)
+                storePassword = providers.gradleProperty("uploadStorePassword").get()
+                keyAlias = providers.gradleProperty("uploadKeyAlias").getOrElse("upload")
+                keyPassword = providers.gradleProperty("uploadKeyPassword").get()
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfigs.findByName("upload")?.let { signingConfig = it }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

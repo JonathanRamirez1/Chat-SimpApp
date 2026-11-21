@@ -159,6 +159,10 @@ La lista completa y ordenada está en **[PENDIENTES.md](PENDIENTES.md)**. Resume
 5. **Play Console:** suscripción `comunidad_pro` con planes base `u30-mensual`, `u30-anual`, … `u5000-anual`.
 6. **AdMob:** 4 bloques (banner, apertura, intersticial, recompensado) en `~/.gradle/gradle.properties`.
 
+**Firma:** las compilaciones debug usan `app/debug.keystore` (del repo, no es secreta). La versión para Play se
+firma con la **clave de subida**, que no está en el repo: se configura en `~/.gradle/gradle.properties` con
+`uploadStoreFile`, `uploadStorePassword`, `uploadKeyAlias` y `uploadKeyPassword`. Las huellas están en PENDIENTES.md.
+
 Antes de publicar: `./scripts/check-release.sh`.
 
 ## Actualización obligatoria

@@ -17,9 +17,9 @@ database_id = "662adbce-6b6f-432a-b757-f19ee50c371c"
 migrations_dir = "migrations"
 
 [vars]
-# Completar con los datos del proyecto Firebase nuevo (Configuración del proyecto → General).
-FIREBASE_PROJECT_ID = "PENDIENTE"
-FIREBASE_PROJECT_NUMBER = "PENDIENTE"
+# Proyecto Firebase (Spark) de Chat SimpApp en rj2techsolutions@gmail.com.
+FIREBASE_PROJECT_ID = "chat-simpapp-efb77"
+FIREBASE_PROJECT_NUMBER = "929638718992"
 # Pasar a "true" cuando App Check esté registrado con Play Integrity.
 APP_CHECK_ENFORCE = "false"
 

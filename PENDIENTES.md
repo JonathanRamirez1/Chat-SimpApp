@@ -13,12 +13,23 @@ facturación "RJ2 Apps N" ni alerta de 20.000 COP para esta app.
 
 ## 1. Correo y Firebase (cuenta rj2techsolutions@gmail.com)
 
+Proyecto: **`chat-simpapp-efb77`** (número 929638718992), plan Spark. App Android
+`com.rj2techsolutions.chatsimpapp` (appId `1:929638718992:android:1b4b3f79f777b2aeb5f495`).
+
 - [ ] Crear `chatsimpapp@rj2techsolutions.com` en Spaceship (reenvío a rj2techsolutions@gmail.com).
-- [ ] Crear el proyecto Firebase **en plan Spark** (no vincular facturación).
-- [ ] Agregar la app Android con paquete **`com.rj2techsolutions.chatsimpapp`** y las huellas SHA-1 (depuración
-      y la de firma de Play). **Pasarle a Claude el `google-services.json`** para cambiar el paquete en el código.
-- [ ] Authentication → habilitar **Google** (solo Google).
-- [ ] Crear **Firestore** (modo producción).
+- [x] Proyecto Firebase en plan Spark.
+- [x] App Android `com.rj2techsolutions.chatsimpapp`.
+- [ ] Agregar las huellas en Configuración del proyecto → la app Android:
+
+      | Clave | SHA-1 | SHA-256 |
+      |---|---|---|
+      | Debug (`app/debug.keystore`, en el repo) | `52:F3:D8:E3:A8:79:7C:69:36:A9:CD:91:39:83:A5:28:FB:D2:64:71` | `A7:6B:A2:F4:2A:2C:DA:2B:AD:6F:73:A5:2C:D6:54:EA:68:7C:A4:45:81:B8:A8:D1:FE:8E:55:05:14:EF:4C:69` |
+      | Subida (upload, fuera del repo) | `FB:78:51:42:97:CE:13:E6:60:43:5A:16:6A:AA:EE:E5:19:27:7B:19` | `74:71:7A:F9:CF:DA:A2:DA:95:C9:08:04:5C:EC:62:90:DD:AA:EA:FA:92:C7:7B:1D:85:83:0A:38:A0:E4:D3:D5` |
+      | Firma de la app de Play (App Signing) | se ve en Play Console → Integridad de la app, tras la primera subida | ídem |
+
+- [ ] **Pasarle a Claude el `google-services.json`** para cambiar el paquete en el código.
+- [x] Authentication → **Google** (nombre público Chat SimpApp).
+- [x] **Firestore** Standard en `nam5`, modo producción.
 - [ ] **App Check** → registrar la app con **Play Integrity**; en depuración, agregar el token de prueba de Logcat.
 - [ ] **AI Logic** → Comenzar → proveedor **Gemini Developer API** (gratis en Spark).
 - [ ] **Remote Config** → crear `min_version_code` (0) y, si se quiere, `ai_model`.
@@ -28,8 +39,7 @@ facturación "RJ2 Apps N" ni alerta de 20.000 COP para esta app.
 
 ## 2. Cloudflare (Worker `chat-simpapp-api`)
 
-- [ ] En `server/wrangler.toml` poner `FIREBASE_PROJECT_ID` y `FIREBASE_PROJECT_NUMBER` del proyecto nuevo
-      (o decirle a Claude los valores, no son secretos).
+- [x] `FIREBASE_PROJECT_ID` y `FIREBASE_PROJECT_NUMBER` en `server/wrangler.toml` (desplegado).
 - [ ] Cargar secretos desde el panel de Cloudflare (Workers → chat-simpapp-api → Settings → Variables) o con
       `npx wrangler secret put`: `FIREBASE_SERVICE_ACCOUNT`, `REVENUECAT_SECRET_KEY`, `REVENUECAT_WEBHOOK_AUTH`,
       `CRON_SECRET`.
@@ -55,7 +65,9 @@ facturación "RJ2 Apps N" ni alerta de 20.000 COP para esta app.
 - [ ] Suscripción **`comunidad_pro`** con planes base `u30-mensual`, `u30-anual`, `u80-mensual`, `u80-anual`,
       `u200-…`, `u500-…`, `u5000-…` (precios con coma decimal; sugeridos en el README).
 - [ ] Licencia para testing: lista "Prueba Paxora Plus" marcada (`RESPOND_NORMALLY`).
-- [ ] Subir a **prueba interna**; probar la actualización obligatoria y una compra de prueba real.
+- [ ] Activar **Play App Signing** y subir a **prueba interna** firmando con la clave de subida; luego copiar
+      las huellas de la clave de firma de Play a Firebase (Play Integrity / App Check las necesita).
+- [ ] Probar la actualización obligatoria y una compra de prueba real.
 - [ ] Formulario de seguridad de datos: ubicación aproximada (alertas del barrio), nombre/correo de Google,
       mensajes. Sin fotos.
 

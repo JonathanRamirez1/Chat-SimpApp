@@ -21,9 +21,12 @@ output.json
 *.hprof
 *.log
 
-# Claves de firma
+# Claves de firma (la debug del proyecto sí va en el repo; la de subida NUNCA)
 *.jks
 *.keystore
+!app/debug.keystore
+keystore.properties
+*.properties.secret
 
 # Firebase Functions
 functions/node_modules/
