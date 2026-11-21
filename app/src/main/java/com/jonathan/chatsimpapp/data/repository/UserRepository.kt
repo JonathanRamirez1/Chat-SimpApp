@@ -1,19 +1,14 @@
 package com.jonathan.chatsimpapp.data.repository
 
-import android.content.Context
-import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.storageMetadata
 import com.jonathan.chatsimpapp.data.model.User
-import com.jonathan.chatsimpapp.util.ImageCompressor
+import com.jonathan.chatsimpapp.data.remote.WorkerApi
 import com.jonathan.chatsimpapp.util.snapshotFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -28,14 +23,10 @@ import javax.inject.Singleton
 class UserRepository @Inject constructor(
     private val db: FirebaseFirestore,
     private val auth: FirebaseAuth,
-    private val storage: FirebaseStorage,
     private val messaging: FirebaseMessaging,
-    private val context: Context,
+    private val api: WorkerApi,
 ) {
     private val users get() = db.collection(USERS)
-
-    /** Los tokens de notificación van en un documento privado que solo el dueño puede leer. */
-    private fun tokensDoc(uid: String) = users.document(uid).collection("private").document("fcm")
 
     fun observeUser(uid: String): Flow<User?> =
         users.document(uid).snapshotFlow().map { it.toObject(User::class.java) }
@@ -65,28 +56,22 @@ class UserRepository @Inject constructor(
         return snapshot.toObjects(User::class.java).filter { it.uid != excludeUid }
     }
 
-    /**
-     * Crea el perfil `users/{uid}` si no existe. Si el usuario venía de la versión anterior
-     * de la app (colección `UsersRegister`), reutiliza su nombre y foto.
-     */
-    suspend fun ensureProfile(firebaseUser: FirebaseUser, nameOverride: String? = null) {
+    /** Crea el perfil `users/{uid}` con el nombre y la foto de la cuenta de Google. */
+    suspend fun ensureProfile(firebaseUser: FirebaseUser) {
         val ref = users.document(firebaseUser.uid)
-        if (ref.get().await().exists()) return
-
-        val legacy = runCatching { db.collection(LEGACY_USERS).document(firebaseUser.uid).get().await() }.getOrNull()
-        val legacyName = legacy?.getString("username")?.takeIf { it.isNotBlank() }
-        val legacyPhoto = legacy?.getString("photo")?.takeIf { it.isNotBlank() }
-
+        val photo = firebaseUser.photoUrl?.toString()
+        if (ref.get().await().exists()) {
+            // La foto de perfil siempre es la de Google (no se suben fotos: el plan gratis no tiene Storage).
+            if (photo != null) ref.update("photoUrl", photo).await()
+            return
+        }
         val email = firebaseUser.email.orEmpty().lowercase()
-        val name = nameOverride
-            ?: firebaseUser.displayName?.takeIf { it.isNotBlank() }
-            ?: legacyName
-            ?: email.substringBefore('@')
+        val name = firebaseUser.displayName?.takeIf { it.isNotBlank() } ?: email.substringBefore('@')
         val data = mapOf(
             "displayName" to name,
             "displayNameLower" to name.lowercase(),
             "email" to email,
-            "photoUrl" to (firebaseUser.photoUrl?.toString() ?: legacyPhoto),
+            "photoUrl" to photo,
             "about" to "",
             "createdAt" to FieldValue.serverTimestamp(),
         )
@@ -101,34 +86,24 @@ class UserRepository @Inject constructor(
         auth.currentUser?.updateProfile(userProfileChangeRequest { displayName = clean })?.await()
     }
 
-    suspend fun updatePhoto(uid: String, uri: Uri): String {
-        val bytes = ImageCompressor.compress(context, uri, maxSize = 640)
-        val ref = storage.reference.child("users/$uid/avatar.jpg")
-        ref.putBytes(bytes, storageMetadata { contentType = "image/jpeg" }).await()
-        val url = ref.downloadUrl.await().toString()
-        users.document(uid).update("photoUrl", url).await()
-        auth.currentUser?.updateProfile(userProfileChangeRequest { photoUri = Uri.parse(url) })?.await()
-        return url
-    }
-
-    suspend fun registerCurrentFcmToken(uid: String) {
+    /** Guarda el token de notificaciones de este teléfono en el servidor (D1 de Cloudflare). */
+    suspend fun registerCurrentFcmToken() {
         @Suppress("DEPRECATION") // Sigue siendo la API documentada para obtener el token FCM.
         val token = messaging.token.await()
-        addFcmToken(uid, token)
+        api.registerToken(token)
     }
 
-    suspend fun addFcmToken(uid: String, token: String) {
-        tokensDoc(uid).set(mapOf("tokens" to FieldValue.arrayUnion(token)), SetOptions.merge()).await()
+    suspend fun registerToken(token: String) {
+        api.registerToken(token)
     }
 
-    suspend fun removeCurrentFcmToken(uid: String) {
-        @Suppress("DEPRECATION") // Sigue siendo la API documentada para obtener el token FCM.
+    suspend fun removeCurrentFcmToken() {
+        @Suppress("DEPRECATION")
         val token = messaging.token.await()
-        tokensDoc(uid).update("tokens", FieldValue.arrayRemove(token)).await()
+        api.deleteToken(token)
     }
 
     companion object {
         const val USERS = "users"
-        private const val LEGACY_USERS = "UsersRegister"
     }
 }

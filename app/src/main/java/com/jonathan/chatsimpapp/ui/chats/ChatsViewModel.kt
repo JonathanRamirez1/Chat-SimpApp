@@ -74,13 +74,7 @@ class ChatsViewModel @Inject constructor(
     private val presence: Flow<Map<String, Presence>> = chats
         .map { list -> list.filterNot { it.isGroup }.mapNotNull { it.otherMember(myUid) }.toSet() }
         .distinctUntilChanged()
-        .flatMapLatest { ids ->
-            if (ids.isEmpty()) {
-                flowOf(emptyMap())
-            } else {
-                combine(ids.map { id -> presenceRepository.observePresence(id).map { id to it } }) { it.toMap() }
-            }
-        }
+        .flatMapLatest { ids -> presenceRepository.observePresence(ids) }
 
     val state: StateFlow<ChatsUiState> = combine(chats, people, presence, query) { chats, people, presence, query ->
         ChatsUiState(

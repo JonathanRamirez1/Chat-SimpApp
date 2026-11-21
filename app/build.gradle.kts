@@ -31,10 +31,10 @@ android {
         buildConfigField("String", "ADMOB_APP_OPEN_ID", "\"${adId("admobAppOpenId", "ca-app-pub-3940256099942544/9257395921")}\"")
         buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"${adId("admobInterstitialId", "ca-app-pub-3940256099942544/1033173712")}\"")
         buildConfigField("String", "ADMOB_REWARDED_ID", "\"${adId("admobRewardedId", "ca-app-pub-3940256099942544/5224354917")}\"")
-        // RevenueCat (clave pública de Android, empieza por "goog_") y Google Maps.
-        // Defínelas en ~/.gradle/gradle.properties: revenueCatApiKey=goog_..., mapsApiKey=AIza...
+        // RevenueCat: clave pública de Android ("goog_..."), en ~/.gradle/gradle.properties como revenueCatApiKey.
         buildConfigField("String", "REVENUECAT_API_KEY", "\"${providers.gradleProperty("revenueCatApiKey").getOrElse("")}\"")
-        manifestPlaceholders["mapsApiKey"] = providers.gradleProperty("mapsApiKey").getOrElse("")
+        // Servidor en Cloudflare (Worker chat-simpapp-api).
+        buildConfigField("String", "API_BASE_URL", "\"${providers.gradleProperty("apiBaseUrl").getOrElse("https://chat-simpapp-api.rj2techsolutions.workers.dev")}\"")
     }
 
     buildTypes {
@@ -97,20 +97,17 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.storage)
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.ai)
     implementation(libs.firebase.config)
-    implementation(libs.firebase.functions)
     implementation(libs.firebase.appcheck.playintegrity)
     debugImplementation(libs.firebase.appcheck.debug)
 
     implementation(libs.play.services.ads)
     implementation(libs.ump)
     implementation(libs.revenuecat)
-    implementation(libs.maps.compose)
     implementation(libs.play.services.location)
+    implementation(libs.maplibre)
     implementation(libs.geofire)
     implementation(libs.play.app.update)
     implementation(libs.play.app.update.ktx)

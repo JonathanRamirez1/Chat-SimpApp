@@ -3,7 +3,7 @@ package com.jonathan.chatsimpapp.billing
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import com.google.firebase.functions.FirebaseFunctions
+import com.jonathan.chatsimpapp.data.remote.WorkerApi
 import com.jonathan.chatsimpapp.BuildConfig
 import com.revenuecat.purchases.Package
 import com.revenuecat.purchases.PackageType
@@ -18,7 +18,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -44,15 +43,15 @@ sealed interface PurchaseState {
  *   Así la suscripción queda atada al edificio aunque cambie la administración.
  * - En RevenueCat hay un "offering" por rango de unidades (`u30`, `u80`, `u200`, `u500`, `u5000`),
  *   cada uno con paquete mensual y anual, y todos dan el entitlement `pro`.
- * - El teléfono nunca activa Pro por su cuenta: tras comprar llama a la Cloud Function
- *   `syncProPlan`, que consulta RevenueCat con la clave secreta y actualiza Firestore. Las
- *   renovaciones y cancelaciones llegan por el webhook `revenueCatWebhook`.
+ * - El teléfono nunca activa Pro por su cuenta: tras comprar le pide al Worker de Cloudflare
+ *   (`/v1/pro/sync`) que consulte RevenueCat con la clave secreta y actualice Firestore. Las
+ *   renovaciones y cancelaciones llegan por el webhook del Worker (`/webhooks/revenuecat`).
  * - Las compras de prueba (sandbox / testers con licencia) funcionan igual que las reales.
  */
 @Singleton
 class ProBilling @Inject constructor(
     @param:ApplicationContext private val context: Context,
-    private val functions: FirebaseFunctions,
+    private val api: WorkerApi,
 ) {
     private val _purchase = MutableStateFlow<PurchaseState>(PurchaseState.Idle)
     val purchase: StateFlow<PurchaseState> = _purchase.asStateFlow()
@@ -96,9 +95,8 @@ class ProBilling @Inject constructor(
 
     /** Pide al servidor que lea el estado real en RevenueCat (renovaciones, cambio de teléfono). */
     suspend fun sync(communityId: String) {
-        runCatching {
-            functions.getHttpsCallable("syncProPlan").call(mapOf("communityId" to communityId)).await()
-        }.onFailure { Log.w("ProBilling", "syncProPlan falló", it) }
+        runCatching { api.syncProPlan(communityId) }
+            .onFailure { Log.w("ProBilling", "Sincronizar Pro falló", it) }
     }
 
     fun reset() {

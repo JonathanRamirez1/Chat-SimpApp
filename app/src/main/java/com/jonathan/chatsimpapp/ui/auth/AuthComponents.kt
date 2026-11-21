@@ -147,7 +147,7 @@ fun GoogleButton(onClick: () -> Unit, loading: Boolean, enabled: Boolean, modifi
         onClick = onClick,
         enabled = enabled && !loading,
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.fillMaxWidth().height(54.dp),
+        modifier = modifier.fillMaxWidth().height(60.dp),
     ) {
         if (loading) {
             CircularProgressIndicator(strokeWidth = 2.5.dp, modifier = Modifier.size(22.dp))

@@ -16,7 +16,7 @@ lo que los grupos de WhatsApp del edificio hacen mal.
 |---|---|
 | Los avisos importantes se pierden entre memes y discusiones | **Avisos oficiales** separados del chat, fijables, con "visto por N" |
 | Votar es contar "👍" a mano; votan dos del mismo apto | **Votaciones con un voto por unidad**, quórum automático y **acta** (texto o PDF) |
-| "¿Ya arreglaron el ascensor?" × 40 mensajes | **Reportes con foto y estado** (abierto → en proceso → resuelto) y "a mí también me afecta" |
+| "¿Ya arreglaron el ascensor?" × 40 mensajes | **Reportes con estado** (abierto → en proceso → resuelto) y "a mí también me afecta" |
 | Quien administra el grupo saca a quien quiera | Unirse con **código**; el canal oficial no depende de un administrador de grupo |
 | Tu número queda expuesto a 200 personas | Te identificas por **tu unidad**; chats privados sin compartir teléfono |
 | Nadie lee 300 mensajes | **Resumen semanal con IA**: acuerdos, compromisos y fechas |
@@ -28,16 +28,16 @@ El **chat es lo principal**: es la primera pestaña y la que se abre. Las alerta
 propia: se abren desde una tarjeta en "Comunidad" y desde "Reportes".
 
 ### Alertas del barrio (mapa)
-- Google Maps para Android (gratis y sin límite de uso) con un estilo simple: sin negocios ni transporte.
+- **MapLibre + OpenFreeMap** (datos de OpenStreetMap): gratis, sin clave ni tarjeta, estilo claro y simple. El crédito de OpenStreetMap se muestra siempre (botón ⓘ).
 - Pensado para personas mayores: pines grandes, 3 colores siempre con ícono y palabra, distancias en cuadras,
-  tiempos en palabras ("hace 20 minutos"), botón "Volver a mi casa" y la misma información en lista.
+  tiempos en palabras ("hace 20 minutos"), botones grandes de zoom (+/−), "Volver a mi casa" y la misma información en lista.
 - Reportar en 2 pasos: "¿Qué pasó?" (6 botones grandes) y "¿Fue aquí?" (se mueve el mapa, el pin queda fijo).
 - Se reportan hechos, no personas: no existe "persona sospechosa". Ubicación redondeada a ~11 m.
 - "Yo también lo vi" confirma; si varios dicen "Ya no está", se oculta. Robos: 12 h; daños: hasta 30 días.
 - Radio de 2 km alrededor del edificio; no se puede alejar más de ~5 km. Búsqueda por cercanía con geohash.
 - Solo las alertas de seguridad envían notificación; las demás se ven en el mapa sin sonar.
 
-Además conserva el chat general del edificio, chats privados y grupos (texto e imágenes, en línea, escribiendo,
+Además conserva el chat general del edificio, chats privados y grupos (texto, últ. vez,
 leído). El chat general **no envía notificaciones push** a propósito: es el ruido que los vecinos quieren evitar.
 Avisos, emergencias, votaciones y cambios en tus reportes sí notifican.
 
@@ -84,10 +84,10 @@ votaciones se calcula con ese número.
 | Banner | ~10 al día × 30 × ~US$0,13/1000 | US$0,04 |
 | Recompensa | ~2 al mes × ~US$1,9/1000 | US$0,004 |
 | **Ingreso por anuncios** | con ~70 % de anuncios servidos | **≈ US$0,13** |
-| **Costo de Firebase** | ~300 lecturas/día, fotos comprimidas | **≈ US$0,005** |
+| **Costo de servidor** | Firebase Spark + Cloudflare gratis | **US$0** (hasta los límites gratis) |
 
-- **Edificio de 50 vecinos en plan gratuito**: ≈ US$6,50 de anuncios contra ≈ US$0,25 de Firebase.
-- **Edificio de 60**: ≈ US$7,80 contra ≈ US$0,30. Los dos dejan ganancia.
+- **Edificio de 50 vecinos en plan gratuito**: ≈ US$6,50 de anuncios; el servidor es gratis.
+- **Edificio de 60**: ≈ US$7,80. Los dos dejan ganancia.
 - **El mismo edificio en Pro (rango hasta 80)**: US$12,99 − 15 % de Google = US$11,04 netos, más que los anuncios
   de un edificio lleno de ese rango (80 × 0,13 = US$10,40). Por eso los precios de arriba: pasar a Pro nunca te hace
   perder frente a los anuncios.
@@ -97,68 +97,69 @@ votaciones se calcula con ese número.
 
 **En resumen: cada vecino deja unas 25 veces lo que cuesta.** Lo que más hay que vigilar no es el costo, sino que
 la gente instale la app y la use. El código además protege el costo: listas con tope, paginación de mensajes,
-imágenes comprimidas, el resumen IA se genera una vez por semana y lo leen todos, y App Check impide que alguien
+sin subida de archivos, el resumen IA se genera una vez por semana y lo leen todos, y App Check impide que alguien
 use tu Firebase desde fuera de la app.
 
 Otras ideas para después: precio especial para administradoras que manejan varios edificios, reserva de zonas
 comunes (salón, BBQ) como función Pro, y un panel web para la administración.
 
+## Backend (esquema nuevo de RJ2)
+
+Firebase queda en **plan Spark (gratis, sin cuenta de facturación)** y todo lo que en Firebase pediría Blaze va en
+**Cloudflare** (cuenta rj2techsolutions@gmail.com, plan gratis).
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Login con Google, Firestore, Remote Config, App Check, AI Logic (Gemini), Hosting (legales) | Firebase Spark | Firestore gratis: ~50.000 lecturas y 20.000 escrituras al día |
+| Notificaciones push, tokens FCM, "últ. vez", webhook y sincronización de RevenueCat | Worker `chat-simpapp-api` + D1 `chat-simpapp` (carpeta [`server/`](server)) | https://chat-simpapp-api.rj2techsolutions.workers.dev |
+| Tareas programadas (borrar alertas vencidas, limpiar D1) | Worker compartido `rj2-cron` | Esta app no crea Cron Triggers propios |
+
+**Qué se quitó por no existir o no caber en Spark:**
+- **Cloud Functions** → Worker de Cloudflare. Firestore no puede llamar al Worker, así que la app le avisa justo
+  después de publicar; el Worker comprueba en Firestore que lo publicado existe y es de quien llama.
+- **Storage** → la app no sube fotos (chat, reportes, tablón, grupos). La foto de perfil es la de Google.
+- **Realtime Database** (100 conexiones simultáneas) → "últ. vez" en D1; sin "escribiendo…" en vivo.
+- **TTL de Firestore** → tarea `cleanup-alerts` de `rj2-cron`.
+- **Google Maps** (pide cuenta de facturación) → MapLibre + OpenFreeMap.
+- **Login con correo/contraseña** → solo Google (regla de RJ2 para comprar; más simple para personas mayores).
+
+**Notificaciones:** chats privados y grupos van a los tokens de cada miembro (D1). Todo lo de la comunidad va a
+**temas FCM** (`c_<comunidad>` y `c_<comunidad>_u_<unidad>`): un solo envío aunque el edificio tenga 300 vecinos
+(el plan gratis de Workers permite 50 subpeticiones por invocación). El chat general del edificio no notifica.
+
+**⚠️ Límite de crecimiento:** con unas 300 lecturas por vecino activo al día, Firestore Spark alcanza para
+**~150 personas usando la app el mismo día**. Al pasarse, Firestore deja de responder hasta la medianoche
+(hora del Pacífico); no cobra, pero la app se cae. Cuando se acerque: mover los mensajes del chat a Cloudflare
+(D1/Durable Objects) o reconsiderar Blaze. Revisar el uso en Firebase → Firestore → Uso.
+
 ## Puesta en marcha
 
-### 1. Firebase (proyecto `chat-simpapp`)
-1. **Pasa el proyecto al plan Blaze** y crea una **alerta de presupuesto** (p. ej. US$5) en Google Cloud → Facturación.
-   Es obligatorio: desde febrero de 2026 Cloud Storage (fotos) solo funciona en Blaze, y las Cloud Functions también
-   lo requieren. Blaze conserva la misma cuota gratuita; con una app pequeña normalmente pagas US$0.
-2. **Authentication**: habilita *Correo/contraseña* y *Google*. Agrega la **SHA-1** de tu llave
-   (`./gradlew signingReport`) en Configuración del proyecto y vuelve a descargar `google-services.json` a `app/`.
-3. Crea **Firestore**, **Realtime Database** y **Storage** si no existen.
-4. **App Check**: registra la app con *Play Integrity*. En depuración la app imprime un token de prueba en Logcat:
-   agrégalo en App Check → Administrar tokens de depuración. Activa la aplicación obligatoria cuando todo funcione.
-5. **AI Logic**: en la consola, *AI Logic → Comenzar* con el proveedor *Gemini Developer API*.
-   El modelo se cambia sin publicar versión desde **Remote Config** (`ai_model`).
-6. Publica reglas, índices y funciones:
+La lista completa y ordenada está en **[PENDIENTES.md](PENDIENTES.md)**. Resumen:
+
+1. **Firebase (rj2techsolutions@gmail.com, plan Spark):** proyecto nuevo, app Android
+   `com.rj2techsolutions.chatsimpapp`, login con Google + SHA-1, Firestore, App Check, AI Logic, Remote Config.
+   `firebase deploy --only firestore,hosting`.
+2. **Cloudflare:** el Worker ya está desplegado. Faltan las variables `FIREBASE_PROJECT_ID` y
+   `FIREBASE_PROJECT_NUMBER` (en `server/wrangler.toml`) y los secretos:
    ```bash
-   firebase login && firebase use chat-simpapp
-   firebase deploy --only firestore,database,storage
-   cd functions && npm install && cd .. && firebase deploy --only functions
+   cd server
+   npx wrangler secret put FIREBASE_SERVICE_ACCOUNT   # JSON de la cuenta de servicio de Firebase
+   npx wrangler secret put REVENUECAT_SECRET_KEY      # clave secreta v1 de RevenueCat (sk_…)
+   npx wrangler secret put REVENUECAT_WEBHOOK_AUTH    # texto largo inventado, igual que en RevenueCat
+   npx wrangler secret put CRON_SECRET                # clave que usará rj2-cron
+   npx wrangler deploy
    ```
+3. **rj2-cron:** registrar `POST https://chat-simpapp-api.rj2techsolutions.workers.dev/cron/cleanup-alerts`
+   (cada hora) y `/cron/cleanup-db` (una vez al día), con el header `X-Cron-Secret: <CRON_SECRET>`.
+4. **RevenueCat (rj2techsolutions@gmail.com):** entitlement `pro`; offerings `u30`, `u80`, `u200`, `u500`,
+   `u5000` con paquetes mensual y anual; webhook a
+   `https://chat-simpapp-api.rj2techsolutions.workers.dev/webhooks/revenuecat` con el mismo valor de
+   `REVENUECAT_WEBHOOK_AUTH` en *Authorization header*. Clave `goog_…` en `~/.gradle/gradle.properties` como
+   `revenueCatApiKey`.
+5. **Play Console:** suscripción `comunidad_pro` con planes base `u30-mensual`, `u30-anual`, … `u5000-anual`.
+6. **AdMob:** 4 bloques (banner, apertura, intersticial, recompensado) en `~/.gradle/gradle.properties`.
 
-### 2. Google Play + RevenueCat (para cobrar)
-1. **Play Console**: suscripción `comunidad_pro` con un plan base por rango y periodo: `u30-mensual`,
-   `u30-anual`, `u80-mensual`, `u80-anual`, … `u5000-anual` (precios con coma decimal; se pueden fijar por país).
-2. **RevenueCat** (proyecto en rj2techsolutions@gmail.com): conecta la app de Play (credenciales de cuenta de
-   servicio), crea el entitlement `pro` y un **offering por rango** con id `u30`, `u80`, `u200`, `u500`,
-   `u5000`, cada uno con paquete *Monthly* y *Annual*. Todos los productos dan `pro`.
-3. La clave pública de Android (`goog_…`) va en `~/.gradle/gradle.properties` como `revenueCatApiKey`.
-4. Secretos de las funciones:
-   ```bash
-   firebase functions:secrets:set REVENUECAT_SECRET_KEY     # clave secreta v1 (sk_…)
-   firebase functions:secrets:set REVENUECAT_WEBHOOK_AUTH   # un texto largo inventado
-   ```
-5. RevenueCat → Integrations → **Webhooks**: URL de la función `revenueCatWebhook` y el mismo valor de
-   `REVENUECAT_WEBHOOK_AUTH` en *Authorization header*.
-
-El cliente de RevenueCat es la comunidad (App User ID `community_<id>`), así la suscripción queda atada al
-edificio aunque cambie la administración. Las compras de prueba funcionan igual que las reales.
-
-### 3. Google Maps
-En Google Cloud (mismo proyecto de Firebase) activa **Maps SDK for Android**, crea una clave restringida a la app
-(paquete + SHA-1) y solo a ese SDK, y ponla en `~/.gradle/gradle.properties` como `mapsApiKey`. Mostrar el mapa
-en Android no tiene costo; la app no usa servicios pagos (direcciones, lugares, rutas).
-Activa además la **política TTL** de Firestore sobre `alerts.expiresAt` para que las alertas vencidas se borren solas.
-
-### 4. AdMob
-Crea la app y cuatro bloques de anuncios: *banner*, *apertura de app*, *intersticial* y *recompensado*.
-Pon los ids en `~/.gradle/gradle.properties` (no en el repositorio):
-```properties
-admobAppId=ca-app-pub-XXXXXXXX~YYYYYYYY
-admobBannerId=ca-app-pub-XXXXXXXX/1111111111
-admobAppOpenId=ca-app-pub-XXXXXXXX/2222222222
-admobInterstitialId=ca-app-pub-XXXXXXXX/3333333333
-admobRewardedId=ca-app-pub-XXXXXXXX/4444444444
-```
-Sin esto se usan los ids de prueba de Google. El consentimiento de anuncios (UMP) ya está integrado; configura
-el mensaje en AdMob → Privacidad y mensajes.
+Antes de publicar: `./scripts/check-release.sh`.
 
 ## Actualización obligatoria
 
@@ -171,7 +172,7 @@ Config bloquea versiones antiguas. Es una regla del proyecto: ver [CLAUDE.md](CL
 Las reglas de [`firestore.rules`](firestore.rules) impiden, entre otras cosas, que alguien: lea una comunidad de la
 que no es miembro, se una sin el código vigente, vote dos veces o por otra unidad, vote después del cierre, publique
 avisos oficiales sin ser administración, cambie el estado de un reporte, o **se active el plan Pro sin pagar** (solo
-la Cloud Function, tras validar la compra con Google Play, puede escribir el plan).
+el Worker de Cloudflare, tras consultar RevenueCat, puede escribir el plan).
 
 Están probadas contra el emulador: `cd rules-tests && npm install && npm test` (19 pruebas).
 
@@ -185,17 +186,19 @@ app/src/main/java/com/jonathan/chatsimpapp/
 ├── data/model          Comunidad, miembro, aviso, votación, reporte, publicación, chat, mensaje
 ├── data/repository     Firebase como Flow/suspend; CommunitySession = comunidad seleccionada
 ├── ai                  Resumen semanal con Gemini (Firebase AI Logic)
-├── billing             RevenueCat (la activación del plan la hace el servidor)
+├── billing             RevenueCat (la activación del plan la hace el Worker)
+├── data/remote         Cliente del Worker de Cloudflare
 ├── ads                 AdMob + consentimiento UMP
 ├── config              Remote Config (modelo de IA, límites del plan gratuito)
 ├── notifications       FCM: chats, avisos, emergencias (canal con alarma)
 ├── ui/…                Pantallas Compose + ViewModels
 └── util                Quórum, códigos de invitación, fechas, PDF del acta
-functions/              Cloud Functions: notificaciones, alertas del barrio y RevenueCat
+server/                 Worker de Cloudflare (TypeScript): notificaciones, RevenueCat, tareas programadas
+hosting/                Páginas legales (Firebase Hosting)
 rules-tests/            Pruebas de las reglas de seguridad
 ```
 
-Kotlin 2.2, Jetpack Compose + Material 3, Hilt, corrutinas/Flow, Navigation con rutas tipadas.
+Kotlin 2.2, Jetpack Compose + Material 3, Hilt, corrutinas/Flow, Navigation con rutas tipadas, MapLibre.
 
 ### Datos
 
@@ -214,10 +217,7 @@ Kotlin 2.2, Jetpack Compose + Material 3, Hilt, corrutinas/Flow, Navigation con 
 
 ```bash
 ./gradlew testDebugUnitTest          # lógica (quórum, códigos, fechas…) + capturas de pantalla
+cd server && npm test                # Worker de Cloudflare
 ./gradlew recordRoborazziDebug       # regenera las capturas de /screenshots
 cd rules-tests && npm test           # reglas de seguridad en el emulador
 ```
-
-## Migración desde la versión 1
-Las cuentas siguen sirviendo (nombre y foto se copian de `UsersRegister`). Los chats y mensajes viejos no se migran.
-Se quitaron Facebook Login y la sección "Rates". La app ahora está en español.

@@ -1,13 +1,8 @@
 package com.jonathan.chatsimpapp.ui.group
 
-import android.net.Uri
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
-import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Groups
@@ -49,14 +43,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import coil.compose.AsyncImage
 import com.jonathan.chatsimpapp.R
 import com.jonathan.chatsimpapp.data.model.User
 import com.jonathan.chatsimpapp.data.repository.AuthRepository
@@ -81,7 +73,6 @@ data class NewGroupUiState(
     val step: Int = 0,
     val selected: List<User> = emptyList(),
     val name: String = "",
-    val photo: Uri? = null,
     val creating: Boolean = false,
     val createdChatId: String? = null,
 )
@@ -113,7 +104,6 @@ class NewGroupViewModel @Inject constructor(
     fun next() = _state.update { if (it.selected.isNotEmpty()) it.copy(step = 1) else it }
     fun back() = _state.update { it.copy(step = 0) }
     fun onNameChange(value: String) = _state.update { it.copy(name = value.take(60)) }
-    fun onPhoto(uri: Uri?) = _state.update { it.copy(photo = uri) }
 
     fun create() {
         val s = _state.value
@@ -121,7 +111,7 @@ class NewGroupViewModel @Inject constructor(
         if (s.name.isBlank() || s.selected.isEmpty() || s.creating) return
         viewModelScope.launch {
             _state.update { it.copy(creating = true) }
-            runCatching { chats.createGroup(me, s.name, s.selected.map { it.uid }, s.photo) }
+            runCatching { chats.createGroup(me, s.name, s.selected.map { it.uid }) }
                 .onSuccess { id -> _state.update { it.copy(createdChatId = id) } }
                 .onFailure { _state.update { it.copy(creating = false) } }
         }
@@ -133,7 +123,6 @@ fun NewGroupScreen(onBack: () -> Unit, onCreated: (String) -> Unit, viewModel: N
     val state by viewModel.state.collectAsStateWithLifecycle()
     val query by viewModel.query.collectAsStateWithLifecycle()
     val search by viewModel.search.collectAsStateWithLifecycle()
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { viewModel.onPhoto(it) }
 
     LaunchedEffect(state.createdChatId) { state.createdChatId?.let(onCreated) }
     BackHandler(enabled = state.step == 1) { viewModel.back() }
@@ -146,7 +135,6 @@ fun NewGroupScreen(onBack: () -> Unit, onCreated: (String) -> Unit, viewModel: N
         onToggle = viewModel::toggle,
         onNext = viewModel::next,
         onNameChange = viewModel::onNameChange,
-        onPickPhoto = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
         onCreate = viewModel::create,
         onBack = { if (state.step == 1) viewModel.back() else onBack() },
     )
@@ -162,7 +150,6 @@ fun NewGroupContent(
     onToggle: (User) -> Unit,
     onNext: () -> Unit,
     onNameChange: (String) -> Unit,
-    onPickPhoto: () -> Unit,
     onCreate: () -> Unit,
     onBack: () -> Unit,
 ) {
@@ -248,23 +235,10 @@ fun NewGroupContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
-                    Modifier
-                        .size(112.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primaryContainer)
-                        .clickable(onClick = onPickPhoto),
+                    Modifier.size(112.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center,
                 ) {
-                    if (state.photo != null) {
-                        AsyncImage(state.photo, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
-                    } else {
-                        Icon(
-                            Icons.Rounded.CameraAlt,
-                            contentDescription = stringResource(R.string.add_group_photo),
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(36.dp),
-                        )
-                    }
+                    Icon(Icons.Rounded.Groups, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(48.dp))
                 }
                 Spacer(Modifier.height(24.dp))
                 OutlinedTextField(

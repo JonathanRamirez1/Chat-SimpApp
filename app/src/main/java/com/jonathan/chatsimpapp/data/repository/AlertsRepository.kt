@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jonathan.chatsimpapp.data.model.Alert
 import com.jonathan.chatsimpapp.data.model.AlertType
+import com.jonathan.chatsimpapp.data.remote.WorkerApi
 import com.jonathan.chatsimpapp.util.Distance
 import com.jonathan.chatsimpapp.util.LatLngPoint
 import com.jonathan.chatsimpapp.util.snapshotFlow
@@ -27,6 +28,7 @@ import javax.inject.Singleton
 @Singleton
 class AlertsRepository @Inject constructor(
     private val db: FirebaseFirestore,
+    private val api: WorkerApi,
 ) {
     private val alerts get() = db.collection(ALERTS)
 
@@ -59,7 +61,7 @@ class AlertsRepository @Inject constructor(
         val lat = Math.round(point.lat * 10_000) / 10_000.0
         val lng = Math.round(point.lng * 10_000) / 10_000.0
         val expires = Timestamp(Date(System.currentTimeMillis() + type.hoursVisible * 3_600_000))
-        alerts.add(
+        val ref = alerts.add(
             mapOf(
                 "type" to type.key,
                 "description" to description.trim().take(280),
@@ -75,6 +77,8 @@ class AlertsRepository @Inject constructor(
                 "goneBy" to emptyList<String>(),
             ),
         ).await()
+        // Solo las de seguridad suenan en los edificios cercanos (lo decide el Worker).
+        runCatching { api.notify("alert", "alertId" to ref.id) }
     }
 
     suspend fun confirm(alertId: String, uid: String, confirmed: Boolean) {

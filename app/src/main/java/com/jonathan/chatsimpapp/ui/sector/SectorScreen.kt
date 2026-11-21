@@ -46,6 +46,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -61,7 +62,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.google.maps.android.compose.rememberCameraPositionState
 import com.jonathan.chatsimpapp.R
 import com.jonathan.chatsimpapp.data.model.Alert
 import com.jonathan.chatsimpapp.data.model.AlertGroup
@@ -151,8 +151,8 @@ fun SectorScreen(onBack: () -> Unit, onReport: () -> Unit, viewModel: SectorView
         else permission.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
     }
 
-    val camera = rememberCameraPositionState()
-    LaunchedEffect(state.center) { state.center?.let { camera.centerOn(it) } }
+    val controller = remember { MapController() }
+    LaunchedEffect(state.center) { state.center?.let { controller.centerOn(it) } }
 
     SectorContent(
         state = state,
@@ -167,16 +167,15 @@ fun SectorScreen(onBack: () -> Unit, onReport: () -> Unit, viewModel: SectorView
         onSetBuildingHere = {
             scope.launch { LocationProvider.current(context)?.let(viewModel::setBuildingHere) }
         },
-        onRecenter = { scope.launch { state.center?.let { camera.animateTo(it) } } },
+        onRecenter = { state.center?.let { controller.animateTo(it) } },
         map = { modifier, onClick ->
-            SectorGoogleMap(
-                cameraState = camera,
+            SectorMapLibre(
+                controller = controller,
                 home = state.center?.takeIf { state.centerIsBuilding },
                 radiusMeters = AlertsRepository.SECTOR_RADIUS_M,
                 alerts = state.alerts,
                 onAlertClick = onClick,
                 modifier = modifier,
-                showMyLocation = hasPermission,
             )
         },
     )

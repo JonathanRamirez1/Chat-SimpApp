@@ -42,8 +42,6 @@ import androidx.compose.foundation.background
 import java.util.Date
 import com.jonathan.chatsimpapp.ui.auth.LoginContent
 import com.jonathan.chatsimpapp.ui.auth.LoginUiState
-import com.jonathan.chatsimpapp.ui.auth.RegisterContent
-import com.jonathan.chatsimpapp.ui.auth.RegisterUiState
 import com.jonathan.chatsimpapp.ui.chat.ChatContent
 import com.jonathan.chatsimpapp.ui.chat.ChatItem
 import com.jonathan.chatsimpapp.ui.chat.ChatSubtitle
@@ -281,14 +279,7 @@ class ScreenshotTest {
     }
 
     @Test fun login() = capture("10_login") {
-        LoginContent(LoginUiState(email = "jonathan@correo.com"), {}, {}, {}, {}, {}, {}, {})
-    }
-
-    @Test fun register() = capture("11_register") {
-        RegisterContent(
-            RegisterUiState(name = "Jonathan", email = "jonathan@", emailError = R.string.error_email_invalid),
-            {}, {}, {}, {}, {}, {},
-        )
+        LoginContent(LoginUiState(), {}, {})
     }
 
     @Test fun chats() = capture("03_chats") {
@@ -328,16 +319,16 @@ class ScreenshotTest {
         loading = false,
         title = "Valentina Ríos",
         colorKey = "Valentina Ríos",
-        subtitle = ChatSubtitle.Typing(null),
+        subtitle = ChatSubtitle.LastSeen(System.currentTimeMillis() - 25 * 60_000L),
         items = conversation,
     )
 
     @Test fun chat() = capture("09_chat") {
-        ChatContent(chatState, "", false, null, {}, {}, {}, {}, {}, {})
+        ChatContent(chatState, "", null, {}, {}, {}, {}, {})
     }
 
     @Test fun chatDark() = capture("14_chat_dark", dark = true) {
-        ChatContent(chatState.copy(subtitle = ChatSubtitle.Online), "Te escribo cuando salga", false, null, {}, {}, {}, {}, {}, {})
+        ChatContent(chatState.copy(subtitle = ChatSubtitle.Online), "Te escribo cuando salga", null, {}, {}, {}, {}, {})
     }
 
     @Test fun groupChat() = capture("15_community_chat") {
@@ -356,7 +347,7 @@ class ScreenshotTest {
                 loading = false, title = "Torres del Parque", isGroup = true, colorKey = "c1",
                 subtitle = ChatSubtitle.Members(listOf("Andrés", "Laura", "Sofía")), items = items,
             ),
-            "", false, null, {}, {}, {}, {}, {}, {},
+            "", null, {}, {}, {}, {}, {},
         )
     }
 
@@ -371,6 +362,6 @@ class ScreenshotTest {
 
     @Test fun profile() = capture("17_profile") {
         val user = User(uid = "me", displayName = "Jonathan Ramírez", email = "jonathan@correo.com", about = "Desarrollador Android")
-        ProfileContent(ProfileUiState(user = user, name = user.displayName, about = user.about), {}, {}, {}, {}, {}, {}, {})
+        ProfileContent(ProfileUiState(user = user, name = user.displayName, about = user.about), {}, {}, {}, {}, {}, {})
     }
 }

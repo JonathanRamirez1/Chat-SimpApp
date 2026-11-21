@@ -20,7 +20,7 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 /**
- * Recibe los mensajes push que envía la Cloud Function `onMessageCreated` (carpeta /functions).
+ * Recibe los mensajes push que envía el Worker de Cloudflare `chat-simpapp-api` (carpeta /server).
  * Son mensajes "data", así que la app decide cómo mostrarlos tanto en primer como en segundo plano.
  */
 @AndroidEntryPoint
@@ -32,13 +32,15 @@ class ChatMessagingService : FirebaseMessagingService() {
 
     @Deprecated("Firebase marca este callback como obsoleto, pero sigue siendo el que recibe tokens nuevos.")
     override fun onNewToken(token: String) {
-        val uid = auth.currentUserId ?: return
-        scope.launch { runCatching { users.addFcmToken(uid, token) } }
+        if (auth.currentUserId == null) return
+        scope.launch { runCatching { users.registerToken(token) } }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
         val data = message.data
-        if (auth.currentUserId == null) return
+        val me = auth.currentUserId ?: return
+        // Los avisos de la comunidad van por temas: quien publicó también está suscrito y no debe recibirlo.
+        if (data["authorId"] == me) return
         // Avisos de la comunidad (los arma la Cloud Function con título y texto ya listos).
         when (data["kind"]) {
             "emergency", "notice", "poll", "report", "alert" -> {

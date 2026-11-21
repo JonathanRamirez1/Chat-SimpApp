@@ -1,9 +1,5 @@
 package com.jonathan.chatsimpapp.ui.profile
 
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,7 +21,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Logout
-import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Mail
 import androidx.compose.material.icons.rounded.Person
@@ -77,7 +72,6 @@ data class ProfileUiState(
     val name: String = "",
     val about: String = "",
     val saving: Boolean = false,
-    val uploadingPhoto: Boolean = false,
     @param:StringRes val message: Int? = null,
 ) {
     val dirty: Boolean get() = user != null && (name.trim() != user.displayName || about.trim() != user.about)
@@ -118,15 +112,6 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun changePhoto(uri: Uri) {
-        viewModelScope.launch {
-            _state.update { it.copy(uploadingPhoto = true) }
-            runCatching { users.updatePhoto(uid, uri) }
-                .onFailure { _state.update { it.copy(message = R.string.error_upload) } }
-            _state.update { it.copy(uploadingPhoto = false) }
-        }
-    }
-
     fun signOut() {
         viewModelScope.launch { auth.signOut() }
     }
@@ -135,15 +120,11 @@ class ProfileViewModel @Inject constructor(
 @Composable
 fun ProfileScreen(onBack: () -> Unit, viewModel: ProfileViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        uri?.let(viewModel::changePhoto)
-    }
     ProfileContent(
         state = state,
         onNameChange = viewModel::onNameChange,
         onAboutChange = viewModel::onAboutChange,
         onSave = viewModel::save,
-        onChangePhoto = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
         onSignOut = viewModel::signOut,
         onBack = onBack,
         onMessageShown = viewModel::onMessageShown,
@@ -157,7 +138,6 @@ fun ProfileContent(
     onNameChange: (String) -> Unit,
     onAboutChange: (String) -> Unit,
     onSave: () -> Unit,
-    onChangePhoto: () -> Unit,
     onSignOut: () -> Unit,
     onBack: () -> Unit,
     onMessageShown: () -> Unit,
@@ -195,29 +175,13 @@ fun ProfileContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(12.dp))
-            Box(Modifier.clickable(onClick = onChangePhoto)) {
-                Avatar(
-                    name = state.user?.displayName.orEmpty(),
-                    photoUrl = state.user?.photoUrl,
-                    colorKey = state.user?.uid.orEmpty(),
-                    size = 120.dp,
-                )
-                if (state.uploadingPhoto) {
-                    Box(Modifier.size(120.dp).background(colors.scrim.copy(alpha = 0.4f), CircleShape), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(color = colors.onPrimary)
-                    }
-                }
-                Box(
-                    Modifier
-                        .align(Alignment.BottomEnd)
-                        .size(38.dp)
-                        .border(3.dp, colors.surface, CircleShape)
-                        .background(colors.primary, CircleShape),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(Icons.Rounded.CameraAlt, contentDescription = stringResource(R.string.change_photo), tint = colors.onPrimary, modifier = Modifier.size(18.dp))
-                }
-            }
+            // La foto es la de la cuenta de Google (sin Storage no se suben fotos).
+            Avatar(
+                name = state.user?.displayName.orEmpty(),
+                photoUrl = state.user?.photoUrl,
+                colorKey = state.user?.uid.orEmpty(),
+                size = 120.dp,
+            )
             Spacer(Modifier.height(16.dp))
             Text(state.user?.displayName.orEmpty(), style = MaterialTheme.typography.headlineSmall)
             Text(state.user?.email.orEmpty(), style = MaterialTheme.typography.bodyMedium, color = colors.onSurfaceVariant)

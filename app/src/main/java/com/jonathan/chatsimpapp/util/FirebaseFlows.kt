@@ -1,9 +1,5 @@
 package com.jonathan.chatsimpapp.util
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.Query as DbQuery
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.MetadataChanges
@@ -35,19 +31,4 @@ fun DocumentReference.snapshotFlow(): Flow<DocumentSnapshot> = callbackFlow {
         if (snapshot != null) trySend(snapshot)
     }
     awaitClose { registration.remove() }
-}
-
-/** Escucha un nodo de Realtime Database como Flow. */
-fun DbQuery.valueFlow(): Flow<DataSnapshot> = callbackFlow {
-    val listener = object : ValueEventListener {
-        override fun onDataChange(snapshot: DataSnapshot) {
-            trySend(snapshot)
-        }
-
-        override fun onCancelled(error: DatabaseError) {
-            close(error.toException())
-        }
-    }
-    addValueEventListener(listener)
-    awaitClose { removeEventListener(listener) }
 }

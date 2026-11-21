@@ -25,16 +25,7 @@ service cloud.firestore {
       allow read: if signedIn();
       allow create, update: if isMe(userId);
       allow delete: if false;
-
-      // Tokens de notificación: privados.
-      match /private/{doc} {
-        allow read, write: if isMe(userId);
-      }
-    }
-
-    // Colección de la versión 1: solo lectura propia, para migrar nombre y foto.
-    match /UsersRegister/{userId} {
-      allow read: if isMe(userId);
+      // Los tokens de notificación ya no están aquí: los guarda el Worker de Cloudflare (D1).
     }
 
     // ---------- Códigos de invitación ----------

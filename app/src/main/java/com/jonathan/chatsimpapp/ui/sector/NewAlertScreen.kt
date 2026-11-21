@@ -38,6 +38,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,7 +51,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.google.maps.android.compose.rememberCameraPositionState
 import com.jonathan.chatsimpapp.R
 import com.jonathan.chatsimpapp.data.model.AlertType
 import com.jonathan.chatsimpapp.data.repository.AlertsRepository
@@ -132,8 +132,8 @@ fun NewAlertScreen(onDone: () -> Unit, viewModel: NewAlertViewModel = hiltViewMo
     LaunchedEffect(state.done) { if (state.done) onDone() }
     BackHandler(enabled = state.step == 1) { viewModel.back() }
 
-    val camera = rememberCameraPositionState()
-    LaunchedEffect(state.start) { state.start?.let { camera.centerOn(it, 17f) } }
+    val controller = remember { MapController() }
+    LaunchedEffect(state.start) { state.start?.let { controller.centerOn(it, 17.0) } }
 
     NewAlertContent(
         state = state,
@@ -141,11 +141,8 @@ fun NewAlertScreen(onDone: () -> Unit, viewModel: NewAlertViewModel = hiltViewMo
         onNext = viewModel::next,
         onClose = { if (state.step == 1) viewModel.back() else onDone() },
         onDescription = viewModel::onDescription,
-        onPublish = {
-            val t = camera.position.target
-            viewModel.publish(LatLngPoint(t.latitude, t.longitude))
-        },
-        map = { modifier -> PickLocationMap(camera, modifier) },
+        onPublish = { (controller.target() ?: state.start)?.let(viewModel::publish) },
+        map = { modifier -> PickLocationMap(controller, modifier) },
     )
 }
 

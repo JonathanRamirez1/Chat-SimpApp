@@ -1,0 +1,30 @@
+# Worker de Chat SimpApp (cuenta Cloudflare de rj2techsolutions@gmail.com).
+# Despliegue: npx wrangler deploy  (usa CLOUDFLARE_API_TOKEN y CLOUDFLARE_ACCOUNT_ID del entorno).
+# Sin Cron Triggers propios: las tareas programadas las llama el Worker compartido rj2-cron.
+name = "chat-simpapp-api"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+workers_dev = true
+preview_urls = false
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "chat-simpapp"
+database_id = "662adbce-6b6f-432a-b757-f19ee50c371c"
+migrations_dir = "migrations"
+
+[vars]
+# Completar con los datos del proyecto Firebase nuevo (Configuración del proyecto → General).
+FIREBASE_PROJECT_ID = "PENDIENTE"
+FIREBASE_PROJECT_NUMBER = "PENDIENTE"
+# Pasar a "true" cuando App Check esté registrado con Play Integrity.
+APP_CHECK_ENFORCE = "false"
+
+# Secretos (no van aquí; se cargan con `npx wrangler secret put <NOMBRE>` o en el panel de Cloudflare):
+#   FIREBASE_SERVICE_ACCOUNT  JSON de la cuenta de servicio de Firebase (FCM + Firestore)
+#   REVENUECAT_SECRET_KEY     clave secreta v1 de RevenueCat (sk_...)
+#   REVENUECAT_WEBHOOK_AUTH   valor del header Authorization del webhook de RevenueCat
+#   CRON_SECRET               clave que manda rj2-cron en el header X-Cron-Secret

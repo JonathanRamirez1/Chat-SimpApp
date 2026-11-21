@@ -1,6 +1,5 @@
 package com.jonathan.chatsimpapp.ui.chat
 
-import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,8 +18,6 @@ import com.jonathan.chatsimpapp.ui.navigation.ChatRoute
 import com.jonathan.chatsimpapp.util.TimeFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -104,9 +101,6 @@ class ChatViewModel @Inject constructor(
     private val _input = MutableStateFlow("")
     val input: StateFlow<String> = _input
 
-    private val _uploading = MutableStateFlow(false)
-    val uploading: StateFlow<Boolean> = _uploading
-
     private val _error = MutableStateFlow<Int?>(null)
     val error: StateFlow<Int?> = _error
 
@@ -126,9 +120,10 @@ class ChatViewModel @Inject constructor(
     private val otherPresence = chat.filterNotNull()
         .map { if (it.isGroup) null else it.otherMember(myUid) }
         .distinctUntilChanged()
-        .flatMapLatest { uid -> if (uid == null) flowOf(null) else presence.observePresence(uid) }
+        .flatMapLatest { uid -> if (uid == null) flowOf(null) else presence.observePresence(setOf(uid)).map { it[uid] } }
 
-    private val typing = presence.observeTyping(chatId).map { it - myUid }
+    // Sin "escribiendo…" en vivo (ver PresenceRepository).
+    private val typing = flowOf(emptySet<String>())
 
     /** En el chat del edificio cada persona se identifica también por su unidad. */
     private val units = chat.filterNotNull()
@@ -151,8 +146,6 @@ class ChatViewModel @Inject constructor(
             buildState(chat, messages, people, presence, typing)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ChatUiState())
 
-    private var typingJob: Job? = null
-
     init {
         // Mientras el chat esté en pantalla, cada mensaje nuevo de otra persona se marca como leído.
         viewModelScope.launch {
@@ -164,42 +157,20 @@ class ChatViewModel @Inject constructor(
 
     fun setVisible(isVisible: Boolean) {
         visible.value = isVisible
-        if (!isVisible) stopTyping()
     }
 
     fun onInputChange(text: String) {
         _input.value = text
-        if (text.isBlank()) {
-            stopTyping()
-            return
-        }
-        if (typingJob == null) presence.setTyping(chatId, myUid, true)
-        typingJob?.cancel()
-        typingJob = viewModelScope.launch {
-            delay(TYPING_TIMEOUT_MS)
-            stopTyping()
-        }
     }
 
     fun send() {
         val text = _input.value.trim()
         if (text.isEmpty()) return
         _input.value = ""
-        stopTyping()
         viewModelScope.launch {
             val current = chat.value ?: chat.filterNotNull().first()
             runCatching { chats.sendMessage(current, myUid, text) }
                 .onFailure { _error.value = R.string.error_send_message }
-        }
-    }
-
-    fun sendImage(uri: Uri) {
-        viewModelScope.launch {
-            _uploading.value = true
-            val current = chat.value ?: chat.filterNotNull().first()
-            runCatching { chats.sendMessage(current, myUid, text = "", image = uri) }
-                .onFailure { _error.value = R.string.error_upload }
-            _uploading.value = false
         }
     }
 
@@ -209,16 +180,6 @@ class ChatViewModel @Inject constructor(
 
     fun onErrorShown() {
         _error.value = null
-    }
-
-    private fun stopTyping() {
-        typingJob?.cancel()
-        if (typingJob != null) presence.setTyping(chatId, myUid, false)
-        typingJob = null
-    }
-
-    override fun onCleared() {
-        stopTyping()
     }
 
     private fun needsMarkRead(chat: Chat, messages: List<Message>): Boolean {
@@ -308,7 +269,6 @@ class ChatViewModel @Inject constructor(
 
     companion object {
         private const val PAGE_SIZE = 50L
-        private const val TYPING_TIMEOUT_MS = 4_000L
         private const val RUN_GAP_MS = 5 * 60 * 1000L
     }
 }

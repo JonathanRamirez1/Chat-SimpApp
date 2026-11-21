@@ -1,9 +1,5 @@
 package com.jonathan.chatsimpapp.ui.community
 
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,7 +21,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AddPhotoAlternate
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,7 +53,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import coil.compose.AsyncImage
 import com.jonathan.chatsimpapp.R
 import com.jonathan.chatsimpapp.config.AppConfig
 import com.jonathan.chatsimpapp.data.model.Post
@@ -86,7 +80,6 @@ data class FormState(
     val options: List<String> = listOf("", ""),
     val days: Int = 3,
     val quorum: Int = 50,
-    val photo: Uri? = null,
     val saving: Boolean = false,
     val done: Boolean = false,
     @param:StringRes val message: Int? = null,
@@ -131,8 +124,8 @@ class FormViewModel @Inject constructor(
                         val closes = Date(System.currentTimeMillis() + s.days * 24L * 3600 * 1000)
                         content.createPoll(ctx.id, ctx.uid, s.title, s.body, s.options, s.quorum, closes)
                     }
-                    FormKind.REPORT -> content.createReport(ctx.id, ctx.uid, ctx.myUnit, s.title, s.body, s.choice, s.photo)
-                    FormKind.POST -> content.createPost(ctx.id, ctx.uid, ctx.myUnit, s.choice, s.body, s.photo)
+                    FormKind.REPORT -> content.createReport(ctx.id, ctx.uid, ctx.myUnit, s.title, s.body, s.choice)
+                    FormKind.POST -> content.createPost(ctx.id, ctx.uid, ctx.myUnit, s.choice, s.body)
                 }
             }.onSuccess {
                 _state.update { it.copy(saving = false, done = true) }
@@ -177,9 +170,6 @@ fun FormContent(
             snackbar.showSnackbar(message)
             onMessageShown()
         }
-    }
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        if (uri != null) onUpdate { it.copy(photo = uri) }
     }
     val title = when (kind) {
         FormKind.ANNOUNCEMENT -> R.string.new_announcement
@@ -259,9 +249,6 @@ fun FormContent(
                     }
                     Field(state.title, { v -> onUpdate { it.copy(title = v.take(100)) } }, R.string.report_title_hint)
                     Field(state.body, { v -> onUpdate { it.copy(body = v.take(1500)) } }, R.string.field_details, minLines = 3)
-                    PhotoPicker(state.photo, { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }) {
-                        onUpdate { it.copy(photo = null) }
-                    }
                 }
                 FormKind.POST -> {
                     Text(stringResource(R.string.post_type), style = MaterialTheme.typography.titleSmall)
@@ -276,9 +263,6 @@ fun FormContent(
                         }
                     }
                     Field(state.body, { v -> onUpdate { it.copy(body = v.take(1000)) } }, R.string.post_text_hint, minLines = 4)
-                    PhotoPicker(state.photo, { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }) {
-                        onUpdate { it.copy(photo = null) }
-                    }
                 }
             }
             Spacer(Modifier.height(4.dp))
@@ -314,25 +298,4 @@ private fun Field(
 @Composable
 private fun ColumnScope.Hint(@StringRes text: Int) {
     Text(stringResource(text), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-}
-
-@Composable
-private fun PhotoPicker(photo: Uri?, onPick: () -> Unit, onRemove: () -> Unit) {
-    if (photo == null) {
-        TextButton(onClick = onPick) {
-            Icon(Icons.Rounded.AddPhotoAlternate, null)
-            Text("  " + stringResource(R.string.add_photo))
-        }
-    } else {
-        Box {
-            AsyncImage(
-                photo, null, contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth().height(200.dp).clip(MaterialTheme.shapes.medium)
-                    .background(MaterialTheme.colorScheme.surfaceVariant).clickable(onClick = onPick),
-            )
-            IconButton(onClick = onRemove, modifier = Modifier.align(Alignment.TopEnd)) {
-                Icon(Icons.Rounded.Close, stringResource(R.string.remove), tint = MaterialTheme.colorScheme.onPrimary)
-            }
-        }
-    }
 }

@@ -4,8 +4,6 @@ import kotlinx.serialization.Serializable
 
 // Rutas con tipos seguros de Navigation Compose.
 @Serializable data object LoginRoute
-@Serializable data object RegisterRoute
-@Serializable data object ForgotPasswordRoute
 @Serializable data object OnboardingRoute
 @Serializable data object HomeRoute
 @Serializable data class ChatRoute(val chatId: String)

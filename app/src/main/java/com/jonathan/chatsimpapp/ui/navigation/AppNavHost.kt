@@ -16,9 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.jonathan.chatsimpapp.data.repository.CommunityState
-import com.jonathan.chatsimpapp.ui.auth.ForgotPasswordScreen
 import com.jonathan.chatsimpapp.ui.auth.LoginScreen
-import com.jonathan.chatsimpapp.ui.auth.RegisterScreen
 import com.jonathan.chatsimpapp.ui.chat.ChatScreen
 import com.jonathan.chatsimpapp.ui.community.CommunityInfoScreen
 import com.jonathan.chatsimpapp.ui.community.FormKind
@@ -60,7 +58,7 @@ fun AppNavHost(
         if (state is CommunityState.Loading) return@LaunchedEffect
         val target = rootFor(state)
         val dest = navController.currentBackStackEntry?.destination ?: return@LaunchedEffect
-        val onAuth = dest.hasRoute<LoginRoute>() || dest.hasRoute<RegisterRoute>() || dest.hasRoute<ForgotPasswordRoute>()
+        val onAuth = dest.hasRoute<LoginRoute>()
         val onOnboarding = dest.hasRoute<OnboardingRoute>()
         val wrongPlace = when (target) {
             LoginRoute -> !onAuth
@@ -89,14 +87,7 @@ fun AppNavHost(
         popEnterTransition = { slideIntoContainer(SlideDirection.End, tween(duration), initialOffset = { it / 4 }) + fadeIn(tween(duration)) },
         popExitTransition = { slideOutOfContainer(SlideDirection.End, tween(duration)) + fadeOut(tween(duration)) },
     ) {
-        composable<LoginRoute> {
-            LoginScreen(
-                onRegister = { navController.navigate(RegisterRoute) },
-                onForgotPassword = { navController.navigate(ForgotPasswordRoute) },
-            )
-        }
-        composable<RegisterRoute> { RegisterScreen(onBack = navController::popBackStack) }
-        composable<ForgotPasswordRoute> { ForgotPasswordScreen(onBack = navController::popBackStack) }
+        composable<LoginRoute> { LoginScreen() }
         composable<OnboardingRoute> { OnboardingScreen() }
 
         composable<HomeRoute> {

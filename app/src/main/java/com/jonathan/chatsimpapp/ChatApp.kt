@@ -10,6 +10,7 @@ import com.jonathan.chatsimpapp.data.repository.PresenceRepository
 import com.jonathan.chatsimpapp.data.repository.UserRepository
 import com.jonathan.chatsimpapp.di.ApplicationScope
 import com.jonathan.chatsimpapp.notifications.NotificationHelper
+import com.jonathan.chatsimpapp.notifications.TopicSubscriptions
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ class ChatApp : Application() {
     @Inject lateinit var presence: PresenceRepository
     @Inject @ApplicationScope lateinit var scope: CoroutineScope
     @Inject lateinit var ads: AdsController
+    @Inject lateinit var topics: TopicSubscriptions
 
     override fun onCreate() {
         super.onCreate()
@@ -30,19 +32,21 @@ class ChatApp : Application() {
         AppCheckInstaller.install()
         NotificationHelper.createChannels(this)
         ads.register(this)
+        topics.start()
 
-        // En línea mientras la app está visible; desconectado cuando pasa a segundo plano.
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onStart(owner: LifecycleOwner) {
                 ads.onAppForeground()
-                val uid = auth.currentUserId ?: return
-                presence.goOnline(uid)
-                scope.launch { runCatching { users.registerCurrentFcmToken(uid) } }
+                if (auth.currentUserId == null) return
+                // Una sola vez al abrir: "últ. vez" y token de notificaciones (en el Worker de Cloudflare).
+                scope.launch {
+                    presence.ping()
+                    runCatching { users.registerCurrentFcmToken() }
+                }
             }
 
             override fun onStop(owner: LifecycleOwner) {
                 ads.onAppBackground()
-                auth.currentUserId?.let(presence::goOffline)
             }
         })
     }

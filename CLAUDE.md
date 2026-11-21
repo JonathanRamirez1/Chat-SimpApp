@@ -1,7 +1,7 @@
 # Chat SimpApp — instrucciones del proyecto
 
-App Android nativa (Kotlin, Jetpack Compose, Hilt, Firebase) para comunidades de vecinos.
-Ver README.md para arquitectura, monetización y puesta en marcha.
+App Android nativa (Kotlin, Jetpack Compose, Hilt, Firebase Spark + Cloudflare) para comunidades de vecinos.
+Ver README.md para arquitectura y monetización, y PENDIENTES.md para lo que falta configurar.
 
 ## Regla: actualización obligatoria
 
@@ -22,18 +22,33 @@ Ver README.md para arquitectura, monetización y puesta en marcha.
 
 Jonathan (ramirezjj201@gmail.com) SIEMPRE debe poder hacer compras de prueba reales de Google Play (sin cobro)
 en prueba interna, cerrada y producción. Nunca bloquear, ignorar ni revertir compras sandbox: RevenueCat debe
-otorgar el entitlement `pro` y la Cloud Function `syncProPlan`/`revenueCatWebhook` debe activarlo igual que una
-compra real. En Play Console la lista de testers con licencia ("Prueba Paxora Plus") debe seguir marcada.
+otorgar el entitlement `pro` y el Worker (`/v1/pro/sync` y `/webhooks/revenuecat`) debe activarlo igual que una
+compra real: `ACCEPT_SANDBOX_EVENTS = true` en `server/src/config.ts` (lo revisa `scripts/check-release.sh`). En Play Console la lista de testers con licencia ("Prueba Paxora Plus") debe seguir marcada.
+
+## Regla: backend (esquema nuevo de RJ2)
+
+- Firebase en **plan Spark, sin cuenta de facturación**. Prohibido: Cloud Functions, Cloud Storage, Realtime
+  Database (100 conexiones), login por teléfono, Identity Platform, Google Maps (pide facturación).
+- Lo que necesite servidor va en **Cloudflare** (cuenta rj2techsolutions@gmail.com): Worker `chat-simpapp-api`
+  (carpeta `server/`) y D1 `chat-simpapp`. Notificaciones con FCM HTTP v1 desde el Worker.
+- **Sin Cron Triggers propios**: las tareas programadas son handlers `POST /cron/<tarea>` que llama el Worker
+  compartido `rj2-cron`.
+- Login **solo con Google** (no hay uso sin cuenta; para comprar Pro hace falta Google).
+- Sin subida de archivos/fotos (no hay Storage). Mapa con MapLibre + OpenFreeMap (atribución OSM visible).
+- Secretos en Workers Secrets (`wrangler secret put`), nunca en el repo ni en el chat. Despliegue con
+  `npx wrangler deploy` usando `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID` del entorno.
+- Firestore Spark ≈ 50.000 lecturas/día: evitar escuchas innecesarias y consultas sin límite.
 
 ## Cuentas (RJ2)
 
-- Firebase y RevenueCat: rj2techsolutions@gmail.com. Play Console y AdMob: cuenta personal.
+- Firebase (Spark), RevenueCat y Cloudflare: rj2techsolutions@gmail.com. Play Console y AdMob: cuenta personal.
 - Paquete final: `com.rj2techsolutions.chatsimpapp` (pendiente: hoy compila con `com.jonathan.chatsimpapp`
   hasta tener el `google-services.json` del proyecto nuevo).
 - Correo público de la app: chatsimpapp@rj2techsolutions.com. Nunca el correo personal en nada público.
 
 ## Notas de compilación
 
-- Pruebas: `./gradlew testDebugUnitTest` · reglas de Firestore: `cd rules-tests && npm test`.
-- Claves locales en `~/.gradle/gradle.properties` (nunca en el repo): `revenueCatApiKey`, `mapsApiKey`, ids de AdMob.
+- Pruebas: `./gradlew testDebugUnitTest` · reglas de Firestore: `cd rules-tests && npm test` · Worker: `cd server && npm test`.
+- Antes de publicar: `./scripts/check-release.sh`.
+- Claves locales en `~/.gradle/gradle.properties` (nunca en el repo): `revenueCatApiKey`, ids de AdMob.
 - Subir `versionCode` en `app/build.gradle.kts` en cada publicación.

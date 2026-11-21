@@ -1,6 +1,7 @@
 {
   "firestore": { "rules": "firestore.rules", "indexes": "firestore.indexes.json" },
-  "database": { "rules": "database.rules.json" },
-  "storage": { "rules": "storage.rules" },
-  "functions": [{ "source": "functions", "codebase": "default" }]
+  "hosting": {
+    "public": "hosting",
+    "ignore": ["firebase.json", "**/.*"]
+  }
 }

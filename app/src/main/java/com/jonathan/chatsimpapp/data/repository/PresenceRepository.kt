@@ -1,82 +1,43 @@
 package com.jonathan.chatsimpapp.data.repository
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ServerValue
-import com.google.firebase.database.ValueEventListener
 import com.jonathan.chatsimpapp.data.model.Presence
-import com.jonathan.chatsimpapp.util.valueFlow
+import com.jonathan.chatsimpapp.data.remote.WorkerApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Presencia ("en línea" / "últ. vez") y estado "escribiendo" con Realtime Database.
- * Se usa RTDB porque `onDisconnect()` marca al usuario como desconectado aunque la app muera
- * o se pierda la red, algo que Firestore no puede hacer.
+ * "Últ. vez" sin Realtime Database (en el plan gratis de Firebase solo admite 100 conexiones a la vez).
+ * La app avisa al Worker cuando se abre, y las pantallas consultan cuándo fue la última vez de cada
+ * persona. Se considera "en línea" si abrió la app hace menos de [ONLINE_WINDOW_MS].
+ * No hay "escribiendo…": hacerlo en vivo gastaría las peticiones que comparten todas las apps.
  */
 @Singleton
 class PresenceRepository @Inject constructor(
-    private val database: FirebaseDatabase,
+    private val api: WorkerApi,
 ) {
-    private val connectedRef by lazy { database.getReference(".info/connected") }
-    private var connectionListener: ValueEventListener? = null
+    suspend fun ping() {
+        runCatching { api.ping() }
+    }
 
-    private fun statusRef(uid: String) = database.getReference("status").child(uid)
-    private fun typingRef(chatId: String) = database.getReference("typing").child(chatId)
-
-    private val onlineValue get() = mapOf("state" to "online", "lastChanged" to ServerValue.TIMESTAMP)
-    private val offlineValue get() = mapOf("state" to "offline", "lastChanged" to ServerValue.TIMESTAMP)
-
-    /** Marca al usuario en línea mientras haya conexión; se re-registra si la conexión vuelve. */
-    fun goOnline(uid: String) {
-        if (connectionListener != null) return
-        val listener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.getValue(Boolean::class.java) != true) return
-                statusRef(uid).onDisconnect().setValue(offlineValue).addOnSuccessListener {
-                    statusRef(uid).setValue(onlineValue)
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) = Unit
+    /** Consulta una vez y luego cada [REFRESH_MS] mientras la pantalla esté abierta. */
+    fun observePresence(uids: Set<String>): Flow<Map<String, Presence>> = flow {
+        if (uids.isEmpty()) {
+            emit(emptyMap())
+            return@flow
         }
-        connectionListener = listener
-        connectedRef.addValueEventListener(listener)
-    }
-
-    fun goOffline(uid: String) {
-        connectionListener?.let { connectedRef.removeEventListener(it) }
-        connectionListener = null
-        statusRef(uid).setValue(offlineValue)
-    }
-
-    fun observePresence(uid: String): Flow<Presence> =
-        statusRef(uid).valueFlow()
-            .map { snap ->
-                Presence(
-                    online = snap.child("state").getValue(String::class.java) == "online",
-                    lastChanged = snap.child("lastChanged").getValue(Long::class.java),
-                )
-            }
-            .catch { emit(Presence()) }
-
-    fun setTyping(chatId: String, uid: String, typing: Boolean) {
-        val ref = typingRef(chatId).child(uid)
-        if (typing) {
-            ref.onDisconnect().removeValue()
-            ref.setValue(true)
-        } else {
-            ref.removeValue()
+        while (true) {
+            val now = System.currentTimeMillis()
+            val seen = runCatching { api.lastSeen(uids) }.getOrDefault(emptyMap())
+            emit(seen.mapValues { (_, t) -> Presence(online = now - t < ONLINE_WINDOW_MS, lastChanged = t) })
+            delay(REFRESH_MS)
         }
     }
 
-    /** Uids que están escribiendo en el chat (incluye el propio; filtrar en la UI). */
-    fun observeTyping(chatId: String): Flow<Set<String>> =
-        typingRef(chatId).valueFlow()
-            .map { snap -> snap.children.mapNotNull { it.key }.toSet() }
-            .catch { emit(emptySet()) }
+    companion object {
+        private const val ONLINE_WINDOW_MS = 3 * 60_000L
+        private const val REFRESH_MS = 2 * 60_000L
+    }
 }

@@ -1,14 +1,10 @@
 package com.jonathan.chatsimpapp.data.repository
 
-import android.content.Context
-import android.net.Uri
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.storageMetadata
 import com.jonathan.chatsimpapp.data.model.Announcement
 import com.jonathan.chatsimpapp.data.model.Poll
 import com.jonathan.chatsimpapp.data.model.Post
@@ -16,7 +12,7 @@ import com.jonathan.chatsimpapp.data.model.Report
 import com.jonathan.chatsimpapp.data.model.ReportEvent
 import com.jonathan.chatsimpapp.data.model.Vote
 import com.jonathan.chatsimpapp.data.model.WeeklySummary
-import com.jonathan.chatsimpapp.util.ImageCompressor
+import com.jonathan.chatsimpapp.data.remote.WorkerApi
 import com.jonathan.chatsimpapp.util.snapshotFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -32,9 +28,13 @@ import javax.inject.Singleton
 @Singleton
 class CommunityContentRepository @Inject constructor(
     private val db: FirebaseFirestore,
-    private val storage: FirebaseStorage,
-    private val context: Context,
+    private val api: WorkerApi,
 ) {
+    /** Las notificaciones las envía el Worker; si falla, lo publicado igual queda guardado. */
+    private suspend fun notifyQuietly(kind: String, vararg ids: Pair<String, String>) {
+        runCatching { api.notify(kind, *ids) }
+    }
+
     private fun col(cid: String, name: String) =
         db.collection(CommunityRepository.COMMUNITIES).document(cid).collection(name)
 
@@ -45,23 +45,25 @@ class CommunityContentRepository @Inject constructor(
             .snapshotFlow().map { it.toObjects(Announcement::class.java) }
 
     suspend fun postAnnouncement(cid: String, uid: String, unit: String, title: String, body: String, pinned: Boolean) {
-        col(cid, ANNOUNCEMENTS).add(
+        val ref = col(cid, ANNOUNCEMENTS).add(
             mapOf(
                 "title" to title.trim(), "body" to body.trim(), "type" to Announcement.TYPE_NOTICE,
                 "pinned" to pinned, "authorId" to uid, "authorUnit" to unit,
                 "createdAt" to FieldValue.serverTimestamp(),
             ),
         ).await()
+        notifyQuietly("announcement", "communityId" to cid, "announcementId" to ref.id)
     }
 
     suspend fun raiseEmergency(cid: String, uid: String, unit: String, kind: String, details: String) {
-        col(cid, ANNOUNCEMENTS).add(
+        val ref = col(cid, ANNOUNCEMENTS).add(
             mapOf(
                 "title" to kind, "body" to details.trim(), "type" to Announcement.TYPE_EMERGENCY,
                 "emergencyKind" to kind, "pinned" to false, "authorId" to uid, "authorUnit" to unit,
                 "createdAt" to FieldValue.serverTimestamp(),
             ),
         ).await()
+        notifyQuietly("announcement", "communityId" to cid, "announcementId" to ref.id)
     }
 
     suspend fun deleteAnnouncement(cid: String, id: String) {
@@ -103,6 +105,7 @@ class CommunityContentRepository @Inject constructor(
                 "createdAt" to FieldValue.serverTimestamp(), "closesAt" to Timestamp(closesAt), "closed" to false,
             ),
         ).await()
+        notifyQuietly("poll", "communityId" to cid, "pollId" to ref.id)
         return ref.id
     }
 
@@ -126,15 +129,14 @@ class CommunityContentRepository @Inject constructor(
         col(cid, REPORTS).document(rid).snapshotFlow().map { it.toObject(Report::class.java) }
 
     suspend fun createReport(
-        cid: String, uid: String, unit: String, title: String, description: String, category: String, photo: Uri?,
+        cid: String, uid: String, unit: String, title: String, description: String, category: String,
     ): String {
         val ref = col(cid, REPORTS).document()
-        val photoUrl = photo?.let { upload("communities/$cid/reports/${ref.id}.jpg", it) }
         val now = Timestamp.now()
         ref.set(
             mapOf(
                 "title" to title.trim(), "description" to description.trim(), "category" to category,
-                "photoUrl" to photoUrl, "status" to Report.STATUS_OPEN, "createdBy" to uid, "unit" to unit,
+                "status" to Report.STATUS_OPEN, "createdBy" to uid, "unit" to unit,
                 "affectedUnits" to listOf(unit),
                 "history" to listOf(ReportEvent(Report.STATUS_OPEN, "", unit, now)),
                 "createdAt" to FieldValue.serverTimestamp(), "updatedAt" to FieldValue.serverTimestamp(),
@@ -158,6 +160,8 @@ class CommunityContentRepository @Inject constructor(
                 "history" to FieldValue.arrayUnion(ReportEvent(status, note.trim(), byUnit, Timestamp.now())),
             ),
         ).await()
+        // Avisa solo a las unidades afectadas.
+        notifyQuietly("report", "communityId" to cid, "reportId" to rid)
     }
 
     // ---------- Tablón ----------
@@ -166,12 +170,11 @@ class CommunityContentRepository @Inject constructor(
         col(cid, POSTS).orderBy("createdAt", Query.Direction.DESCENDING).limit(limit)
             .snapshotFlow().map { it.toObjects(Post::class.java) }
 
-    suspend fun createPost(cid: String, uid: String, unit: String, type: String, text: String, photo: Uri?) {
+    suspend fun createPost(cid: String, uid: String, unit: String, type: String, text: String) {
         val ref = col(cid, POSTS).document()
-        val photoUrl = photo?.let { upload("communities/$cid/posts/${ref.id}.jpg", it) }
         ref.set(
             mapOf(
-                "type" to type, "text" to text.trim(), "photoUrl" to photoUrl, "authorId" to uid,
+                "type" to type, "text" to text.trim(), "authorId" to uid,
                 "unit" to unit, "resolved" to false, "createdAt" to FieldValue.serverTimestamp(),
             ),
         ).await()
@@ -198,13 +201,6 @@ class CommunityContentRepository @Inject constructor(
                 "generatedAt" to FieldValue.serverTimestamp(),
             ),
         ).await()
-    }
-
-    private suspend fun upload(path: String, uri: Uri): String {
-        val bytes = ImageCompressor.compress(context, uri, maxSize = 1280, quality = 78)
-        val ref = storage.reference.child(path)
-        ref.putBytes(bytes, storageMetadata { contentType = "image/jpeg" }).await()
-        return ref.downloadUrl.await().toString()
     }
 
     companion object {

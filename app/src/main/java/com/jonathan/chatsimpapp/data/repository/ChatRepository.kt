@@ -1,17 +1,13 @@
 package com.jonathan.chatsimpapp.data.repository
 
-import android.content.Context
-import android.net.Uri
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.storageMetadata
 import com.jonathan.chatsimpapp.data.model.Chat
 import com.jonathan.chatsimpapp.data.model.Message
+import com.jonathan.chatsimpapp.data.remote.WorkerApi
 import com.jonathan.chatsimpapp.util.ChatIds
-import com.jonathan.chatsimpapp.util.ImageCompressor
 import com.jonathan.chatsimpapp.util.snapshotFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,8 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class ChatRepository @Inject constructor(
     private val db: FirebaseFirestore,
-    private val storage: FirebaseStorage,
-    private val context: Context,
+    private val api: WorkerApi,
 ) {
     private val chats get() = db.collection(CHATS)
     private fun messages(chatId: String) = chats.document(chatId).collection(MESSAGES)
@@ -75,7 +70,7 @@ class ChatRepository @Inject constructor(
         return id
     }
 
-    suspend fun createGroup(myUid: String, name: String, memberIds: List<String>, photo: Uri?): String {
+    suspend fun createGroup(myUid: String, name: String, memberIds: List<String>): String {
         val ref = chats.document()
         val members = (memberIds + myUid).distinct()
         ref.set(
@@ -88,12 +83,6 @@ class ChatRepository @Inject constructor(
                 "unread" to members.associateWith { 0 },
             ),
         ).await()
-        if (photo != null) {
-            runCatching {
-                val url = upload("chats/${ref.id}/photo.jpg", photo, maxSize = 640)
-                ref.update("photoUrl", url).await()
-            }
-        }
         return ref.id
     }
 
@@ -101,17 +90,17 @@ class ChatRepository @Inject constructor(
      * Guarda el mensaje y actualiza el resumen del chat en una sola escritura atómica:
      * último mensaje, fecha y +1 en el contador de no leídos de los demás miembros.
      * Sin conexión, el mensaje aparece al instante como "pendiente" y se envía al volver la red.
+     * Solo texto: el plan gratis de Firebase no tiene Storage para fotos.
      */
-    suspend fun sendMessage(chat: Chat, senderId: String, text: String, image: Uri? = null) {
+    suspend fun sendMessage(chat: Chat, senderId: String, text: String) {
         val messageRef = messages(chat.id).document()
-        val imageUrl = image?.let { upload("chats/${chat.id}/${messageRef.id}.jpg", it, maxSize = 1600) }
         val cleanText = text.trim()
 
         val chatUpdate = mutableMapOf<String, Any>(
             "lastMessage" to mapOf(
                 "text" to cleanText,
                 "senderId" to senderId,
-                "hasImage" to (imageUrl != null),
+                "hasImage" to false,
                 "sentAt" to FieldValue.serverTimestamp(),
             ),
             "updatedAt" to FieldValue.serverTimestamp(),
@@ -125,13 +114,16 @@ class ChatRepository @Inject constructor(
                 mapOf(
                     "senderId" to senderId,
                     "text" to cleanText,
-                    "imageUrl" to imageUrl,
                     "sentAt" to FieldValue.serverTimestamp(),
                 ),
             )
             .update(chats.document(chat.id), chatUpdate)
             .commit()
             .await()
+        // El Worker envía la notificación (el chat general del edificio no notifica).
+        if (chat.type != Chat.TYPE_COMMUNITY) {
+            runCatching { api.notify("message", "chatId" to chat.id, "messageId" to messageRef.id) }
+        }
     }
 
     /** Pone en cero los no leídos del usuario y guarda cuándo leyó (para los checks azules). */
@@ -139,13 +131,6 @@ class ChatRepository @Inject constructor(
         chats.document(chatId).update(
             mapOf("unread.$uid" to 0, "lastRead.$uid" to FieldValue.serverTimestamp()),
         )
-    }
-
-    private suspend fun upload(path: String, uri: Uri, maxSize: Int): String {
-        val bytes = ImageCompressor.compress(context, uri, maxSize = maxSize)
-        val ref = storage.reference.child(path)
-        ref.putBytes(bytes, storageMetadata { contentType = "image/jpeg" }).await()
-        return ref.downloadUrl.await().toString()
     }
 
     private fun DocumentSnapshot.toChat(): Chat? =

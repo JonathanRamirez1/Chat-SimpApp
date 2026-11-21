@@ -1,9 +1,5 @@
 package com.jonathan.chatsimpapp.ui.chat
 
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -36,7 +32,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Send
-import androidx.compose.material.icons.rounded.AddPhotoAlternate
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.DoneAll
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
@@ -46,7 +41,6 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
@@ -101,7 +95,6 @@ import kotlinx.coroutines.launch
 fun ChatScreen(onBack: () -> Unit, viewModel: ChatViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val input by viewModel.input.collectAsStateWithLifecycle()
-    val uploading by viewModel.uploading.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
@@ -130,18 +123,12 @@ fun ChatScreen(onBack: () -> Unit, viewModel: ChatViewModel = hiltViewModel()) {
         }
     }
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        uri?.let(viewModel::sendImage)
-    }
-
     ChatContent(
         state = state,
         input = input,
-        uploading = uploading,
         error = error?.let { stringResource(it) },
         onInputChange = viewModel::onInputChange,
         onSend = viewModel::send,
-        onAttach = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
         onLoadMore = viewModel::loadMore,
         onBack = onBack,
         onErrorShown = viewModel::onErrorShown,
@@ -153,11 +140,9 @@ fun ChatScreen(onBack: () -> Unit, viewModel: ChatViewModel = hiltViewModel()) {
 fun ChatContent(
     state: ChatUiState,
     input: String,
-    uploading: Boolean,
     error: String?,
     onInputChange: (String) -> Unit,
     onSend: () -> Unit,
-    onAttach: () -> Unit,
     onLoadMore: () -> Unit,
     onBack: () -> Unit,
     onErrorShown: () -> Unit,
@@ -203,12 +188,10 @@ fun ChatContent(
                 }
                 ScrollToBottom(listState, Modifier.align(Alignment.BottomEnd).padding(16.dp))
             }
-            if (uploading) LinearProgressIndicator(Modifier.fillMaxWidth())
             InputBar(
                 value = input,
                 onValueChange = onInputChange,
                 onSend = onSend,
-                onAttach = onAttach,
                 enabled = !state.loading,
             )
         }
@@ -415,7 +398,6 @@ private fun InputBar(
     value: String,
     onValueChange: (String) -> Unit,
     onSend: () -> Unit,
-    onAttach: () -> Unit,
     enabled: Boolean,
 ) {
     val colors = MaterialTheme.colorScheme
@@ -435,11 +417,6 @@ private fun InputBar(
                 maxLines = 5,
                 shape = RoundedCornerShape(26.dp),
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-                leadingIcon = {
-                    IconButton(onClick = onAttach, enabled = enabled) {
-                        Icon(Icons.Rounded.AddPhotoAlternate, contentDescription = stringResource(R.string.attach_image))
-                    }
-                },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = colors.surfaceContainerHigh,
                     unfocusedContainerColor = colors.surfaceContainerHigh,
