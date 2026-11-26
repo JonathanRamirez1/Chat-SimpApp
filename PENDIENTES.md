@@ -27,7 +27,7 @@ Proyecto: **`chat-simpapp-efb77`** (número 929638718992), plan Spark. App Andro
       | Subida (upload, fuera del repo) | `FB:78:51:42:97:CE:13:E6:60:43:5A:16:6A:AA:EE:E5:19:27:7B:19` | `74:71:7A:F9:CF:DA:A2:DA:95:C9:08:04:5C:EC:62:90:DD:AA:EA:FA:92:C7:7B:1D:85:83:0A:38:A0:E4:D3:D5` |
       | Firma de la app de Play (App Signing) | se ve en Play Console → Integridad de la app, tras la primera subida | ídem |
 
-- [ ] **Pasarle a Claude el `google-services.json`** para cambiar el paquete en el código.
+- [x] `google-services.json` del proyecto nuevo en `app/` y paquete cambiado a `com.rj2techsolutions.chatsimpapp`.
 - [x] Authentication → **Google** (nombre público Chat SimpApp).
 - [x] **Firestore** Standard en `nam5`, modo producción.
 - [x] **App Check** → registrar la app con **Play Integrity**; en depuración, agregar el token de prueba de Logcat.

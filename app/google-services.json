@@ -1,41 +1,49 @@
 {
   "project_info": {
-    "project_number": "337577816817",
-    "project_id": "chat-simpapp",
-    "storage_bucket": "chat-simpapp.appspot.com"
+    "project_number": "929638718992",
+    "project_id": "chat-simpapp-efb77",
+    "storage_bucket": "chat-simpapp-efb77.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:337577816817:android:9270e1511cc42e14896f50",
+        "mobilesdk_app_id": "1:929638718992:android:1b4b3f79f777b2aeb5f495",
         "android_client_info": {
-          "package_name": "com.jonathan.chatsimpapp"
+          "package_name": "com.rj2techsolutions.chatsimpapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "337577816817-f7adm358hicd66r0ovjrhi0a5l33chkg.apps.googleusercontent.com",
+          "client_id": "929638718992-ghjkt7fv4qlacgt7jgtp7rg4d95arule.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.jonathan.chatsimpapp",
-            "certificate_hash": "61afcb3cc6813e3ed20b33a8f372b00d8c8dda22"
+            "package_name": "com.rj2techsolutions.chatsimpapp",
+            "certificate_hash": "fb78514297ce13e660435a166aaaeee519277b19"
           }
         },
         {
-          "client_id": "337577816817-kobt18chq8seja5jsp69d2ipv9qbpv4l.apps.googleusercontent.com",
+          "client_id": "929638718992-iifouebipnsgg63edg5cudnv6fodcvc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rj2techsolutions.chatsimpapp",
+            "certificate_hash": "52f3d8e3a8797c6936a9cd913983a528fbd26471"
+          }
+        },
+        {
+          "client_id": "929638718992-mumnchm2h46okgshtjr6p3u0jlcq833t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCnb2b8E26lRYCbow9Ijr7WTFvTJFn9d-Y"
+          "current_key": "AIzaSyBooCD7C6o7v71aBhFPxAcHxpanxrKEaK4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "337577816817-kobt18chq8seja5jsp69d2ipv9qbpv4l.apps.googleusercontent.com",
+              "client_id": "929638718992-mumnchm2h46okgshtjr6p3u0jlcq833t.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

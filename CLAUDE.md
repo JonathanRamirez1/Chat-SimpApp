@@ -42,8 +42,8 @@ compra real: `ACCEPT_SANDBOX_EVENTS = true` en `server/src/config.ts` (lo revisa
 ## Cuentas (RJ2)
 
 - Firebase (Spark), RevenueCat y Cloudflare: rj2techsolutions@gmail.com. Play Console y AdMob: cuenta personal.
-- Paquete final: `com.rj2techsolutions.chatsimpapp` (pendiente: hoy compila con `com.jonathan.chatsimpapp`
-  hasta tener el `google-services.json` del proyecto nuevo).
+- Paquete (applicationId): `com.rj2techsolutions.chatsimpapp`, proyecto Firebase `chat-simpapp-efb77`.
+  El namespace del código sigue siendo `com.jonathan.chatsimpapp` (no afecta a Play ni a Firebase).
 - Correo público de la app: chatsimpapp@rj2techsolutions.com. Nunca el correo personal en nada público.
 
 ## Notas de compilación

@@ -14,8 +14,8 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        // Se mantiene el mismo applicationId para seguir usando el proyecto de Firebase existente.
-        applicationId = "com.jonathan.chatsimpapp"
+        // Paquete de RJ2 (proyecto Firebase chat-simpapp-efb77). El namespace del código sigue siendo com.jonathan.chatsimpapp.
+        applicationId = "com.rj2techsolutions.chatsimpapp"
         minSdk = 26
         targetSdk = 36
         versionCode = 2
