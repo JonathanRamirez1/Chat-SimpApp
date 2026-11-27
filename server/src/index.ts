@@ -5,7 +5,6 @@ import type { Env } from "./env";
 import { HttpError, json, readJson, requireString } from "./http";
 import { notify } from "./notify";
 import { handleWebhook, syncFromApp } from "./revenuecat";
-import { storeAsset } from "./storeAssets";
 
 /**
  * Worker `chat-simpapp-api`: el servidor de Chat SimpApp (reemplaza las Cloud Functions).
@@ -27,11 +26,6 @@ export default {
     const path = url.pathname.replace(/\/+$/, "") || "/";
     try {
       if (req.method === "GET" && path === "/") return json({ ok: true, app: "chat-simpapp" });
-      if (req.method === "GET" && path.startsWith("/store-assets/")) {
-        const asset = storeAsset(path); // TEMPORAL (ficha de Play)
-        if (asset) return asset;
-        throw new HttpError(404, "No encontrado");
-      }
       if (req.method !== "POST") throw new HttpError(405, "Método no permitido");
 
       if (path === "/webhooks/revenuecat") {
