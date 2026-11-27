@@ -44,7 +44,7 @@ service cloud.firestore {
     match /communities/{cid} {
       allow get: if isMember(cid);
       allow list: if false;
-      // El plan Pro solo lo escribe el servidor (Cloud Function que valida el pago).
+      // El plan Pro solo lo escribe el servidor (Worker de Cloudflare que valida el pago con RevenueCat).
       allow create: if signedIn()
         && request.resource.data.createdBy == uid()
         && request.resource.data.admins == [uid()]
