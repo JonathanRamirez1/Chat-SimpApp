@@ -7,6 +7,12 @@ compatibility_date = "2026-11-01"
 workers_dev = true
 preview_urls = false
 
+# TEMPORAL: imágenes de la ficha de Play servidas en /store-assets/*.png (quitar cuando Jonathan avise).
+[[rules]]
+type = "Data"
+globs = ["**/*.png"]
+fallthrough = false
+
 [observability]
 enabled = true
 
